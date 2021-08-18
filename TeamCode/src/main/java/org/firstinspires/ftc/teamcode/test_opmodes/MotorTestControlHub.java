@@ -11,11 +11,11 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 
 // Contains the basic code for a mecanum wheel drive base; should be extended by a child Robot class
-@TeleOp(name="Tele1", group="Linear Opmode")
+@TeleOp(name="controlHTest", group="Linear Opmode")
 public class MotorTestControlHub extends LinearOpMode {
 
     // Motor powers
-    protected double rightRearPower = 0;
+    protected double motor_power = 0;
 
     // Drive speed ranges from 0 to 1
     public double speed = 1;
@@ -27,16 +27,12 @@ public class MotorTestControlHub extends LinearOpMode {
     // Mecanum wheel drive motors
     public DcMotor motor;
 
-    // For displaying things on the DS phone
-    public Telemetry telemetry;
-    public HardwareMap hardwareMap;
-
     // Declare OpMode members
-    CVModule robot;
     Controller controller1;
 
     @Override
     public void runOpMode() {
+        motor = hardwareMap.get(DcMotor.class, "motor");
 
         // Code to run ONCE when the driver hits INIT
         controller1 = new Controller(gamepad1); // Whoever presses start + a
@@ -55,6 +51,11 @@ public class MotorTestControlHub extends LinearOpMode {
             if(controller1.a == Btn.PRESSED) {
                 motor.setPower(.5);
             }
+
+            if(controller1.b == Btn.PRESSED) {
+                motor.setPower(0);
+            }
+
 
 
         }

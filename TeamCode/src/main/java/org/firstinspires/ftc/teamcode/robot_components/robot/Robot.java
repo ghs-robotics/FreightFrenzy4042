@@ -12,8 +12,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
     // Robot variables and objects
 
-//    public CRServo intakeCRServo;
-
+    //public CRServo intakeCRServo;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
