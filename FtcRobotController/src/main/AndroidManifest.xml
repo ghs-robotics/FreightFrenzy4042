@@ -23,6 +23,7 @@
 
     <!-- The main robot controller activity -->
     <activity android:name="org.firstinspires.ftc.robotcontroller.internal.PermissionValidatorWrapper"
+              android:exported="true"
               android:screenOrientation="fullUser"
               android:configChanges="orientation|screenSize"
               android:label="@string/app_name"
@@ -37,7 +38,8 @@
 
     <activity
       android:name="org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity"
-      android:screenOrientation="fullUser"
+        android:exported="true"
+        android:screenOrientation="fullUser"
       android:configChanges="orientation|screenSize"
       android:label="@string/app_name"
       android:launchMode="singleTask" >
