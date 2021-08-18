@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.cv_objects;
 
 import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.firstinspires.ftc.teamcode.data.MyScalar;
-import org.firstinspires.ftc.teamcode.robot_components.CVDetectionPipeline;
-import org.firstinspires.ftc.teamcode.robot_components.PIDController;
+import org.firstinspires.ftc.teamcode.robot_components.cv.CVDetectionPipeline;
+import org.firstinspires.ftc.teamcode.robot_components.movement_enhancing.PIDController;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -76,16 +75,6 @@ public abstract class CVObject implements HSVConstants {
             pipeline.activeObjects.add(this);
             active = true;
         }
-    }
-
-    // Creates solid rectangles to cover up background noise
-    protected void coverBackground() {
-        Imgproc.rectangle(
-                currentHSVMat,
-                new Point(0, 0),
-                new Point(SCREEN_WIDTH, (int) (cover * SCREEN_HEIGHT)),
-                GREEN_BGR, -1
-        );
     }
 
     // Remove from list of objects that are continually updated in the pipeline
@@ -233,9 +222,6 @@ public abstract class CVObject implements HSVConstants {
         // Converts color from BGR (default format for OpenCV) to HSV (easier format to process with)
         Imgproc.cvtColor(input, currentHSVMat, Imgproc.COLOR_BGR2HSV);
 
-        // Adds rectangles
-        coverBackground();
-
         // Filters colors within certain color range
         Core.inRange(currentHSVMat, this.lowerHSV, this.upperHSV, currentHSVMask);
 
@@ -256,9 +242,6 @@ public abstract class CVObject implements HSVConstants {
                 largestRect = rect;
             }
         }
-
-        // Draws largest rect on src image
-        Imgproc.rectangle(input, largestRect, GREEN_BGR, 2);
 
         // Updates coordinates
         this.x = largestRect.x;

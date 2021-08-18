@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot_components;
+package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.robot_components.movement_enhancing.PIDController;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
 
 // Contains the basic code for a mecanum wheel drive base; should be extended by a child Robot class
 public class DriveBase {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot_components;
+package org.firstinspires.ftc.teamcode.robot_components.navigation;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;

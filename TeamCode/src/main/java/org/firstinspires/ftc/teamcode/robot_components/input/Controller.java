@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot_components;
+package org.firstinspires.ftc.teamcode.robot_components.input;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -6,23 +6,23 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class Controller {
     Gamepad gamepad;
 
-    public String a;
-    public String b;
-    public String x;
-    public String y;
-    public String dpad_right;
-    public String dpad_up;
-    public String dpad_left;
-    public String dpad_down;
-    public String back;
-    public String guide;
-    public String start;
-    public String left_stick_button;
-    public String right_stick_button;
-    public String left_bumper;
-    public String right_bumper;
-    public String left_trigger_state;
-    public String right_trigger_state;
+    public Btn a;
+    public Btn b;
+    public Btn x;
+    public Btn y;
+    public Btn dpad_right;
+    public Btn dpad_up;
+    public Btn dpad_left;
+    public Btn dpad_down;
+    public Btn back;
+    public Btn guide;
+    public Btn start;
+    public Btn left_stick_button;
+    public Btn right_stick_button;
+    public Btn left_bumper;
+    public Btn right_bumper;
+    public Btn left_trigger_state;
+    public Btn right_trigger_state;
 
     public double left_stick_x;
     public double left_stick_y;
@@ -35,23 +35,23 @@ public class Controller {
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
 
-        a = "released";
-        b = "released";
-        x = "released";
-        y = "released";
-        dpad_right = "released";
-        dpad_up = "released";
-        dpad_left = "released";
-        dpad_down = "released";
-        back = "released";
-        guide = "released";
-        start = "released";
-        left_stick_button = "released";
-        right_stick_button = "released";
-        left_bumper = "released";
-        right_bumper = "released";
-        left_trigger_state = "released"; // pretending the triggers are buttons (with >0.95 counting as being pressed)
-        right_trigger_state = "released";
+        a = Btn.RELEASED;
+        b = Btn.RELEASED;
+        x = Btn.RELEASED;
+        y = Btn.RELEASED;
+        dpad_right = Btn.RELEASED;
+        dpad_up = Btn.RELEASED;
+        dpad_left = Btn.RELEASED;
+        dpad_down = Btn.RELEASED;
+        back = Btn.RELEASED;
+        guide = Btn.RELEASED;
+        start = Btn.RELEASED;
+        left_stick_button = Btn.RELEASED;
+        right_stick_button = Btn.RELEASED;
+        left_bumper = Btn.RELEASED;
+        right_bumper = Btn.RELEASED;
+        left_trigger_state = Btn.RELEASED; // pretending the triggers are buttons (with >0.95 counting as being pressed)
+        right_trigger_state = Btn.RELEASED;
 
         left_stick_x = 0;
         left_stick_y = 0;
@@ -97,19 +97,19 @@ public class Controller {
     }
 
     // Helper method for updating controller input
-    private String check(String previous, Boolean current) {
-        String state;
+    private Btn check(Btn previous, Boolean current) {
+        Btn state;
         if (current) {
-            if (previous.equals("released")) {
-                state = "pressing"; // The button is about to be pressed down
+            if (previous == (Btn.RELEASED)) {
+                state = Btn.PRESSING; // The button is about to be pressed down
             } else {
-                state = "pressed"; // The button is held down
+                state = Btn.PRESSED; // The button is held down
             }
         } else {
-            if (previous.equals("pressed")) {
-                state = "releasing"; // The button is about to be released
+            if (previous == (Btn.PRESSED)) {
+                state = Btn.RELEASING; // The button is about to be released
             } else {
-                state = "released"; // The button is not being pushed
+                state = Btn.RELEASED; // The button is not being pushed
             }
         }
         return state;

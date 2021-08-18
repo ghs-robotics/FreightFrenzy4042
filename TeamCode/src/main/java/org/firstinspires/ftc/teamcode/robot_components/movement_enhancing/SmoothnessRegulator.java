@@ -1,6 +1,8 @@
-package org.firstinspires.ftc.teamcode.robot_components;
+package org.firstinspires.ftc.teamcode.robot_components.movement_enhancing;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 
 // For use in TeleOp; allows you to toggle between smooth and choppy driving
 // NOTE: For Ultimate Goal, this wasn't particularly useful, so we didn't use it

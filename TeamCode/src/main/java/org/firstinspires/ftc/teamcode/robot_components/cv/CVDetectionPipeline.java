@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot_components;
+package org.firstinspires.ftc.teamcode.robot_components.cv;
 
 import org.firstinspires.ftc.teamcode.cv_objects.CVObject;
 import org.firstinspires.ftc.teamcode.data.HSVConstants;
@@ -60,13 +60,6 @@ public class CVDetectionPipeline extends OpenCvPipeline implements HSVConstants 
 //        /*
         Imgproc.cvtColor(input, dst1, Imgproc.COLOR_BGR2HSV);
         crosshairHSV = findHSV(dst1, input.rows()/2, input.cols()/2).toString();
-        Imgproc.rectangle(
-                input,
-                new Point(input.cols()/2 - 5, input.rows()/2 - 5),
-                new Point(input.cols()/2 + 5, input.rows()/2 + 5),
-                GREEN_BGR,
-                1);
-//         */
 
         // Draw some rectangles
 //        Imgproc.rectangle(currentMat, new Point(0, 0), new Point(320, 40), GREEN_BGR, -1);
