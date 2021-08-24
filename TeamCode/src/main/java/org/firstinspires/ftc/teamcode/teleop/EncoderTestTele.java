@@ -10,15 +10,14 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
 import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
-@Disabled
+@TeleOp(name="EncoderTest", group="Iterative Opmode")
 public class EncoderTestTele extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
     private DcMotor rightFrontDrive = null;
-    private DcMotor leftRearDrive = null;
-    private DcMotor rightRearDrive = null;
+//    private DcMotor leftRearDrive = null;
+//    private DcMotor rightRearDrive = null;
     private Gyro gyro;
     private OdometryModule odo;
 
@@ -29,10 +28,10 @@ public class EncoderTestTele extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initialized");
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
-        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
-        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "odo");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "motor2");
+//        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
+//        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
         gyro = new Gyro(hardwareMap);
         odo = new OdometryModule(leftFrontDrive, rightFrontDrive, gyro);
 

@@ -62,7 +62,7 @@ public class OdometryModule {
      * @return The linear distance in mm.
      */
     public double encoderTicksToDistance(int ticks) {
-        double revolutions = ((float)ticks)/TICKS_PER_REVOLUTION;
+        double revolutions = ((double)ticks)/TICKS_PER_REVOLUTION;
         return revolutions * WHEEL_CIRCUMFERENCE_MM;
     }
 }
