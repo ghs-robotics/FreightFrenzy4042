@@ -52,14 +52,13 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS PRESS START A
             //DRIVER FUNCTIONS
-            if (controller1.right_bumper != Btn.PRESSED) {
-                robot.calculateDrivePowers(
-                        controller1.left_stick_x,
-                        controller1.left_stick_y,
-                        controller1.right_stick_x,
-                        controller1.right_stick_y
-                );
-            }
+            robot.calculateDrivePowers(
+                    controller1.left_stick_x,
+                    controller1.left_stick_y,
+                    controller1.right_stick_x,
+                    controller1.right_stick_y
+            );
+            robot.sendDrivePowers();
 
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
