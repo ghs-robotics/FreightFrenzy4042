@@ -12,12 +12,11 @@ import org.firstinspires.ftc.teamcode.data.HSVConstants;
 // Contains all of the motors/servos/sensors specific to this year's challenge
 public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
-    // Robot variables and objects
+    //Robot variables and objects
 
     //public CRServo intakeCRServo;
 
-    // Construc
-    // ts a robot with the mechanical functions specific to this year's competition
+    // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
