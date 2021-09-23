@@ -58,7 +58,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for prioritizing carousal and possibly balancing the team element
+        //Auto mode for prioritizing carousal and possibly balancing the shared hub
 
         //Detect the barcode and place game element to corresponding level
 
