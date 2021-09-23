@@ -40,7 +40,9 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Auto mode for prioritizing delivering freight
 
-        //rotate to have the intake face the warehouse
+        //Detect the barcode and place game element to the corresponding level
+
+        //Move to have the intake face the warehouse
 
         //Detect the weight of the freight if possible
 
@@ -53,5 +55,17 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //Park in the warehouse
 
 
+
+
+
+        //Auto mode for prioritizing carousal and possibly balancing the team element
+
+        //Detect the barcode and place game element to corresponding level
+
+        //Move to the carousal to deliver the duck
+
+        //Stay at the shared shipping hub and try to balance the hub
+
+        //2-5 seconds before autonomous ends go park in the warehouse
     }
 }
