@@ -16,11 +16,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     @Override
     public void runOpMode()
     {
-        //Auto mode for prioritizing ducks
+        //Auto mode for team member with bad auto
 
-        //Detect the barcode and place the game element to corresponding level
+        //Detect the barcode and place the box to corresponding level
 
-        //Move to the carousal to deliver the duck
+        //Move to the carousal to knock off the duck
 
         //Move to the side with the intake facing the warehouse
 
@@ -40,7 +40,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Auto mode for prioritizing delivering freight
 
-        //Detect the barcode and place game element to the corresponding level
+        //Detect the barcode and place box to the corresponding level
 
         //Move to have the intake face the warehouse
 
@@ -62,7 +62,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Detect the barcode and place game element to corresponding level
 
-        //Move to the carousal to deliver the duck
+        //Move to the carousal to knock off the duck
 
         //Stay at the shared shipping hub and try to balance the hub
 
