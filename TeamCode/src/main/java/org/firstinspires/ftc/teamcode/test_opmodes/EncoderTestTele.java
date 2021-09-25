@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.data.Vector2;
 import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
 import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 
@@ -29,11 +30,11 @@ public class EncoderTestTele extends OpMode {
         telemetry.addData("Status", "Initialized");
 
         leftFrontDrive = hardwareMap.get(DcMotor.class, "odo");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "motor2");
+        //rightFrontDrive = hardwareMap.get(DcMotor.class, "motor2");
 //        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
 //        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
         gyro = new Gyro(hardwareMap);
-        odo = new OdometryModule(leftFrontDrive, rightFrontDrive, gyro);
+        odo = new OdometryModule(leftFrontDrive, leftFrontDrive, gyro);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -64,11 +65,10 @@ public class EncoderTestTele extends OpMode {
      */
     @Override
     public void loop() {
-        int encoderValues[] = odo.getRawEncoderValues();
+        Vector2 distance = odo.calculateDistanceChange();
 
-        // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("encoder values", "x %d right %d", encoderValues[0], encoderValues[1]);
+        telemetry.addData("encoder distances", "x in mm " + distance.x  );
     }
 
     /*
