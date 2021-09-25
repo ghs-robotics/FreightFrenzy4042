@@ -64,7 +64,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Move to the carousal to knock off the duck
 
-        //Stay at the shared shipping hub and try to balance the hub
+        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
 
         //2-5 seconds before autonomous ends go park in the warehouse
     }
