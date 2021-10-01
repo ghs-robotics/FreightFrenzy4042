@@ -20,6 +20,9 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //bottom spawn point closer to the carousal
 
 
+        //Idea - add bumpers
+
+
 
         //Auto mode for prioritizing freight delivery - top
 
@@ -39,7 +42,25 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for prioritizing0 freight delivery - bottom
+        //Auto mode for Auto mode for prioritizing freight delivery (no detection)- top
+
+        //Drop the preloaded box for teammate
+
+        //Rotate to face the warehouse
+
+        //Detect the weight of the freight if possible
+
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+
+        //Park in the warehouse
+
+
+
+
+
+        //Auto mode for prioritizing freight delivery - bottom
 
         //Detect the barcode and place box to the corresponding level
 
@@ -151,7 +172,25 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for prioritizing0 freight delivery - bottom
+        //Auto mode for Auto mode for prioritizing freight delivery (no detection)- top
+
+        //Drop the preloaded box for teammate
+
+        //Rotate to face the warehouse
+
+        //Detect the weight of the freight if possible
+
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+
+        //Park in the alliance shipping hub
+
+
+
+
+
+        //Auto mode for prioritizing freight delivery - bottom
 
         //Detect the barcode and place box to the corresponding level
 
