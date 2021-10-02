@@ -17,20 +17,23 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     public void runOpMode()
     {
         //top - spawn point closer to the warehouse
-        //bottom spawn point closer to the carousal
+        //bottom - spawn point closer to the carousal
 
 
         //Idea - add bumpers
 
 
 
-        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
+        //Auto mode: Teammate prioritizing Freight; No anti-collision on either robot
 
         //Detect the barcode and place box to the corresponding level
 
-        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+        //If teammate places down their box, navigate around them (Guess their actions beforehand)
+        //then pick it up and deliver to corresponding shipping hub level
 
         //Park in warehouse out of our teammate's way
+
+
 
 
 
@@ -52,7 +55,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for Auto mode for prioritizing freight delivery (no detection)- top
+        //Auto mode for for prioritizing freight delivery (Ignore pre-loaded box)- top
 
         //Drop the preloaded box for teammate
 
@@ -65,8 +68,6 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //Repeat the last three steps until there's 2-5 secs left on the auto timer
 
         //Park in the warehouse
-
-
 
 
 
@@ -119,9 +120,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Move to the carousal to knock off the duck
 
-        //Go do freight
-
-        //2-5 seconds before autonomous ends go park in the warehouse
+        //Go park in the warehouse
 
 
 
@@ -131,7 +130,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Detect the barcode and place box to the corresponding level
 
-        //Move around our teammate's robot with the intake face the warehouse
+        //Move around our teammate's robot with the intake facing the warehouse
 
         //Detect the weight of the freight if possible
 
