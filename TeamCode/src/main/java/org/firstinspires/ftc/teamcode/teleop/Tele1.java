@@ -68,6 +68,11 @@ public class Tele1 extends LinearOpMode implements FieldPositions {
 
         while (opModeIsActive()) {
 
+            int[] odoData = robot.getOdometryDate();
+
+            telemetry.addData("odometry X:", odoData[0]+"");
+            telemetry.addData("odometry Y:", odoData[1]+"");
+            telemetry.update();
             // Registers controller input
             controller1.update();
             controller2.update();

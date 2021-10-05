@@ -9,9 +9,13 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.robot_components.movement_enhancing.PIDController;
 import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 
 // Contains the basic code for a mecanum wheel drive base; should be extended by a child Robot class
 public class DriveBase {
+
+    private OdometryModule odometryModule;
+
 
     // Motor powers
     protected double leftFrontPower = 0;
@@ -57,6 +61,7 @@ public class DriveBase {
         leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
         rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
 
+
         // Default is to have the launcher be the front
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -72,6 +77,8 @@ public class DriveBase {
         // Initializes gyro and sets starting angle to zero
         gyro = new Gyro(hardwareMap);
         resetGyroAngle();
+
+        odometryModule = new OdometryModule(leftRearDrive, leftFrontDrive, gyro);
 
         // gyroPID works best when Ki = 0
         gyroPID = new PIDController(0.0330, 0.0000, 0.0020, 0.2);
@@ -94,6 +101,11 @@ public class DriveBase {
         telemetry.addData("LR power: ", leftRearPower);
         telemetry.addData("RR power: ", rightRearPower);
         telemetry.update();
+    }
+
+    public int[] getOdometryDate() {
+
+        return odometryModule.getRawEncoderValues();
     }
 
     // Turns the robot to a desired target angle (if called repeatedly)

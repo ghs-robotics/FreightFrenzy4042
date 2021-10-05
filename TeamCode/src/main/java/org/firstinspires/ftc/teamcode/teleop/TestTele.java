@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @TeleOp(name="TestTele", group="Linear Opmode")
@@ -24,6 +25,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         controller1 = new Controller(gamepad1); // Whoever presses start + a
         controller2 = new Controller(gamepad2); // Whoever presses start + b
+
 
 //        robot;
 
