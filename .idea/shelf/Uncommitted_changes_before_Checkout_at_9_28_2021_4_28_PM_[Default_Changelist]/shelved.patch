@@ -1,0 +1,21 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/test_opmodes/EncoderTestTele.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.test_opmodes;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.Disabled;\r\nimport com.qualcomm.robotcore.eventloop.opmode.OpMode;\r\nimport com.qualcomm.robotcore.eventloop.opmode.TeleOp;\r\nimport com.qualcomm.robotcore.hardware.DcMotor;\r\nimport com.qualcomm.robotcore.util.ElapsedTime;\r\nimport com.qualcomm.robotcore.util.Range;\r\n\r\nimport org.firstinspires.ftc.teamcode.data.Vector2;\r\nimport org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;\r\nimport org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;\r\n\r\n@TeleOp(name=\"EncoderTest\", group=\"Iterative Opmode\")\r\npublic class EncoderTestTele extends OpMode {\r\n    // Declare OpMode members.\r\n    private ElapsedTime runtime = new ElapsedTime();\r\n    private DcMotor leftFrontDrive = null;\r\n    private DcMotor rightFrontDrive = null;\r\n//    private DcMotor leftRearDrive = null;\r\n//    private DcMotor rightRearDrive = null;\r\n    private Gyro gyro;\r\n    private OdometryModule odo;\r\n\r\n    /*\r\n     * Code to run ONCE when the driver hits INIT\r\n     */\r\n    @Override\r\n    public void init() {\r\n        telemetry.addData(\"Status\", \"Initialized\");\r\n\r\n        leftFrontDrive = hardwareMap.get(DcMotor.class, \"odo\");\r\n        //rightFrontDrive = hardwareMap.get(DcMotor.class, \"motor2\");\r\n//        leftRearDrive = hardwareMap.get(DcMotor.class, \"leftRearDrive\");\r\n//        rightRearDrive = hardwareMap.get(DcMotor.class, \"rightRearDrive\");\r\n        gyro = new Gyro(hardwareMap);\r\n        odo = new OdometryModule(leftFrontDrive, leftFrontDrive, gyro);\r\n\r\n        // Most robots need the motor on one side to be reversed to drive forward\r\n        // Reverse the motor that runs backwards when connected directly to the battery\r\n//        leftDrive.setDirection(DcMotor.Direction.FORWARD);\r\n//        rightDrive.setDirection(DcMotor.Direction.REVERSE);\r\n\r\n        // Tell the driver that initialization is complete.\r\n        telemetry.addData(\"Status\", \"Initialized\");\r\n    }\r\n\r\n    /*\r\n     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY\r\n     */\r\n    @Override\r\n    public void init_loop() {\r\n    }\r\n\r\n    /*\r\n     * Code to run ONCE when the driver hits PLAY\r\n     */\r\n    @Override\r\n    public void start() {\r\n        runtime.reset();\r\n    }\r\n\r\n    /*\r\n     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP\r\n     */\r\n    @Override\r\n    public void loop() {\r\n        Vector2 distance = odo.calculateDistanceChange();\r\n\r\n        telemetry.addData(\"Status\", \"Run Time: \" + runtime.toString());\r\n        telemetry.addData(\"encoder distances\", \"x in mm \" + distance.x  );\r\n    }\r\n\r\n    /*\r\n     * Code to run ONCE after the driver hits STOP\r\n     */\r\n    @Override\r\n    public void stop() {\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/test_opmodes/EncoderTestTele.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/test_opmodes/EncoderTestTele.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/test_opmodes/EncoderTestTele.java	
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/test_opmodes/EncoderTestTele.java	
+@@ -69,7 +69,10 @@
+ 
+         telemetry.addData("Status", "Run Time: " + runtime.toString());
+         telemetry.addData("encoder distances", "x in mm " + distance.x  );
++
+     }
++
++
+ 
+     /*
+      * Code to run ONCE after the driver hits STOP
