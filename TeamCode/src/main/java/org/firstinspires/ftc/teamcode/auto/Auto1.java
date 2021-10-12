@@ -21,6 +21,8 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
         //Idea - add bumpers
+        //Idea - make the robot acknowledge it's been hit
+        //Idea - If possible to track weight, spit info back at driver station
 
 
 
@@ -42,7 +44,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for Auto mode for prioritizing freight delivery (no detection)- top
+        //Auto mode for prioritizing freight delivery (no detection)- top
 
         //Drop the preloaded box for teammate
 
@@ -172,7 +174,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for Auto mode for prioritizing freight delivery (no detection)- top
+        //Auto mode for prioritizing freight delivery (no detection)- top
 
         //Drop the preloaded box for teammate
 
