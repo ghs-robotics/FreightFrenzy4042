@@ -118,7 +118,7 @@ public class DriveBase {
         double angleOfRotation = Math.atan2(y2, x2); // Angle to rotate to (with launcher side)
         setTargetGyroAngle(Math.toDegrees(angleOfRotation));
         double rot = r2 * getMetaGyroPIDValue();
-        calculateDrivePowers(x1, y1, rot, true);
+        calculateDrivePowers(x1, y1, rot, false);
     }
 
     // Helper method for completing drive power calculations
