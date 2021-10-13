@@ -108,8 +108,13 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
-    public void calculateDrivePowers(double x, double y, double rot) { // rot is rotation
-        calculateDrivePowers(x, y, rot, false);
+    public void calculateDrivePowers(double x, double y, double rot) {
+        double r = Math.hypot(x, y);
+        double robotAngle = Math.atan2(y, x) - Math.PI / 4;
+        leftFrontPower = Range.clip(r * Math.cos(robotAngle) + rot, -1.0, 1.0) * speed;
+        rightFrontPower = Range.clip(r * Math.sin(robotAngle) - rot, -1.0, 1.0) * speed;
+        leftRearPower = Range.clip(r * Math.sin(robotAngle) + rot, -1.0, 1.0) * speed;
+        rightRearPower = Range.clip(r * Math.cos(robotAngle) - rot, -1.0, 1.0) * speed;
     }
 
     // Calculates powers for mecanum wheel drive in meta mode
@@ -133,6 +138,8 @@ public class DriveBase {
         leftRearPower = Range.clip(r * Math.sin(angleOfMotion) + rot, -1.0, 1.0) * speed;
         rightRearPower = Range.clip(r * Math.cos(angleOfMotion) - rot, -1.0, 1.0) * speed;
     }
+
+
 
     // Returns how many seconds have passed since the timer was last reset
     public double elapsedSecs() {
