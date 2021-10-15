@@ -67,6 +67,9 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
+            if (controller2.right_trigger.equals("pressing")) {
+                robot.dropThings();
+            }
 
         }
     }

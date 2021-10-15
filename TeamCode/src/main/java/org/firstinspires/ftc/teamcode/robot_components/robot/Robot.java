@@ -11,13 +11,22 @@ import org.firstinspires.ftc.teamcode.data.HSVConstants;
 public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
     // Robot variables and objects
-
     //public CRServo intakeCRServo;
-
+    public Servo thingDropper;
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
+
+
+        thingDropper = hardwaremap.get(Servo.class, "thingDropper");
+
     }
+
+    public void dropThings() {
+        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+        thingDropper.setPosition(dropperAngle);
+    }
+
 
 }
