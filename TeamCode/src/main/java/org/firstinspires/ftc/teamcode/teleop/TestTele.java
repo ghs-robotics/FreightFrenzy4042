@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
+import java.util.Objects;
+
 @TeleOp(name="TestTele", group="Linear Opmode")
 public class TestTele extends LinearOpMode implements FieldPositions {
     
@@ -67,7 +69,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
-            if (controller2.right_trigger.equals("pressing")) {
+            if (Objects.equals(controller2.right_trigger, "pressing")) {
                 robot.dropThings();
             }
 

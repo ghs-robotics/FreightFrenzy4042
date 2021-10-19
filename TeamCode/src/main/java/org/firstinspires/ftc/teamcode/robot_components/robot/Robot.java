@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
@@ -13,13 +14,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     // Robot variables and objects
     //public CRServo intakeCRServo;
     public Servo thingDropper;
+    double dropperAngle;
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
 
-        thingDropper = hardwaremap.get(Servo.class, "thingDropper");
+        thingDropper = hardwareMap.get(Servo.class, "thingDropper");
 
     }
 
