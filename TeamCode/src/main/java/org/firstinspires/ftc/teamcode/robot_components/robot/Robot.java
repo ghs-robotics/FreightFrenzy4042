@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,23 +13,35 @@ import org.firstinspires.ftc.teamcode.data.HSVConstants;
 public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
     // Robot variables and objects
-    //public CRServo intakeCRServo;
-    public Servo thingDropper;
+    protected double spinnerPower = 0;
     double dropperAngle;
+    //public CRServo intakeCRServo;
+    public DcMotor extenderMotor;
+    public DcMotor spinnerMotor;
+    public Servo dropperServo;
+
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-
-        thingDropper = hardwareMap.get(Servo.class, "thingDropper");
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
+        dropperServo = hardwareMap.get(Servo.class, "thingDropper");
 
     }
 
     public void dropThings() {
         dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
-        thingDropper.setPosition(dropperAngle);
+        dropperServo.setPosition(dropperAngle);
     }
+
+    public void duckSpin(double power){
+        spinnerPower = power;
+        spinnerMotor.setPower(spinnerPower);
+
+    }
+
+
 
 
 }
