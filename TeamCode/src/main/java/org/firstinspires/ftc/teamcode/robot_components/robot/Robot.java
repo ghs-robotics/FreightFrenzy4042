@@ -21,6 +21,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
     public Servo dropperServo;
+    private final double DROPPER_MAX = 0.8;
+    private final double DROPPER_MIN = 0.35;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -28,7 +30,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        dropperServo = hardwareMap.get(Servo.class, "thingDropper");
+        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
         extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -40,7 +42,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      */
     public void toggleExtension(double distance) {
         int currentTicks = extenderMotor.getCurrentPosition();
-        if (currentTicks > 5 || currentTicks < -5) {
+        if (currentTicks > 5 || currentTicks < -5) { // could also use math.abs but this is simple
             // retract
             extenderMotor.setTargetPosition(0);
         } else {
@@ -53,8 +55,13 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         }
     }
 
+    /**
+     * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
+     */
     public void dropThings() {
-        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+//        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+        // Important note: never compare doubles or floats with == or !=, because floating point error
+        dropperAngle = (Math.abs(dropperAngle - DROPPER_MAX) < 0.001 ? DROPPER_MAX : DROPPER_MIN);
         dropperServo.setPosition(dropperAngle);
     }
 
