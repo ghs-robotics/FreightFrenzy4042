@@ -17,6 +17,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     double dropperAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
+    private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
+    private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
     public Servo dropperServo;
 
@@ -27,7 +29,28 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         dropperServo = hardwareMap.get(Servo.class, "thingDropper");
+        extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
+        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
 
+    /**
+     * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
+     * to be set up properly with RunMode.RUN_TO_POSITION.
+     * @param distance The distance to extend to if retracted.
+     */
+    public void toggleExtension(double distance) {
+        int currentTicks = extenderMotor.getCurrentPosition();
+        if (currentTicks > 5 || currentTicks < -5) {
+            // retract
+            extenderMotor.setTargetPosition(0);
+        } else {
+            // extend
+            int targetTicks = (int) Math.round(
+                    (distance / EXTENDER_PULLEY_INNER_CIRC /* num. revolutions*/)
+                    * EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT
+            );
+            extenderMotor.setTargetPosition(targetTicks);
+        }
     }
 
     public void dropThings() {
@@ -35,6 +58,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         dropperServo.setPosition(dropperAngle);
     }
 
+    // This probably shouldn't be used since there is a dedicated duckSpinner class? idk
     public void duckSpin(double power){
         spinnerPower = power;
         spinnerMotor.setPower(spinnerPower);
