@@ -27,7 +27,7 @@ public class DuckSpinner {
     final double DUCK_MASS = 0.01700971; // kg
     final double SPINNER_MOMENT_OF_INERTIA = 1000; // probably not accurate, needs tweaking
     final double MAX_MOTOR_TORQUE = 18.7;
-    final double SPIN_TIME_BEFORE_STOP = 3.3; // this needs tweaking
+    final double SPIN_TIME_BEFORE_STOP = 1000;//3.3; // this needs tweaking
 
     // TODO: SET DIRECTION !!!!
 
@@ -80,7 +80,7 @@ public class DuckSpinner {
      * @return true if done spinning, else false
      */
     public boolean update() {
-        double time = runtime.time();
+        double time = runtime.seconds();
         telemetry.ifPresent(telemetry1 -> { // if telemetry is null nothing will happen
             telemetry1.addData("duck time", time);
             telemetry1.addData("duck motor power", motor.getPower());

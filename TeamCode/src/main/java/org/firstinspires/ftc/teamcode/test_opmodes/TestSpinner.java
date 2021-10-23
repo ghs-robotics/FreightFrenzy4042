@@ -51,12 +51,13 @@ public class TestSpinner extends LinearOpMode implements FieldPositions {
 //        robot.resetGyroAngle();
 //        robot.resetElapsedTime();
 
-        ElapsedTime et = new ElapsedTime();
+//        ElapsedTime et = new ElapsedTime();
 
-        boolean started = false;
+//        boolean started = false;
+//
+//        et.reset();
 
-        et.reset();
-
+//        spinner.startRunning();
         while (opModeIsActive()) {
 
             // Registers controller input
@@ -79,10 +80,10 @@ public class TestSpinner extends LinearOpMode implements FieldPositions {
 //                );
             }
 
-            if (et.time() > 1.0 && !started) {
-                spinner.startRunning();
-                started = true;
-            }
+//            if (et.time() > 1.0 && !started) {
+//                spinner.startRunning();
+//                started = true;
+//            }
 
             if (controller1.b == Btn.PRESSED) {
                 spinner.startRunning();
