@@ -107,6 +107,15 @@ public class DriveBase {
         return (leftFrontPower != 0 || rightFrontPower != 0 || leftRearPower != 0 || rightRearPower != 0);
     }
 
+
+    // Calculates powers for mecanum wheel drive in meta mode
+    public void calculateDrivePowers(double x1, double y1, double x2, double y2) {
+        double r2 = Math.hypot(x2, y2);
+        double angleOfRotation = Math.atan2(y2, x2); // Angle to rotate to (with launcher side)
+        setTargetGyroAngle(Math.toDegrees(angleOfRotation));
+        double rot = r2 * getMetaGyroPIDValue();
+        calculateDrivePowers(x1, y1, rot);
+    }
     // Calculates powers for mecanum wheel drive
     public void calculateDrivePowers(double x, double y, double rot) {
         double r = Math.hypot(x, y);
@@ -116,16 +125,7 @@ public class DriveBase {
         leftRearPower = Range.clip(r * Math.sin(robotAngle) + rot, -1.0, 1.0) * speed;
         rightRearPower = Range.clip(r * Math.cos(robotAngle) - rot, -1.0, 1.0) * speed;
     }
-
-    // Calculates powers for mecanum wheel drive in meta mode
-    public void calculateDrivePowers(double x1, double y1, double x2, double y2) {
-        double r2 = Math.hypot(x2, y2);
-        double angleOfRotation = Math.atan2(y2, x2); // Angle to rotate to (with launcher side)
-        setTargetGyroAngle(Math.toDegrees(angleOfRotation));
-        double rot = r2 * getMetaGyroPIDValue();
-        calculateDrivePowers(x1, y1, rot, false);
-    }
-
+/*
     // Helper method for completing drive power calculations
     public void calculateDrivePowers(double x, double y, double rot, boolean meta) {
         double r = Math.hypot(x, y);
@@ -138,7 +138,7 @@ public class DriveBase {
         leftRearPower = Range.clip(r * Math.sin(angleOfMotion) + rot, -1.0, 1.0) * speed;
         rightRearPower = Range.clip(r * Math.cos(angleOfMotion) - rot, -1.0, 1.0) * speed;
     }
-
+*/
 
 
     // Returns how many seconds have passed since the timer was last reset

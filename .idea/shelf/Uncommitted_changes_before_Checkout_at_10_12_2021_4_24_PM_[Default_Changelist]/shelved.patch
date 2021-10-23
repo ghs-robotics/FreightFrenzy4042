@@ -1,0 +1,351 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/Tele1.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* Copyright (c) 2017 FIRST. All rights reserved.\r\n *\r\n * Redistribution and use in source and binary forms, with or without modification,\r\n * are permitted (subject to the limitations in the disclaimer below) provided that\r\n * the following conditions are met:\r\n *\r\n * Redistributions of source code must retain the above copyright notice, this list\r\n * of conditions and the following disclaimer.\r\n *\r\n * Redistributions in binary form must reproduce the above copyright notice, this\r\n * list of conditions and the following disclaimer in the documentation and/or\r\n * other materials provided with the distribution.\r\n *\r\n * Neither the name of FIRST nor the names of its contributors may be used to endorse or\r\n * promote products derived from this software without specific prior written permission.\r\n *\r\n * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS\r\n * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\r\n * \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\r\n * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\r\n * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\r\n * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\r\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\r\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\r\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\r\n * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\r\n * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\r\n */\r\n\r\npackage org.firstinspires.ftc.teamcode.teleop;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\r\nimport com.qualcomm.robotcore.eventloop.opmode.TeleOp;\r\n\r\nimport org.firstinspires.ftc.teamcode.robot_components.input.Btn;\r\nimport org.firstinspires.ftc.teamcode.data.FieldPositions;\r\nimport org.firstinspires.ftc.teamcode.robot_components.input.Controller;\r\nimport org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;\r\n\r\n@TeleOp(name=\"Tele1\", group=\"Linear Opmode\")\r\npublic class Tele1 extends LinearOpMode implements FieldPositions {\r\n    \r\n    // Declare OpMode members\r\n    CVModule robot;\r\n    Controller controller1;\r\n    Controller controller2;\r\n\r\n    @Override\r\n    public void runOpMode() {\r\n\r\n        // Code to run ONCE when the driver hits INIT\r\n        robot = new CVModule(hardwareMap, telemetry);\r\n        controller1 = new Controller(gamepad1); // Whoever presses start + a\r\n        controller2 = new Controller(gamepad2); // Whoever presses start + b\r\n\r\n        robot.initWithCV();\r\n\r\n        telemetry.addData(\"Status\", \"Initialized\");\r\n        telemetry.update();\r\n\r\n        // Wait for the game to start (driver presses PLAY)\r\n        waitForStart();\r\n        robot.cameras.webcam.pauseViewport();\r\n        robot.activateFieldLocalization();\r\n\r\n        robot.resetGyroAngle();\r\n        robot.resetElapsedTime();\r\n\r\n        while (opModeIsActive()) {\r\n\r\n            int[] odoData = robot.getOdometryDate();\r\n\r\n            telemetry.addData(\"odometry X:\", odoData[0]+\"\");\r\n            telemetry.addData(\"odometry Y:\", odoData[1]+\"\");\r\n            telemetry.update();\r\n            // Registers controller input\r\n            controller1.update();\r\n            controller2.update();\r\n\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // ------------------------------   CONTROLLER 1 FUNCTIONS   -------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // NOTE: TO USE THESE FUNCTIONS PRESS START A\r\n            //DRIVER FUNCTIONS\r\n            if (controller1.right_bumper != Btn.PRESSED) {\r\n                robot.calculateDrivePowers(\r\n                        controller1.left_stick_x,\r\n                        controller1.left_stick_y,\r\n                        controller1.right_stick_x,\r\n                        controller1.right_stick_y\r\n                );\r\n            }\r\n\r\n            robot.sendDrivePowers();\r\n\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // ------------------------------   CONTROLLER 2 FUNCTIONS   -------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // NOTE: TO USE THESE FUNCTIONS, PRESS START B\r\n            //OPERATOR FUNCTIONS\r\n\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/Tele1.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/Tele1.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/Tele1.java	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/Tele1.java	(date 1634078253349)
+@@ -72,7 +72,6 @@
+ 
+             telemetry.addData("odometry X:", odoData[0]+"");
+             telemetry.addData("odometry Y:", odoData[1]+"");
+-            telemetry.update();
+             // Registers controller input
+             controller1.update();
+             controller2.update();
+@@ -84,14 +83,12 @@
+             // -----------------------------------------------------------------------------------------
+             // NOTE: TO USE THESE FUNCTIONS PRESS START A
+             //DRIVER FUNCTIONS
+-            if (controller1.right_bumper != Btn.PRESSED) {
+-                robot.calculateDrivePowers(
+-                        controller1.left_stick_x,
+-                        controller1.left_stick_y,
+-                        controller1.right_stick_x,
+-                        controller1.right_stick_y
+-                );
+-            }
++            robot.calculateDrivePowers(
++                    controller1.left_stick_x,
++                    controller1.left_stick_y,
++                    controller1.right_stick_x,
++                    controller1.right_stick_y
++            );
+ 
+             robot.sendDrivePowers();
+ 
+@@ -103,6 +100,7 @@
+             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
+             //OPERATOR FUNCTIONS
+ 
++            telemetry.update();
+         }
+     }
+ }
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM__Default_Changelist_.xml	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
++++ /dev/null	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]" date="1633113992883" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 10/1/2021 11:46 AM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM__Default_Changelist_.xml	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
++++ /dev/null	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]" date="1633114023109" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Merge at 10/1/2021 11:46 AM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
++++ /dev/null	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
+@@ -1,27 +0,0 @@
+-Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package org.firstinspires.ftc.teamcode.auto;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.Autonomous;\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\r\n\r\nimport org.firstinspires.ftc.teamcode.data.FieldPositions;\r\nimport org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;\r\n\r\n\r\n@Autonomous\r\npublic class Auto1 extends LinearOpMode implements FieldPositions {\r\n\r\n    // Declare OpMode members\r\n    CVModule robot;\r\n\r\n    @Override\r\n    public void runOpMode()\r\n    {\r\n        //top - spawn point closer to the warehouse\r\n        //bottom spawn point closer to the carousal\r\n\r\n\r\n\r\n        //Auto mode for prioritizing freight delivery - top\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //Move back to spawn with the intake face the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last three steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the warehouse\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for prioritizing0 freight delivery - bottom\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //Move around our teammate's robot with the intake face the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last two steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the warehouse\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate prioritizing freight delivery and no anti-collision system\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level\r\n\r\n        //Park in warehouse out of our teammate's way\r\n\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate with bad auto - top\r\n\r\n        //Detect the barcode and place the box to corresponding level\r\n\r\n        //Move around the teammate's robot to knock off the duck\r\n\r\n        //Move back to spawn with the side with the intake facing the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last two steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the warehouse\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate with bad auto - bottom\r\n\r\n        //Detect the barcode\r\n\r\n        //Move to the carousal and knock off the duck\r\n\r\n        //Deliver the box to the shipping hub\r\n\r\n        //Move around the other robot with intake facing warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Check if the shipping hub is balanced\r\n\r\n        //Repeat the last three steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the warehouse\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for prioritizing carousal and possibly balancing the shared hub\r\n\r\n        //Detect the barcode and place game element to corresponding level\r\n\r\n        //Move to the carousal to knock off the duck\r\n\r\n        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight\r\n\r\n        //2-5 seconds before autonomous ends go park in the warehouse\r\n\r\n\r\n\r\n        ///////////////////////////////////////////////////////////////////////////////////////\r\n        //                   If we can't park both robots in the warehouse\r\n        ///////////////////////////////////////////////////////////////////////////////////////\r\n\r\n\r\n\r\n\r\n        //Auto mode for prioritizing freight delivery - top\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //Move back to spawn with the intake face the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last three steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the alliance shipping hub\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for prioritizing0 freight delivery - bottom\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //Move around our teammate's robot with the intake face the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last two steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the alliance shipping hub\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate prioritizing freight delivery and no anti-collision system\r\n\r\n        //Detect the barcode and place box to the corresponding level\r\n\r\n        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level\r\n\r\n        //Park in alliance shipping hub out of our teammate's way\r\n\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate with bad auto - top\r\n\r\n        //Detect the barcode and place the box to corresponding level\r\n\r\n        //Move around the teammate's robot to knock off the duck\r\n\r\n        //Move back to spawn with the side with the intake facing the warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Repeat the last two steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the alliance shipping hub\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for teammate with bad auto - bottom\r\n\r\n        //Detect the barcode\r\n\r\n        //Move to the carousal and knock off the duck\r\n\r\n        //Deliver the box to the shipping hub\r\n\r\n        //Move around the other robot with intake facing warehouse\r\n\r\n        //Detect the weight of the freight if possible\r\n\r\n        //Deliver the freight to the team shipping hub's bottom level\r\n\r\n        //Check if the shipping hub is balanced\r\n\r\n        //Repeat the last three steps until there's 2-5 secs left on the auto timer\r\n\r\n        //Park in the alliance shipping hub\r\n\r\n\r\n\r\n\r\n\r\n        //Auto mode for prioritizing carousal and possibly balancing the shared hub\r\n\r\n        //Detect the barcode and place game element to corresponding level\r\n\r\n        //Move to the carousal to knock off the duck\r\n\r\n        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight\r\n\r\n        //2-5 seconds before autonomous ends go park in the alliance shipping hub\r\n\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java
+---- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java	(revision 6095051692b28035dfdb70106c2cca44ab667a07)
+-+++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java	(date 1633106909214)
+-@@ -19,6 +19,8 @@
+-         //top - spawn point closer to the warehouse
+-         //bottom spawn point closer to the carousal
+- 
+-+        //add bumpersz
+-+        //maybe add some distance sensors on the side?
+- 
+- 
+-         //Auto mode for prioritizing freight delivery - top
+-@@ -27,6 +29,7 @@
+- 
+-         //Move back to spawn with the intake face the warehouse
+- 
+-+        //todo not needed
+-         //Detect the weight of the freight if possible
+- 
+-         //Deliver the freight to the team shipping hub's bottom level
+Index: .idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Merge_at_10_1_2021_11_46_AM_[Default_Changelist]/shelved.patch	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
++++ /dev/null	(revision 7f18587fd93210d65156cb670ac5d36e7adba20e)
+@@ -1,239 +0,0 @@
+-Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package org.firstinspires.ftc.teamcode.auto;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.Autonomous;\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\r\n\r\nimport org.firstinspires.ftc.teamcode.data.FieldPositions;\r\nimport org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;\r\n\r\n\r\n@Autonomous\r\npublic class Auto1 extends LinearOpMode implements FieldPositions {\r\n\r\n    // Declare OpMode members\r\n    CVModule robot;\r\n\r\n    @Override\r\n    public void runOpMode()\r\n    {\r\n\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java
+---- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java	(revision ec7f35eb0766a79abbdbf45ad8a5344ededc659e)
+-+++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auto/Auto1.java	(date 1633113992756)
+-@@ -16,6 +16,228 @@
+-     @Override
+-     public void runOpMode()
+-     {
+-+        //top - spawn point closer to the warehouse
+-+        //bottom spawn point closer to the carousal
+-+
+-+        //add bumpersz
+-+        //maybe add some distance sensors on the side?
+-+
+-+
+-+        //Auto mode for prioritizing freight delivery - top
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //Move back to spawn with the intake face the warehouse
+-+
+-+        //todo not needed
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the warehouse
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for prioritizing0 freight delivery - bottom
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //Move around our teammate's robot with the intake face the warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the warehouse
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+-+
+-+        //Park in warehouse out of our teammate's way
+-+
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate with bad auto - top
+-+
+-+        //Detect the barcode and place the box to corresponding level
+-+
+-+        //Move around the teammate's robot to knock off the duck
+-+
+-+        //Move back to spawn with the side with the intake facing the warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the warehouse
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate with bad auto - bottom
+-+
+-+        //Detect the barcode
+-+
+-+        //Move to the carousal and knock off the duck
+-+
+-+        //Deliver the box to the shipping hub
+-+
+-+        //Move around the other robot with intake facing warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Check if the shipping hub is balanced
+-+
+-+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the warehouse
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+-+
+-+        //Detect the barcode and place game element to corresponding level
+-+
+-+        //Move to the carousal to knock off the duck
+-+
+-+        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+-+
+-+        //2-5 seconds before autonomous ends go park in the warehouse
+-+
+-+
+-+
+-+        ///////////////////////////////////////////////////////////////////////////////////////
+-+        //                   If we can't park both robots in the warehouse
+-+        ///////////////////////////////////////////////////////////////////////////////////////
+-+
+-+
+-+
+-+
+-+        //Auto mode for prioritizing freight delivery - top
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //Move back to spawn with the intake face the warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the alliance shipping hub
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for prioritizing0 freight delivery - bottom
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //Move around our teammate's robot with the intake face the warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the alliance shipping hub
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
+-+
+-+        //Detect the barcode and place box to the corresponding level
+-+
+-+        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+-+
+-+        //Park in alliance shipping hub out of our teammate's way
+-+
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate with bad auto - top
+-+
+-+        //Detect the barcode and place the box to corresponding level
+-+
+-+        //Move around the teammate's robot to knock off the duck
+-+
+-+        //Move back to spawn with the side with the intake facing the warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the alliance shipping hub
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for teammate with bad auto - bottom
+-+
+-+        //Detect the barcode
+-+
+-+        //Move to the carousal and knock off the duck
+-+
+-+        //Deliver the box to the shipping hub
+-+
+-+        //Move around the other robot with intake facing warehouse
+-+
+-+        //Detect the weight of the freight if possible
+-+
+-+        //Deliver the freight to the team shipping hub's bottom level
+-+
+-+        //Check if the shipping hub is balanced
+-+
+-+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+-+
+-+        //Park in the alliance shipping hub
+-+
+-+
+-+
+-+
+-+
+-+        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+-+
+-+        //Detect the barcode and place game element to corresponding level
+-+
+-+        //Move to the carousal to knock off the duck
+-+
+-+        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+-+
+-+        //2-5 seconds before autonomous ends go park in the alliance shipping hub
+- 
+-     }
+- }
