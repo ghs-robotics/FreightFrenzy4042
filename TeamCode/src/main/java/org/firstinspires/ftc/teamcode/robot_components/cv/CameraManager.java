@@ -168,3 +168,4 @@ public class CameraManager implements HSVConstants {
         webcam.stopStreaming();
     }
 }
+
