@@ -69,9 +69,23 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
-            if (Objects.equals(controller2.right_trigger, "pressing")) {
+
+            //dropper
+            if (Objects.equals(controller2.a, "pressing")) {
                 robot.dropThings();
             }
+
+            //intake
+            //run intake based on how strong trigger pressed (i think)
+            if (Objects.equals(controller2.right_trigger, "pressing")) {
+                robot.runIntake(0.9 * controller2.right_trigger);
+            }
+
+            //turn intake up/down
+            if (Objects.equals(controller2.b, "pressing")) {
+                robot.toggleIntake();
+            }
+
 
 
 

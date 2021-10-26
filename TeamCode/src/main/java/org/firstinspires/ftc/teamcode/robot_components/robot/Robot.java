@@ -13,16 +13,22 @@ import org.firstinspires.ftc.teamcode.data.HSVConstants;
 public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
     // Robot variables and objects
-    protected double spinnerPower = 0;
+    //protected double spinnerPower = 0; maybe delete?
+    protected double intakePower = 0;
     double dropperAngle;
+    double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
+    public DcMotor intakeMotor;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
     public Servo dropperServo;
+    public Servo intakeServo;
     private final double DROPPER_MAX = 0.8;
     private final double DROPPER_MIN = 0.35;
+    private final double INTAKE_DWN = 0;
+    private final double INTAKE_UP = 0.9;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -30,9 +36,11 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
+        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
     }
 
     /**
@@ -65,12 +73,24 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         dropperServo.setPosition(dropperAngle);
     }
 
-    // This probably shouldn't be used since there is a dedicated duckSpinner class? idk
-    public void duckSpin(double power){
-        spinnerPower = power;
-        spinnerMotor.setPower(spinnerPower);
-
+    //*~INTAKE FUNCTIONS*~//
+    //manages up/down positions of intake
+    public void toggleIntake(){
+        intakeAngle = (Math.abs(intakeAngle - INTAKE_DWN) < 0.001 ? INTAKE_DWN : INTAKE_UP);
+        intakeServo.setPosition(intakeAngle);
     }
+
+    public void runIntake(double power){
+        intakePower = power;
+        intakeMotor.setPower(intakePower);
+    }
+
+    // This probably shouldn't be used since there is a dedicated duckSpinner class? idk
+    //public void duckSpin(double power){
+        //spinnerPower = power;
+       // spinnerMotor.setPower(spinnerPower);
+
+    //}
 
 
 
