@@ -134,6 +134,11 @@ public class CameraManager implements HSVConstants {
             {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
         });
         streaming = true;
         elapsedTime.reset();
@@ -153,6 +158,11 @@ public class CameraManager implements HSVConstants {
                 @Override
                 public void onOpened() {
                     webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+                    
                 }
             });
             webcam.openCameraDevice();
