@@ -44,7 +44,7 @@ public class DuckSpinner {
             double radius,
             Telemetry telemetry //,
 //            boolean useEncoders
-            ){
+    ){
         this.motor = motor;
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
