@@ -14,20 +14,23 @@ import java.util.Optional;
 @RequiresApi(api = Build.VERSION_CODES.N) // needed to use Optional (not actually, but android studio complains)
 public class DuckSpinner {
     DcMotor motor = null;
-    double muG;
+    double muGSquared;
     double radius;
+    double w4r2; //This will be the angular velocity of the spinner ^4 times spinner radius^2
     private ElapsedTime runtime = null;
     private Optional<Telemetry> telemetry; // used to log power if not null
                                            // Optional<e> prevents NullReferenceExceptions
 
     private boolean isRunning = false;
 //    private boolean useEncoder = false;
-
+    //inputs: radius from center of wheel to duck and current velocity
+    //constants: gravity, coefficient of friction, moment of inertia
+    //output power
     final double G_CONST = -9.8; // m/s^2
-    final double DUCK_MASS = 0.01700971; // kg
     final double SPINNER_MOMENT_OF_INERTIA = 1000; // probably not accurate, needs tweaking
     final double MAX_MOTOR_TORQUE = 18.7;
     final double SPIN_TIME_BEFORE_STOP = 1000;//3.3; // this needs tweaking
+
 
     // TODO: SET DIRECTION !!!!
 
@@ -45,19 +48,20 @@ public class DuckSpinner {
         this.motor = motor;
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.muG = frictionCoefficient * G_CONST;
+        this.muGSquared = Math.pow((frictionCoefficient * G_CONST), 2);
         this.radius = radius;
         this.runtime = new ElapsedTime();
         this.telemetry = Optional.ofNullable(telemetry);
 //        this.useEncoder = useEncoders;
     }
-
-    private double calcAccel(double t) {
-        double k = this.muG / this.radius;
-        double rootK = Math.sqrt(k);
-        double partTwo = t / (Math.pow(Math.cosh(rootK * t), 2));
-        double alpha = 0.5 * ( (Math.tanh(rootK * t) / rootK) + partTwo);
-        return alpha;
+    // w is the rotational velocity of the
+    private double calcAccel(double w) {
+        w4r2 = Math.pow(w, 4) * Math.pow(radius, 2);
+        if(muGSquared > w4r2) {
+            return (Math.sqrt(muGSquared - w4r2)) / radius;
+        } else {
+            return 0;
+        }
     }
 
     private double calcPower(double alpha) {
@@ -71,7 +75,7 @@ public class DuckSpinner {
     }
 
     public void stopRunning() {
-        motor.setPower(0);
+        //motor.setPower(0); Moved to the DuckSpinner.update function
         isRunning = false;
     }
 
@@ -84,17 +88,27 @@ public class DuckSpinner {
         telemetry.ifPresent(telemetry1 -> { // if telemetry is null nothing will happen
             telemetry1.addData("duck time", time);
             telemetry1.addData("duck motor power", motor.getPower());
+            if (isRunning) {
+                telemetry1.addData("Goal motor power", 0.5);
+            } else {
+                telemetry1.addData("Goal motor power", 0);
+            }
         });
         if (isRunning) {
-            if (time < SPIN_TIME_BEFORE_STOP) {
-                motor.setPower(calcPower(calcAccel(time)));
-                return false;
-            } else {
-                // setting power to zero will make the motor brake and stop
-                // TODO: use encoder to make sure the wheel doesn't slip to slow down as fast as possible
-                this.stopRunning();
-                return true;
-            }
+            //Setting the power to 0.5 for testing purposes
+            motor.setPower(0.5);
+            //if (time < SPIN_TIME_BEFORE_STOP) {
+            //    motor.setPower(calcPower(calcAccel(time)))
+            //    motor.setPower(0.5);
+            //    return false;
+            //} else {
+            //    // setting power to zero will make the motor brake and stop
+            //    // TODO: use encoder to make sure the wheel doesn't slip to slow down as fast as possible
+            //    this.stopRunning();
+            //    return true;
+            //}
+        } else {
+            motor.setPower(0);
         }
         return true; // not running, so must be done?
     }
