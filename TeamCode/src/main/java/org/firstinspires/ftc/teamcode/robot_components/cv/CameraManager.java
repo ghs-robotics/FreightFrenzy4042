@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCamera.AsyncCameraOpenListener;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -128,11 +129,16 @@ public class CameraManager implements HSVConstants {
     public void startStreaming() {
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        webcam.openCameraDeviceAsync(new AsyncCameraOpenListener(){
             @Override
             public void onOpened()
             {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
             }
         });
         streaming = true;
@@ -149,10 +155,15 @@ public class CameraManager implements HSVConstants {
             webcam = OpenCvCameraFactory.getInstance().createWebcam(
                     hardwareMap.get(WebcamName.class, "Webcam 1"));
             webcam.setPipeline(webcamPipeline);
-            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            webcam.openCameraDeviceAsync(new AsyncCameraOpenListener() {
                 @Override
                 public void onOpened() {
                     webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+
                 }
             });
             webcam.openCameraDevice();
