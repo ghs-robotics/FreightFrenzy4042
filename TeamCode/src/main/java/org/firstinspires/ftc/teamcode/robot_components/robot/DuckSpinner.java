@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot_components.robot;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -30,6 +30,10 @@ public class DuckSpinner {
     final double SPINNER_MOMENT_OF_INERTIA = 1000; // probably not accurate, needs tweaking
     final double MAX_MOTOR_TORQUE = 18.7;
     final double SPIN_TIME_BEFORE_STOP = 1000;//3.3; // this needs tweaking
+    long previousTicks = 0;
+    double previousElapsedTime = 0;
+    double SPINNER_TABLE_RATIO = 8; //Ratio between the spinner radius and table radius
+    private ElapsedTime VElapsedTime;
 
 
     // TODO: SET DIRECTION !!!!
@@ -52,15 +56,17 @@ public class DuckSpinner {
         this.radius = radius;
         this.runtime = new ElapsedTime();
         this.telemetry = Optional.ofNullable(telemetry);
+
 //        this.useEncoder = useEncoders;
     }
-    // w is the rotational velocity of the
+    // w is the rotational velocity of the motor.
+    //Assuming no slippage, the duck is traveling at W * DuckRadius
     private double calcAccel(double w) {
         w4r2 = Math.pow(w, 4) * Math.pow(radius, 2);
         if(muGSquared > w4r2) {
             return (Math.sqrt(muGSquared - w4r2)) / radius;
         } else {
-            return 0;
+            return 1000; //returns a high value for speed to stop the wheel from spinning
         }
     }
 
@@ -75,8 +81,15 @@ public class DuckSpinner {
     }
 
     public void stopRunning() {
-        //motor.setPower(0); Moved to the DuckSpinner.update function
+        motor.setPower(0);
         isRunning = false;
+    }
+    public double getVelocity() {
+        long deltaTicks = (motor.getCurrentPosition() - previousTicks);
+        double deltaTime = VElapsedTime.seconds() - previousElapsedTime;
+        previousTicks = motor.getCurrentPosition();
+        previousElapsedTime = VElapsedTime.seconds();
+        return (deltaTicks / deltaTime);
     }
 
     /**
@@ -95,21 +108,14 @@ public class DuckSpinner {
             }
         });
         if (isRunning) {
-            //Setting the power to 0.5 for testing purposes
-            motor.setPower(0.5);
-            //if (time < SPIN_TIME_BEFORE_STOP) {
-            //    motor.setPower(calcPower(calcAccel(time)))
-            //    motor.setPower(0.5);
-            //    return false;
-            //} else {
-            //    // setting power to zero will make the motor brake and stop
-            //    // TODO: use encoder to make sure the wheel doesn't slip to slow down as fast as possible
-            //    this.stopRunning();
-            //    return true;
-            //}
+
+            motor.setPower(calcPower(calcAccel(getVelocity() * SPINNER_TABLE_RATIO)));
+            return false;
         } else {
-            motor.setPower(0);
+            // setting power to zero will make the motor brake and stop
+            // TODO: use encoder to make sure the wheel doesn't slip to slow down as fast as possible
+            this.stopRunning();
+            return true;
         }
-        return true; // not running, so must be done?
     }
 }
