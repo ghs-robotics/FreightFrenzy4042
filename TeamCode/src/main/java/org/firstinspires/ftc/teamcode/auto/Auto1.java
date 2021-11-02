@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.opencv.core.Mat;
@@ -18,24 +20,30 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    CVModule robot;
-
+    private CVModule robot;
     OpenCvWebcam webcam;
+
+    CVPipeline pipeline;
+
     @Override
     public void runOpMode()
     {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
+        pipeline= new CVPipeline();
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-                // Usually this is where you'll want to start streaming from the camera (see section 4)
+                waitForStart();
+                while(opModeIsActive()){
+                    camera.setPipeline(pipeline);
+                    camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+                    // Usually this is where you'll want to start streaming from the camera (see section 4)
+                }
             }
-
             public void onError(int errorCode)
             {
                 /*
@@ -43,13 +51,14 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                  */
             }
         });
-    }
-    class CVPipeline extends OpenCvPipeline
-    {
+        waitForStart();
 
-        @Override
-        public Mat processFrame(Mat input) {
-            return null;
+        while(opModeIsActive()){
+            telemetry.addData("Boxes", pipeline.returnResultsBoxes());
+            //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
+            //telemetry.addData("Ducks", pipeline.returnResultsDucks());
+            telemetry.update();
+            sleep(100);
         }
     }
 }

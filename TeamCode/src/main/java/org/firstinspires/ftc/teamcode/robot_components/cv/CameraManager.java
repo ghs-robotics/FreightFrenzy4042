@@ -1,3 +1,7 @@
+// Deprecated
+//Do Not Use!!!!
+
+
 package org.firstinspires.ftc.teamcode.robot_components.cv;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
