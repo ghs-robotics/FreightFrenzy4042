@@ -3,20 +3,16 @@ package org.firstinspires.ftc.teamcode.test_opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 
 // Contains the basic code for a mecanum wheel drive base; should be extended by a child Robot class
-@TeleOp(name="controlHTest", group="Linear Opmode")
+@TeleOp(name="motor test", group="Linear Opmode")
 public class MotorTestControlHub extends LinearOpMode {
 
     // Motor powers
     protected double motor_power = 0;
-
     // Drive speed ranges from 0 to 1
     public double speed = 1;
 
@@ -25,17 +21,20 @@ public class MotorTestControlHub extends LinearOpMode {
     // 90 degrees is optimal for when the driver is standing on side of field
 
     // Mecanum wheel drive motors
-    public DcMotor motor;
+    public DcMotor motor1;
+    public DcMotor motor2;
 
     // Declare OpMode members
     Controller controller1;
 
     @Override
     public void runOpMode() {
-        motor = hardwareMap.get(DcMotor.class, "motor");
+        motor1 = hardwareMap.get(DcMotor.class, "motor1");
+        motor2 = hardwareMap.get(DcMotor.class, "motor2");
 
         // Code to run ONCE when the driver hits INIT
         controller1 = new Controller(gamepad1); // Whoever presses start + a
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -49,14 +48,14 @@ public class MotorTestControlHub extends LinearOpMode {
             controller1.update();
 
             if(controller1.a == Btn.PRESSED) {
-                motor.setPower(.5);
+                motor1.setPower(.5);
+                motor2.setPower(.5);
             }
 
             if(controller1.b == Btn.PRESSED) {
-                motor.setPower(0);
+                motor1.setPower(0);
+                motor2.setPower(0);
             }
-
-
 
         }
     }

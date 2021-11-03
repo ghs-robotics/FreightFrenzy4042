@@ -1,10 +1,12 @@
+// Deprecated
+//Do Not Use!!!!
+
+
 package org.firstinspires.ftc.teamcode.robot_components.cv;
 
-import org.firstinspires.ftc.teamcode.cv_objects.CVObject;
 import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.firstinspires.ftc.teamcode.data.MyScalar;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;

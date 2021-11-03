@@ -62,7 +62,6 @@ public class Tele1 extends LinearOpMode implements FieldPositions {
         waitForStart();
         robot.cameras.webcam.pauseViewport();
         robot.activateFieldLocalization();
-//        telemetry.setMsTransmissionInterval(20);
 
         robot.resetGyroAngle();
         robot.resetElapsedTime();
@@ -88,6 +87,8 @@ public class Tele1 extends LinearOpMode implements FieldPositions {
                         controller1.right_stick_y
                 );
             }
+
+            // this is my cool change
 
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
