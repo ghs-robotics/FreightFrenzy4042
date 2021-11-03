@@ -3,12 +3,12 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
+import org.firstinspires.ftc.teamcode.data.Tasks;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
 
 @Autonomous
-public class Auto1 extends LinearOpMode implements FieldPositions {
+public class Auto1 extends LinearOpMode implements Tasks {
 
     // Declare OpMode members
     CVModule robot;
@@ -29,6 +29,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //Detect the barcode and place box to the corresponding level
 
         //If teammate places down their box, navigate around them (Guess their actions beforehand)
+
         //then pick it up and deliver to corresponding shipping hub level
 
         //Park in warehouse out of our teammate's way

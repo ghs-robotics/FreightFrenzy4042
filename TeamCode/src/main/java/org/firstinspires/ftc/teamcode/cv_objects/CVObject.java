@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.cv_objects;
 
-import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.firstinspires.ftc.teamcode.data.MyScalar;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVDetectionPipeline;
 import org.firstinspires.ftc.teamcode.robot_components.movement_enhancing.PIDController;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Generic object that can be detected using OpenCV
-public abstract class CVObject implements HSVConstants {
+public abstract class CVObject{
 
     public String name = "unspecified";
     protected boolean identified = false;

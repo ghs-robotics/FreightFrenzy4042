@@ -3,12 +3,10 @@ package org.firstinspires.ftc.teamcode.robot_components.robot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
-import org.firstinspires.ftc.teamcode.data.HSVConstants;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
-public class Robot extends DriveBase implements HSVConstants, FieldPositions {
+public class Robot extends DriveBase{
 
     // Robot variables and objects
 

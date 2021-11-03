@@ -7,18 +7,14 @@ import androidx.annotation.RequiresApi;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.DuckSpinner;
-import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 @TeleOp(name="TestSpinner", group="Linear Opmode")
-public class TestSpinner extends LinearOpMode implements FieldPositions {
+public class TestSpinner extends LinearOpMode {
 
     // Declare OpMode members
 //    Robot robot;
