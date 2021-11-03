@@ -17,4 +17,8 @@ public class Point2D {
     public Point2D subtract(Point2D other) {
         return new Point2D(this.x - other.x, this.y - other.y);
     }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y);
+    }
 }
