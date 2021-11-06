@@ -40,4 +40,8 @@ public class AutoController {
         currentTaskIdx++;
         this.tasks.get(currentTaskIdx).init();
     }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }
