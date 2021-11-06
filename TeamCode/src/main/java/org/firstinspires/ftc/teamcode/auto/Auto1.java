@@ -5,13 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
+import org.firstinspires.ftc.teamcode.robot_components.cv.CameraManager;
+import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 
 @Autonomous
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    CVModule robot;
+    Robot robot;
+    CameraManager cameraManager; //320 by 240 (x by y)
+
+    int detectBarcode() {
+        int shippingX = 0;
+        //Magically assign shippingX here
+        return shippingX / 107;
+    }
 
     @Override
     public void runOpMode()
@@ -24,8 +33,13 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //Auto mode for prioritizing freight delivery - top
 
         //Detect the barcode and place box to the corresponding level
+        int barcode = detectBarcode(); //0 = left, 1 = middle, 2 = right
+        robot.raiseDeployer(100 * barcode); //100 is a placeholder for 1 level up the shipping hub
+        robot.dumpElement();
 
-        //Move back to spawn with the intake face the warehouse
+        //Move back to spawn with the intake facing the warehouse
+        robot.turn(90); //Face the warehouse (assuming 90 means right)
+        robot.move(); //Move 100 units in the 90 degree direction
 
         //Detect the weight of the freight if possible
 
@@ -34,7 +48,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //Repeat the last three steps until there's 2-5 secs left on the auto timer
 
         //Park in the warehouse
-
+        Robot.park()
 
 
 
@@ -127,7 +141,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        //                   If we can't park both robots in the warehouse
+        //                   If we can't park both robots in the warehouse                   //
         ///////////////////////////////////////////////////////////////////////////////////////
 
 
