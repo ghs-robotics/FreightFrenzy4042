@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.auto_helpers.Nav;
+import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.opencv.core.Mat;
@@ -21,13 +24,14 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     // Declare OpMode members
     Robot robot;
     CameraManager cameraManager; //320 by 240 (x by y)
+    Nav nav;
 
     int detectBarcode() {
         int shippingX = 0;
         //Magically assign shippingX here
         return shippingX / 107;
     }
-    private CVModule robot;
+    private CVModule module;
     OpenCvWebcam webcam;
 
     CVPipeline pipeline;
@@ -65,6 +69,8 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
             telemetry.update();
+            nav.updateVel();
+            nav.updatePos();
             sleep(100);
         }
     }
@@ -77,6 +83,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Auto mode for prioritizing freight delivery - top
 
 //Detect the barcode and place box to the corresponding level
+    /*
     int barcode = detectBarcode(); //0 = left, 1 = middle, 2 = right
     robot.raiseDeployer(100 * barcode); //100 is a placeholder for 1 level up the shipping hub//
             robot.dumpElement();
@@ -93,6 +100,8 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //Park in the warehouse
         Robot.park()
+
+     */
 
 
 
