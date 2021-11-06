@@ -43,12 +43,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                     // Usually this is where you'll want to start streaming from the camera (see section 4)
                 }
             }
-            public void onError(int errorCode)
-            {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
+            public void onError(int errorCode) {// This will be called if the camera could not be opened}
         });
     }
 
