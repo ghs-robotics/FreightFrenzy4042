@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
+import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
@@ -69,24 +70,27 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //OPERATOR FUNCTIONS
 
             //dropper
-            if (Objects.equals(controller2.a, "pressing")) {
+            if (controller2.a == Btn.PRESSING) {
                 robot.dropGameElement();
             }
 
             //intake
             //run intake based on how strong trigger pressed (i think)
-            if (Objects.equals(controller2.right_trigger, "pressing")) {
+            boolean triggerPressed = Math.abs(controller2.right_trigger - Controller.TRIGGER_PRESSED) < .01;
+            if (triggerPressed) {
                 robot.setIntakePower(0.9 * controller2.right_trigger);
             }
 
             //turn bucket up/down
-            if (Objects.equals(controller2.b, "pressing")) {
+            if(controller2.b == Btn.PRESSING) {
                 robot.toggleBucket();
             }
 
-
-
-
+            //extend the arm
+            if(controller2.x == Btn.PRESSING) {
+                //im gonna hardcode the distance because fuck you - simon
+                robot.toggleExtension(13);
+            }
         }
     }
 }

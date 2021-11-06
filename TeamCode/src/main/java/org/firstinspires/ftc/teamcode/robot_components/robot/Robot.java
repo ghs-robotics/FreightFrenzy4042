@@ -46,6 +46,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     /**
      * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
      * to be set up properly with RunMode.RUN_TO_POSITION.
+     * todo what unit of measurement is distance????? Gonna assume that it is in mm
      * @param distance The distance to extend to if retracted.
      */
     public void toggleExtension(double distance) {
