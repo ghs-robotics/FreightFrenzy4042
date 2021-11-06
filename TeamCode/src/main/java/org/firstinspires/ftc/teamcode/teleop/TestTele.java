@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
-import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
@@ -72,18 +70,18 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //dropper
             if (Objects.equals(controller2.a, "pressing")) {
-                robot.dropThings();
+                robot.dropGameElement();
             }
 
             //intake
             //run intake based on how strong trigger pressed (i think)
             if (Objects.equals(controller2.right_trigger, "pressing")) {
-                robot.runIntake(0.9 * controller2.right_trigger);
+                robot.setIntakePower(0.9 * controller2.right_trigger);
             }
 
-            //turn intake up/down
+            //turn bucket up/down
             if (Objects.equals(controller2.b, "pressing")) {
-                robot.toggleIntake();
+                robot.toggleBucket();
             }
 
 

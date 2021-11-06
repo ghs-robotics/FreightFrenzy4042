@@ -50,7 +50,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      */
     public void toggleExtension(double distance) {
         int currentTicks = extenderMotor.getCurrentPosition();
-        if (currentTicks > 5 || currentTicks < -5) { // could also use math.abs but this is simple
+        boolean isExtended = currentTicks > 5 || currentTicks < -5;
+        if (isExtended) { // could also use math.abs but this is simple
             // retract
             extenderMotor.setTargetPosition(0);
         } else {
@@ -66,21 +67,29 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
      */
-    public void dropThings() {
+    public void dropGameElement() {
 //        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
         // Important note: never compare doubles or floats with == or !=, because floating point error
-        dropperAngle = (Math.abs(dropperAngle - DROPPER_MAX) < 0.001 ? DROPPER_MAX : DROPPER_MIN);
+        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
+        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX);
         dropperServo.setPosition(dropperAngle);
     }
 
+    /* KENNY PLS READ
+    //just to clarify, the "bucket" is the part that is responsible for
+    //holding the game element
+    //the "intake" is responsible for catching game elements
+    //I have updated the method names accordingly
+    */
     //*~INTAKE FUNCTIONS*~//
     //manages up/down positions of intake
-    public void toggleIntake(){
-        intakeAngle = (Math.abs(intakeAngle - INTAKE_DWN) < 0.001 ? INTAKE_DWN : INTAKE_UP);
+    public void toggleBucket(){
+        boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
+        intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
         intakeServo.setPosition(intakeAngle);
     }
 
-    public void runIntake(double power){
+    public void setIntakePower(double power){
         intakePower = power;
         intakeMotor.setPower(intakePower);
     }
