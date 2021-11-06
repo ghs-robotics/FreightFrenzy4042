@@ -24,7 +24,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
     public Servo dropperServo;
-    public Servo intakeServo;
+    public Servo intakeBucketFlipServo;
     private final double DROPPER_MAX = 0.8;
     private final double DROPPER_MIN = 0.35;
     private final double INTAKE_DWN = 0;
@@ -40,7 +40,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeServo = hardwareMap.get(Servo.class, "intakeServo");
+        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
     }
 
     /**
@@ -51,7 +51,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public void toggleExtension(double distance) {
         int currentTicks = extenderMotor.getCurrentPosition();
         boolean isExtended = currentTicks > 5 || currentTicks < -5;
-        if (isExtended) { // could also use math.abs but this is simple
+        if (isExtended) {
             // retract
             extenderMotor.setTargetPosition(0);
         } else {
@@ -71,7 +71,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 //        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
         // Important note: never compare doubles or floats with == or !=, because floating point error
         boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
-        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX);
+        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
         dropperServo.setPosition(dropperAngle);
     }
 
@@ -86,20 +86,13 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public void toggleBucket(){
         boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
         intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
-        intakeServo.setPosition(intakeAngle);
+        intakeBucketFlipServo.setPosition(intakeAngle);
     }
 
     public void setIntakePower(double power){
         intakePower = power;
         intakeMotor.setPower(intakePower);
     }
-
-    // This probably shouldn't be used since there is a dedicated duckSpinner class? idk
-    //public void duckSpin(double power){
-        //spinnerPower = power;
-       // spinnerMotor.setPower(spinnerPower);
-
-    //}
 
 
 
