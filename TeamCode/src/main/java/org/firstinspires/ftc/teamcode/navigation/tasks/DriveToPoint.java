@@ -10,6 +10,10 @@ public class DriveToPoint implements Task {
     public RobotPosition targetPosition;
     public RobotPosition errorMargin;
 
+    public void init() {
+        // don't need to do anything
+    }
+
     public boolean update(RobotPosition currentPosition, Robot robot) {
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);

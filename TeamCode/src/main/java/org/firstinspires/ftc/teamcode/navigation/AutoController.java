@@ -32,7 +32,12 @@ public class AutoController {
         // not done...
         Task currentTask = this.tasks.get(currentTaskIdx);
         boolean done = currentTask.update(currentPosition, robot);
-        if (done) currentTaskIdx++;
+        if (done) switchToNextTask();
         return false;
+    }
+
+    private void switchToNextTask() {
+        currentTaskIdx++;
+        this.tasks.get(currentTaskIdx).init();
     }
 }
