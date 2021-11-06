@@ -21,16 +21,15 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
     private CVModule robot;
-    OpenCvWebcam webcam;
+    private OpenCvWebcam webcam;
+    private CVPipeline pipeline;
+    private WebcamName webcamName;
 
-    CVPipeline pipeline;
-
-    @Override
-    public void runOpMode()
-    {
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam");
-        final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
+    //TODO idk if the camera should be initialized here
+    public void initializeCV() {
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         pipeline= new CVPipeline();
+        final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -51,6 +50,12 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                  */
             }
         });
+    }
+
+    @Override
+    public void runOpMode()
+    {
+        initializeCV();
         waitForStart();
 
         while(opModeIsActive()){
@@ -62,6 +67,10 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         }
     }
 }
+
+//AUTO PSEUDO CODE
+//////////////////
+
 //top - spawn point closer to the warehouse
 //bottom spawn point closer to the carousal
 
