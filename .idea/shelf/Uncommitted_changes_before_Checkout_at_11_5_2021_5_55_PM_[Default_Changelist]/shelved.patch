@@ -1,0 +1,35 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/robot_components/navigation/Navigation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.robot_components.navigation;\r\n\r\npublic class Navigation {\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/robot_components/navigation/Navigation.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/robot_components/navigation/Navigation.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/robot_components/navigation/Navigation.java	(revision cc2ce39d0e58ac1de05b5ed31d028da6e46c378a)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/robot_components/navigation/Navigation.java	(date 1636160154595)
+@@ -2,5 +2,5 @@
+ 
+ public class Navigation {
+ 
+-
++    
+ }
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TestTele.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.teleop;\r\n\r\nimport com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;\r\nimport com.qualcomm.robotcore.eventloop.opmode.TeleOp;\r\n\r\nimport org.firstinspires.ftc.teamcode.data.FieldPositions;\r\nimport org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;\r\nimport org.firstinspires.ftc.teamcode.robot_components.input.Btn;\r\nimport org.firstinspires.ftc.teamcode.robot_components.input.Controller;\r\nimport org.firstinspires.ftc.teamcode.robot_components.robot.Robot;\r\n\r\n@TeleOp(name=\"TestTele\", group=\"Linear Opmode\")\r\npublic class TestTele extends LinearOpMode implements FieldPositions {\r\n    \r\n    // Declare OpMode members\r\n    Robot robot;\r\n    Controller controller1;\r\n    Controller controller2;\r\n\r\n    @Override\r\n    public void runOpMode() {\r\n\r\n        // Code to run ONCE when the driver hits INIT\r\n        robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);\r\n        controller1 = new Controller(gamepad1); // Whoever presses start + a\r\n        controller2 = new Controller(gamepad2); // Whoever presses start + b\r\n\r\n//        robot;\r\n\r\n        telemetry.addData(\"Status\", \"Initialized\");\r\n        telemetry.update();\r\n\r\n        // Wait for the game to start (driver presses PLAY)\r\n        waitForStart();\r\n//        robot.cameras.webcam.pauseViewport();\r\n//        robot.activateFieldLocalization();\r\n//        telemetry.setMsTransmissionInterval(20);\r\n\r\n        robot.resetGyroAngle();\r\n        robot.resetElapsedTime();\r\n\r\n        while (opModeIsActive()) {\r\n\r\n            // Registers controller input\r\n            controller1.update();\r\n            controller2.update();\r\n\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // ------------------------------   CONTROLLER 1 FUNCTIONS   -------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // NOTE: TO USE THESE FUNCTIONS PRESS START A\r\n            //DRIVER FUNCTIONS\r\n            robot.calculateDrivePowers(\r\n                    controller1.left_stick_x,\r\n                    controller1.left_stick_y,\r\n                    controller1.right_stick_x,\r\n                    controller1.right_stick_y\r\n            );\r\n            robot.sendDrivePowers();\r\n\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // ------------------------------   CONTROLLER 2 FUNCTIONS   -------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // -----------------------------------------------------------------------------------------\r\n            // NOTE: TO USE THESE FUNCTIONS, PRESS START B\r\n            //OPERATOR FUNCTIONS\r\n\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TestTele.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TestTele.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TestTele.java	(revision cc2ce39d0e58ac1de05b5ed31d028da6e46c378a)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/teleop/TestTele.java	(date 1636160154588)
+@@ -67,7 +67,6 @@
+             // -----------------------------------------------------------------------------------------
+             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
+             //OPERATOR FUNCTIONS
+-
+         }
+     }
+ }

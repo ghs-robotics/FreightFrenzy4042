@@ -4,18 +4,37 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
+import org.firstinspires.ftc.teamcode.navigation.AutoController;
+import org.firstinspires.ftc.teamcode.navigation.Task;
+import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Autonomous
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    CVModule robot;
+    private CVModule robot;
+    private AutoController autoController = new AutoController();
+
+    public void initializeTasks() {
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new DriveToPoint());
+        autoController.setTasks(tasks);
+    }
 
     @Override
     public void runOpMode()
     {
+        initializeTasks();
+
+        while(opModeIsActive()) {
+            autoController.update();
+        }
+
         //top - spawn point closer to the warehouse
         //bottom spawn point closer to the carousal
 
