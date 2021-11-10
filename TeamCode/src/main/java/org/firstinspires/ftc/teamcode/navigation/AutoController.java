@@ -10,6 +10,7 @@ public class AutoController {
     private Robot robot;
 
     public RobotPosition currentPosition;
+    public RobotPosition startingPosition;
 
     /**
      * Initialize with a series of points
@@ -18,6 +19,7 @@ public class AutoController {
      */
     public void initialize(List<Task> tasks, RobotPosition startingPosition) {
         this.tasks = tasks;
+        this.startingPosition = startingPosition;
         this.currentPosition = startingPosition;
     }
 
@@ -26,6 +28,7 @@ public class AutoController {
      * @return true if done
      */
     public boolean update() { // call this to run nav
+        currentPosition = updateCurrentPosition();
         if (currentTaskIdx >= tasks.size()) {
             return true; // done -> return true
         }
@@ -34,6 +37,27 @@ public class AutoController {
         boolean done = currentTask.update(currentPosition, robot);
         if (done) switchToNextTask();
         return false;
+    }
+
+    public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
+        //Gives the number of encoder ticks (232.16 ticks is 1 rotation)
+        double wheelCirc = 48 * Math.PI; //Circumference of the wheel given a 48mm diameter
+        double degreesTurned = robot.gyro.getAngle(); //Get gyro angle to subtract from robot rotations
+        double leftFrontTicks = robot.leftFrontDrive.getCurrentPosition();
+        double leftFrontRotations = leftFrontTicks / 232.16;
+        double rightFrontTicks = robot.rightFrontDrive.getCurrentPosition();
+        double rightFrontRotations = rightFrontTicks / 232.16;
+        //Must account for rotations that were used to re-orient the robot...
+        //^One full 360 degree turn would require an estimated 9.525 wheel rotations
+        //This assumes the robot has only underwent clockwise rotation of no more than 360 degrees total
+        leftFrontRotations -= degreesTurned * (9.525 / 360);
+        rightFrontRotations += degreesTurned * (9.525 / 360);
+        //Calculate final x and y distances from the robot's starting position
+        double xDist = (wheelCirc * Math.cos(45)) * (leftFrontRotations - rightFrontRotations);
+        double yDist = (wheelCirc * Math.sin(45)) * (leftFrontRotations + rightFrontRotations);
+
+        return new RobotPosition(startingPosition.position.add(new Point2D(xDist, yDist)),
+                startingPosition.rotation + degreesTurned);
     }
 
     private void switchToNextTask() {

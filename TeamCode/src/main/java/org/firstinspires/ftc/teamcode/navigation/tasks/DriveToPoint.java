@@ -31,10 +31,11 @@ public class DriveToPoint implements Task {
     public boolean update(RobotPosition currentPosition, Robot robot) {
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
+        Point2D clampedError = error.scale(0.0001);
         double rotError = targetPosition.rotation - currentPosition.rotation;
 
         // todo: this is kinda jank and should use PID or something
-        robot.calculateDrivePowers(error.x, error.y, rotError);
+        robot.calculateDrivePowers(clampedError.x, clampedError.y, rotError);
 
         return arrived(currentPosition);
     }

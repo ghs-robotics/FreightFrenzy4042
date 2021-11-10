@@ -108,7 +108,7 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
-    public double[] calculateDrivePowers(double x, double y, double rot) { // rot is rotation
+    public double[] calculateDrivePowers(double x, double y, double rot) { //Expects something between -1 and 1 // rot is rotation
         return calculateDrivePowers(x, y, rot, false);
     }
 

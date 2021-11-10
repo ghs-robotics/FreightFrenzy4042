@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.auto_helpers.Nav;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
+import org.firstinspires.ftc.teamcode.navigation.Point2D;
+import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
@@ -36,8 +38,9 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DriveToPoint());
+        tasks.add(new DriveToPoint(new RobotPosition(new Point2D(1000, 0), 0.0)));
         autoController.setTasks(tasks);
+        autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0)); //Decide where starting coordinates are
     }
 
     public void setupCV() {
@@ -79,13 +82,12 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         initializeTasks();
         setupCV();
 
-        while(opModeIsActive()){
+        while(opModeIsActive()) {
             telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
             telemetry.update();
             autoController.update();
-            sleep(100);
         }
     }
 }
