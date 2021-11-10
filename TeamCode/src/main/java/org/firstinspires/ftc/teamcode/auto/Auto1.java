@@ -7,6 +7,9 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto_helpers.Nav;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
+import org.firstinspires.ftc.teamcode.navigation.AutoController;
+import org.firstinspires.ftc.teamcode.navigation.Task;
+import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -17,28 +20,27 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CameraManager;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Autonomous
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    Robot robot;
-    CameraManager cameraManager; //320 by 240 (x by y)
-    Nav nav;
-
-    int detectBarcode() {
-        int shippingX = 0;
-        //Magically assign shippingX here
-        return shippingX / 107;
-    }
     private CVModule module;
+    private AutoController autoController = new AutoController();
     OpenCvWebcam webcam;
-
     CVPipeline pipeline;
+    CameraManager cameraManager; //320 by 240 (x by y)
 
-    @Override
-    public void runOpMode()
-    {
+    public void initializeTasks() {
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new DriveToPoint());
+        autoController.setTasks(tasks);
+    }
+
+    public void setupCV() {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
         pipeline= new CVPipeline();
@@ -63,14 +65,26 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
             }
         });
         waitForStart();
+    }
+
+    int detectBarcode() {
+        int shippingX = 0;
+        //Magically assign shippingX here
+        return shippingX / 107;
+    }
+
+    @Override
+    public void runOpMode()
+    {
+        initializeTasks();
+        setupCV();
 
         while(opModeIsActive()){
             telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
             telemetry.update();
-            nav.updateVel();
-            nav.updatePos();
+            autoController.update();
             sleep(100);
         }
     }
@@ -80,45 +94,37 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-//Auto mode for prioritizing freight delivery - top
+        //Auto mode for prioritizing freight delivery - top
 
-//Detect the barcode and place box to the corresponding level
-    /*
-    int barcode = detectBarcode(); //0 = left, 1 = middle, 2 = right
-    robot.raiseDeployer(100 * barcode); //100 is a placeholder for 1 level up the shipping hub//
-            robot.dumpElement();
-//Move back to spawn with the intake face the warehouse
-        //Move back to spawn with the intake facing the warehouse
-        robot.turn(90); //Face the warehouse (assuming 90 means right)
-        robot.move(); //Move 100 units in the 90 degree direction
+        //Detect the barcode and place box to the corresponding level
 
-//Detect the weight of the freight if possible
+        //Move back to spawn with the intake face the warehouse
 
-//Deliver the freight to the team shipping hub's bottom level
+        //Detect the weight of the freight if possible
 
-//Repeat the last three steps until there's 2-5 secs left on the auto timer
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
 
         //Park in the warehouse
-        Robot.park()
-
-     */
 
 
 
 
-//Auto mode for prioritizing0 freight delivery - bottom
 
-//Detect the barcode and place box to the corresponding level
+        //Auto mode for prioritizing0 freight delivery - bottom
 
-//Move around our teammate's robot with the intake face the warehouse
+        //Detect the barcode and place box to the corresponding level
 
-//Detect the weight of the freight if possible
+        //Move around our teammate's robot with the intake face the warehouse
 
-//Deliver the freight to the team shipping hub's bottom level
+        //Detect the weight of the freight if possible
 
-//Repeat the last two steps until there's 2-5 secs left on the auto timer
+        //Deliver the freight to the team shipping hub's bottom level
 
-//Park in the warehouse
+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+
+        //Park in the warehouse
 
 
 
@@ -130,175 +136,178 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
 
-//Park in warehouse out of our teammate's way
+        //Park in warehouse out of our teammate's way
 
 
 
 
 
 
-//Auto mode for teammate with bad auto - top
+        //Auto mode for teammate with bad auto - top
 
-//Detect the barcode and place the box to corresponding level
+        //Detect the barcode and place the box to corresponding level
 
-//Move around the teammate's robot to knock off the duck
+        //Move around the teammate's robot to knock off the duck
 
-//Move back to spawn with the side with the intake facing the warehouse
+        //Move back to spawn with the side with the intake facing the warehouse
 
-//Detect the weight of the freight if possible
+        //Detect the weight of the freight if possible
 
-//Deliver the freight to the team shipping hub's bottom level
+        //Deliver the freight to the team shipping hub's bottom level
 
-//Repeat the last two steps until there's 2-5 secs left on the auto timer
+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
 
-//Park in the warehouse
-
-
-
-
-
-//Auto mode for teammate with bad auto - bottom
-
-//Detect the barcode
-
-//Move to the carousal and knock off the duck
-
-//Deliver the box to the shipping hub
-
-//Move around the other robot with intake facing warehouse
-
-//Detect the weight of the freight if possible
-
-//Deliver the freight to the team shipping hub's bottom level
-
-//Check if the shipping hub is balanced
-
-//Repeat the last three steps until there's 2-5 secs left on the auto timer
-
-//Park in the warehouse
+        //Park in the warehouse
 
 
 
 
 
-//Auto mode for prioritizing carousal and possibly balancing the shared hub
+        //Auto mode for teammate with bad auto - bottom
 
-//Detect the barcode and place game element to corresponding level
+        //Detect the barcode
 
-//Move to the carousal to knock off the duck
+        //Move to the carousal and knock off the duck
 
-//Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+        //Deliver the box to the shipping hub
 
-//2-5 seconds before autonomous ends go park in the warehouse
+        //Move around the other robot with intake facing warehouse
+
+        //Detect the weight of the freight if possible
+
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Check if the shipping hub is balanced
+
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+
+        //Park in the warehouse
+
+
+
+
+
+        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+
+        //Detect the barcode and place game element to corresponding level
+
+        //Move to the carousal to knock off the duck
+
+        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+
+        //2-5 seconds before autonomous ends go park in the warehouse
 
 
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        //                   If we can't park both robots in the warehouse                   //
+        //                   If we can't park both robots in the warehouse
         ///////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
-//Auto mode for prioritizing freight delivery - top
+        //Auto mode for prioritizing freight delivery - top
 
-//Detect the barcode and place box to the corresponding level
+        //Detect the barcode and place box to the corresponding level
 
-//Move back to spawn with the intake face the warehouse
+        //Move back to spawn with the intake face the warehouse
 
-//Detect the weight of the freight if possible
+        //Detect the weight of the freight if possible
 
-//Deliver the freight to the team shipping hub's bottom level
+        //Deliver the freight to the team shipping hub's bottom level
 
-//Repeat the last three steps until there's 2-5 secs left on the auto timer
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
 
-//Park in the alliance shipping hub
-
-
-
-
-
-//Auto mode for prioritizing0 freight delivery - bottom
-
-//Detect the barcode and place box to the corresponding level
-
-//Move around our teammate's robot with the intake face the warehouse
-
-//Detect the weight of the freight if possible
-
-//Deliver the freight to the team shipping hub's bottom level
-
-//Repeat the last two steps until there's 2-5 secs left on the auto timer
-
-//Park in the alliance shipping hub
+        //Park in the alliance shipping hub
 
 
 
 
 
-//Auto mode for teammate prioritizing freight delivery and no anti-collision system
+        //Auto mode for prioritizing0 freight delivery - bottom
 
-//Detect the barcode and place box to the corresponding level
+        //Detect the barcode and place box to the corresponding level
 
-//If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+        //Move around our teammate's robot with the intake face the warehouse
 
-//Park in alliance shipping hub out of our teammate's way
+        //Detect the weight of the freight if possible
 
+        //Deliver the freight to the team shipping hub's bottom level
 
+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
 
-
-
-
-//Auto mode for teammate with bad auto - top
-
-//Detect the barcode and place the box to corresponding level
-
-//Move around the teammate's robot to knock off the duck
-
-//Move back to spawn with the side with the intake facing the warehouse
-
-//Detect the weight of the freight if possible
-
-//Deliver the freight to the team shipping hub's bottom level
-
-//Repeat the last two steps until there's 2-5 secs left on the auto timer
-
-//Park in the alliance shipping hub
+        //Park in the alliance shipping hub
 
 
 
 
 
-//Auto mode for teammate with bad auto - bottom
+        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
 
-//Detect the barcode
+        //Detect the barcode and place box to the corresponding level
 
-//Move to the carousal and knock off the duck
+        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
 
-//Deliver the box to the shipping hub
-
-//Move around the other robot with intake facing warehouse
-
-//Detect the weight of the freight if possible
-
-//Deliver the freight to the team shipping hub's bottom level
-
-//Check if the shipping hub is balanced
-
-//Repeat the last three steps until there's 2-5 secs left on the auto timer
-
-//Park in the alliance shipping hub
+        //Park in alliance shipping hub out of our teammate's way
 
 
 
 
 
-//Auto mode for prioritizing carousal and possibly balancing the shared hub
 
-//Detect the barcode and place game element to corresponding level
+        //Auto mode for teammate with bad auto - top
 
-//Move to the carousal to knock off the duck
+        //Detect the barcode and place the box to corresponding level
 
-//Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+        //Move around the teammate's robot to knock off the duck
 
-//2-5 seconds before autonomous ends go park in the alliance shipping hub
+        //Move back to spawn with the side with the intake facing the warehouse
+
+        //Detect the weight of the freight if possible
+
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Repeat the last two steps until there's 2-5 secs left on the auto timer
+
+        //Park in the alliance shipping hub
+
+
+
+
+
+        //Auto mode for teammate with bad auto - bottom
+
+        //Detect the barcode
+
+        //Move to the carousal and knock off the duck
+
+        //Deliver the box to the shipping hub
+
+        //Move around the other robot with intake facing warehouse
+
+        //Detect the weight of the freight if possible
+
+        //Deliver the freight to the team shipping hub's bottom level
+
+        //Check if the shipping hub is balanced
+
+        //Repeat the last three steps until there's 2-5 secs left on the auto timer
+
+        //Park in the alliance shipping hub
+
+
+
+
+
+        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+
+        //Detect the barcode and place game element to corresponding level
+
+        //Move to the carousal to knock off the duck
+
+        //Stay at the shared shipping hub and try to balance the hub if it gives points, if not go do freight
+
+        //2-5 seconds before autonomous ends go park in the alliance shipping hub
+
+    }
+}
