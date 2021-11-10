@@ -1,0 +1,16 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/Tasks.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.firstinspires.ftc.teamcode.data;\n\npublic interface Tasks {\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/Tasks.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/Tasks.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/Tasks.java	(revision 391d027afbb8a4edba5dc5803fa037f88ba47a3c)
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/data/Tasks.java	(date 1635899883971)
+@@ -2,4 +2,5 @@
+ 
+ public interface Tasks {
+ 
++
+ }
