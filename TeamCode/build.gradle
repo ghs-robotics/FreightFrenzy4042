@@ -30,6 +30,8 @@ dependencies {
     implementation project(':FtcRobotController')
     implementation 'androidx.camera:camera-core:1.1.0-alpha03'
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+
     implementation 'org.openftc:easyopencv:1.5.0'
+
 }
 

@@ -31,6 +31,9 @@ public class Controller {
     public double left_trigger;
     public double right_trigger;
 
+    public static final double TRIGGER_PRESSED = 1;
+    public static final double TRIGGER_RELEASED = 0;
+
     // Use for each controller in TeleOp
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
