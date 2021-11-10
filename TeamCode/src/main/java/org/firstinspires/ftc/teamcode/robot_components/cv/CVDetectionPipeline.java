@@ -1,6 +1,10 @@
+// Deprecated
+//Do Not Use!!!!
+
+
 package org.firstinspires.ftc.teamcode.robot_components.cv;
 
-import org.firstinspires.ftc.teamcode.cv_objects.CVObject;
+import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.firstinspires.ftc.teamcode.data.MyScalar;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -13,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static java.lang.Thread.sleep;
 
 // Pipeline for image processing
-public class CVDetectionPipeline extends OpenCvPipeline {
+public class CVDetectionPipeline extends OpenCvPipeline implements HSVConstants {
 
     // The amount of time between image processing should take
     // The higher this value, the lower the lag during teleOp

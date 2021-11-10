@@ -1,14 +1,19 @@
+// Deprecated
+//Do Not Use!!!!
+
+
 package org.firstinspires.ftc.teamcode.robot_components.cv;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.cv_objects.CVObject;
+import org.firstinspires.ftc.teamcode.data.FieldPositions;
+import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.firstinspires.ftc.teamcode.robot_components.movement_enhancing.PIDController;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 // The lowest class in the inheritance hierarchy; any OpModes should extend CVRobot
-public class CVModule extends Robot{
+public class CVModule extends Robot implements HSVConstants, FieldPositions {
 
     public CameraManager cameras; // Manages the webcam and phone camera
 

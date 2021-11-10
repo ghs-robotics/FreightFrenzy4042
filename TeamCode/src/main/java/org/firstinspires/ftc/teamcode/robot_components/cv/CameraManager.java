@@ -1,11 +1,15 @@
+// Deprecated
+//Do Not Use!!!!
+
+
 package org.firstinspires.ftc.teamcode.robot_components.cv;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCamera.AsyncCameraOpenListener;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
@@ -16,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // IMPORTANT NOTE: WHILE CAMERAS ARE STREAMING, THERE MAY BE LOTS OF LAG IN TELEOP!!
 // That lag can be avoided by either not streaming or setting the waitTime higher in
 // our pipelines (thus decreasing FPS)
-public class CameraManager{
+public class CameraManager implements HSVConstants {
 
     private int cameraMonitorViewId;
     private boolean streaming = false; // true if cameras are streaming image input
@@ -128,7 +132,7 @@ public class CameraManager{
     public void startStreaming() {
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-        webcam.openCameraDeviceAsync(new AsyncCameraOpenListener(){
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened()
             {
@@ -154,7 +158,7 @@ public class CameraManager{
             webcam = OpenCvCameraFactory.getInstance().createWebcam(
                     hardwareMap.get(WebcamName.class, "Webcam 1"));
             webcam.setPipeline(webcamPipeline);
-            webcam.openCameraDeviceAsync(new AsyncCameraOpenListener() {
+            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
                 @Override
                 public void onOpened() {
                     webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
@@ -162,7 +166,7 @@ public class CameraManager{
 
                 @Override
                 public void onError(int errorCode) {
-
+                    
                 }
             });
             webcam.openCameraDevice();
@@ -178,4 +182,3 @@ public class CameraManager{
         webcam.stopStreaming();
     }
 }
-

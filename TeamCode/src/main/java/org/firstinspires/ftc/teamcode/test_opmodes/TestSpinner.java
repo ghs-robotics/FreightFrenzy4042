@@ -28,7 +28,6 @@ public class TestSpinner extends LinearOpMode {
         // Code to run ONCE when the driver hits INIT
 //        robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         controller1 = new Controller(gamepad1); // Whoever presses start + a
-//        controller2 = new Controller(gamepad2); // Whoever presses start + b
         DcMotor duckMotor = hardwareMap.get(DcMotor.class, "duckMotor");
         // TODO: what coefficient and radius should this be?
         spinner = new DuckSpinner(duckMotor, 0.5, .1, telemetry);

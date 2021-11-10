@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode.cv_objects;
+//Don't use, using HSV values
+
+package org.firstinspires.ftc.teamcode.robot_components.cv;
 
 import org.firstinspires.ftc.teamcode.data.MyScalar;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVDetectionPipeline;
