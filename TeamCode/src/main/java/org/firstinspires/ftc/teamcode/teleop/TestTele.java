@@ -69,7 +69,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
 
-            //dropper
+            //toggles dropper, make code that goes down and then back up later
             if (controller2.a == Btn.PRESSING) {
                 robot.dropGameElement();
             }
@@ -91,6 +91,9 @@ public class TestTele extends LinearOpMode implements FieldPositions {
                 //im gonna hardcode the distance because fuck you - simon
                 robot.toggleExtension(13);
             }
+
+
+
         }
     }
 }
