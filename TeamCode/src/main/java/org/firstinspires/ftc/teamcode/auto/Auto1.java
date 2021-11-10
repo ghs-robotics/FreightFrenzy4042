@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
 import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
@@ -14,7 +13,7 @@ import java.util.List;
 
 
 @Autonomous
-public class Auto1 extends LinearOpMode implements FieldPositions {
+public class Auto1 extends LinearOpMode {
 
     // Declare OpMode members
     private CVModule robot;
@@ -22,7 +21,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DriveToPoint());
+        //tasks.add(new DriveToPoint());
         autoController.setTasks(tasks);
     }
 
