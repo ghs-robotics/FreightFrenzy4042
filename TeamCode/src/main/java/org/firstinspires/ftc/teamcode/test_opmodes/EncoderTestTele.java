@@ -29,7 +29,6 @@ public class EncoderTestTele extends OpMode {
         telemetry.addData("Status", "Initialized");
 
         leftFrontDrive = hardwareMap.get(DcMotor.class, "odo");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "motor2");
 //        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
 //        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
         gyro = new Gyro(hardwareMap);
