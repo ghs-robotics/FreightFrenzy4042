@@ -32,13 +32,12 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.data.Tasks;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
 @TeleOp(name="Tele1", group="Linear Opmode")
-public class Tele1 extends LinearOpMode implements Tasks {
+public class Tele1 extends LinearOpMode {
     
     // Declare OpMode members
     CVModule robot;

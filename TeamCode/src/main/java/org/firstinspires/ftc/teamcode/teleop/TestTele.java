@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.data.Tasks;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CameraManager;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @TeleOp(name="TestTele", group="Linear Opmode")
-public class TestTele extends LinearOpMode implements Tasks {
+public class TestTele extends LinearOpMode {
     
     // Declare OpMode members
     Robot robot;
