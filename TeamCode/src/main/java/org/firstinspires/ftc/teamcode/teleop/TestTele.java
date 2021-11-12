@@ -4,19 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CameraManager;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
-
 
 import java.util.Objects;
 
 @TeleOp(name="TestTele", group="Linear Opmode")
 public class TestTele extends LinearOpMode implements FieldPositions {
-    
+
     // Declare OpMode members
     Robot robot;
     Controller controller1;

@@ -1,5 +1,3 @@
-//WELCOME TO THE BEN BRANCH!
-
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,6 +34,68 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
+
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
+        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
+        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
     }
+
+    /**
+     * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
+     * to be set up properly with RunMode.RUN_TO_POSITION.
+     * todo what unit of measurement is distance????? Gonna assume that it is in mm
+     * @param distance The distance to extend to if retracted.
+     */
+    public void toggleExtension(double distance) {
+        int currentTicks = extenderMotor.getCurrentPosition();
+        boolean isExtended = currentTicks > 5 || currentTicks < -5;
+        if (isExtended) {
+            // retract
+            extenderMotor.setTargetPosition(0);
+        } else {
+            // extend
+            int targetTicks = (int) Math.round(
+                    (distance / EXTENDER_PULLEY_INNER_CIRC /* num. revolutions*/)
+                            * EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT
+            );
+            extenderMotor.setTargetPosition(targetTicks);
+        }
+    }
+
+    /**
+     * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
+     */
+    public void dropGameElement() {
+//        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+        // Important note: never compare doubles or floats with == or !=, because floating point error
+        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
+        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
+        dropperServo.setPosition(dropperAngle);
+    }
+
+    /* KENNY PLS READ
+    //just to clarify, the "bucket" is the part that is responsible for
+    //holding the game element
+    //the "intake" is responsible for catching game elements
+    //I have updated the method names accordingly
+    */
+    //*~INTAKE FUNCTIONS*~//
+    //manages up/down positions of intake
+    public void toggleBucket(){
+        boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
+        intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
+        intakeBucketFlipServo.setPosition(intakeAngle);
+    }
+
+    public void setIntakePower(double power){
+        intakePower = power;
+        intakeMotor.setPower(intakePower);
+    }
+
+
+
 
 }
