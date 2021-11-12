@@ -35,12 +35,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
+        spinnerMotor = hardwareMap.get(DcMotor.class, "duckSpinner");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
+        extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeRot");
     }
 
     /**

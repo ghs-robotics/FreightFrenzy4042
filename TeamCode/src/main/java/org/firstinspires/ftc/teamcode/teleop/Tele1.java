@@ -88,6 +88,8 @@ public class Tele1 extends LinearOpMode implements FieldPositions {
                 );
             }
 
+            robot.sendDrivePowers();
+
             // this is my cool change
 
             // -----------------------------------------------------------------------------------------
