@@ -16,6 +16,7 @@ public class DeadReckoning {
         public DcMotor deadWheelX;
 
         final double INITIAL_X_POSITION = 0;
+        final int INITIAL_X_TICKS = getRawEncoderValues();
         final int TICKS_PER_REVOLUTION = 8192;
         final double WHEEL_DIAMETER_MM = 35.0; // not radius!
         final double WHEEL_CIRCUMFERENCE_MM = WHEEL_DIAMETER_MM * Math.PI;
@@ -24,7 +25,7 @@ public class DeadReckoning {
 
         private int prevX;
 
-        public DeadReckoning(DcMotor x, DcMotor y, Gyro g) {
+        public DeadReckoning(DcMotor x) {
             this.deadWheelX = x;
             this.prevX = 0;
         }
@@ -40,9 +41,6 @@ public class DeadReckoning {
         public int getRawEncoderValues() {
             return deadWheelX.getCurrentPosition();
         }
-        //public int getDeltaEncodervalues() {
-
-        //}
 
         /**
          * get the distance travelled since this function was last called
@@ -53,9 +51,11 @@ public class DeadReckoning {
             double xChange = encoderTicksToDistance(currentX - prevX);
             return new Vector((int) xChange);
         }
+        //Calculates X position based on odometry pod encoder tick values
         public double calculatePosition() {
             //Finds the change in x position in cm, based on odometry ticks
-            double currentXDistance =  10 * encoderTicksToDistance(getRawEncoderValues());
+            int deltaTicks = getRawEncoderValues() - INITIAL_X_TICKS;
+            double currentXDistance = 10 * encoderTicksToDistance(deltaTicks);
             double currentXPos = currentXDistance + INITIAL_X_POSITION;
             return currentXPos;
         }
