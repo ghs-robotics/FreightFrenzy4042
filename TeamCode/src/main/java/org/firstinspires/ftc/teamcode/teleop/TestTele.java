@@ -1,15 +1,23 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
+import org.firstinspires.ftc.teamcode.robot_components.robot.SimpleDuckSpinner;
 
 import java.util.Objects;
 
+@RequiresApi(api = Build.VERSION_CODES.N) // enable java 8
 @TeleOp(name="TestTele", group="Linear Opmode")
 public class TestTele extends LinearOpMode implements FieldPositions {
     
@@ -25,6 +33,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         controller1 = new Controller(gamepad1); // Whoever presses start + a
         controller2 = new Controller(gamepad2); // Whoever presses start + b
+        SimpleDuckSpinner spinner = new SimpleDuckSpinner(robot.spinnerMotor, 0.0, telemetry, DcMotorSimple.Direction.FORWARD);
 
 //        robot;
 
@@ -61,6 +70,20 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             );
             robot.sendDrivePowers();
 
+            if (controller1.x == Btn.PRESSED) {
+                spinner.setDirection(DcMotorSimple.Direction.FORWARD);
+                spinner.startRunning();
+            }
+
+            if (controller1.b == Btn.PRESSED) {
+                spinner.setDirection(DcMotorSimple.Direction.REVERSE);
+                spinner.startRunning();
+            }
+
+            if (controller1.y == Btn.PRESSED) {
+                spinner.stopRunning();
+            }
+
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
             // ------------------------------   CONTROLLER 2 FUNCTIONS   -------------------------------
@@ -88,7 +111,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //extend the arm
             if(controller2.x == Btn.PRESSING) {
-                //im gonna hardcode the distance because fuck you - simon
+                //im gonna hardcode the distance because frick you - simon
                 robot.toggleExtension(13);
             }
 
