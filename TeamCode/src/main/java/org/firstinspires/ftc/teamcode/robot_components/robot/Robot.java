@@ -24,7 +24,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
     public Servo dropperServo;
-    public Servo intakeBucketFlipServo;
+    public Servo intakeFlipServo;
     private final double DROPPER_MAX = 0.8;
     private final double DROPPER_MIN = 0.35;
     private final double INTAKE_DWN = 0;
@@ -41,7 +41,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         extenderMotor.setTargetPosition(0);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeRot");
+        intakeFlipServo = hardwareMap.get(Servo.class, "intakeRot");
     }
 
     /**
@@ -72,7 +72,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public void dropGameElement() {
 //        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
         // Important note: never compare doubles or floats with == or !=, because floating point error
-        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
+        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.01;
         dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
         dropperServo.setPosition(dropperAngle);
     }
@@ -85,10 +85,10 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     */
     //*~INTAKE FUNCTIONS*~//
     //manages up/down positions of intake
-    public void toggleBucket(){
+    public void toggleIntakeServo(){
         boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
         intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
-        intakeBucketFlipServo.setPosition(intakeAngle);
+        intakeFlipServo.setPosition(intakeAngle);
     }
 
     public void setIntakePower(double power){

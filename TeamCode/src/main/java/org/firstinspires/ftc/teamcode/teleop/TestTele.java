@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
@@ -14,8 +13,6 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot_components.robot.SimpleDuckSpinner;
-
-import java.util.Objects;
 
 @RequiresApi(api = Build.VERSION_CODES.N) // enable java 8
 @TeleOp(name="TestTele", group="Linear Opmode")
@@ -49,7 +46,14 @@ public class TestTele extends LinearOpMode implements FieldPositions {
         robot.resetGyroAngle();
         robot.resetElapsedTime();
 
+        double runtimeSeconds = 0.0;
+        double runtimeSecondsLast = 0.0;
+
         while (opModeIsActive()) {
+            runtimeSeconds = robot.elapsedTime.seconds();
+            double deltaTime = runtimeSeconds - runtimeSecondsLast;
+            runtimeSecondsLast = runtimeSeconds;
+
 
             // Registers controller input
             controller1.update();
@@ -106,7 +110,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //turn bucket up/down
             if(controller2.b == Btn.PRESSING) {
-                robot.toggleBucket();
+                robot.toggleIntakeServo();
             }
 
             //extend the arm
@@ -115,7 +119,14 @@ public class TestTele extends LinearOpMode implements FieldPositions {
                 robot.toggleExtension(13);
             }
 
-
+            if (controller2.left_stick_y > 0.1 || controller2.left_stick_y < -0.1) {
+                robot.extenderMotor.setTargetPosition(
+                        (int) Math.round (
+                                robot.extenderMotor.getTargetPosition()
+                                + controller2.left_stick_y * deltaTime
+                        )
+                );
+            }
 
         }
     }
