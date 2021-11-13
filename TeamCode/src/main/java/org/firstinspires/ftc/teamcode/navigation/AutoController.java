@@ -10,8 +10,7 @@ public class AutoController {
     private Robot robot;
     private final double TICKSPERROT = 232.16;
     private final double ROTSPERTURN = 9.525;
-    private final double WHEELDIAMETER = 48;
-
+    private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter
 
     public RobotPosition currentPosition;
     public RobotPosition startingPosition;
@@ -45,7 +44,6 @@ public class AutoController {
 
     public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
         //Gives the number of encoder ticks (232.16 ticks is 1 rotation)
-        double wheelCirc = WHEELDIAMETER * Math.PI; //Circumference of the wheel given a 48mm diameter
         double degreesTurned = robot.gyro.getAngle(); //Get gyro angle to subtract from robot rotations
         double leftFrontTicks = robot.leftFrontDrive.getCurrentPosition();
         double leftFrontRotations = leftFrontTicks / TICKSPERROT;
@@ -57,8 +55,8 @@ public class AutoController {
         leftFrontRotations -= degreesTurned * (ROTSPERTURN / 360);
         rightFrontRotations += degreesTurned * (ROTSPERTURN / 360);
         //Calculate final x and y distances from the robot's starting position
-        double xDist = (wheelCirc * Math.cos(45)) * (leftFrontRotations - rightFrontRotations);
-        double yDist = (wheelCirc * Math.sin(45)) * (leftFrontRotations + rightFrontRotations);
+        double xDist = (WHEELCIRC * Math.cos(Math.PI / 4)) * (leftFrontRotations - rightFrontRotations);
+        double yDist = (WHEELCIRC * Math.sin(Math.PI / 4)) * (leftFrontRotations + rightFrontRotations);
 
         return new RobotPosition(startingPosition.position.add(new Point2D(xDist, yDist)),
                 startingPosition.rotation + degreesTurned);

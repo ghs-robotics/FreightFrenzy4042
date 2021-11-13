@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.navigation.tasks;
 
+import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
@@ -31,11 +33,14 @@ public class DriveToPoint implements Task {
     public boolean update(RobotPosition currentPosition, Robot robot) {
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
-        Point2D clampedError = error.scale(0.0001);
+        Point2D errorPID = error.scale(0.001);
+
         double rotError = targetPosition.rotation - currentPosition.rotation;
+        double rotErrorPID = rotError * 0.01;
 
         // todo: this is kinda jank and should use PID or something
-        robot.calculateDrivePowers(clampedError.x, clampedError.y, rotError);
+        robot.calculateDrivePowers(Range.clip(errorPID.x, -1, 1),
+                Range.clip(errorPID.y, -1, 1), Range.clip(rotErrorPID, -1, 1));
 
         return arrived(currentPosition);
     }

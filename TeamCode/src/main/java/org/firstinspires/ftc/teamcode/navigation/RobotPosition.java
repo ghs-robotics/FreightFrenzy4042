@@ -6,7 +6,7 @@ public class RobotPosition {
     public Point2D position;
     public Double rotation;
 
-    public RobotPosition(Point2D pos, Double rot) {
+    public RobotPosition(Point2D pos, Double rot) { //rot is in degrees
         this.position = pos;
         this.rotation = rot;
     }

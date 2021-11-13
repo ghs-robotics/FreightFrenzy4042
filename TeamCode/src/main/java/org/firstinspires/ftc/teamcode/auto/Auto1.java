@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.navigation.AutoController;
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
+import org.firstinspires.ftc.teamcode.navigation.tasks.Deposit;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
@@ -40,7 +41,13 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DriveToPoint(new RobotPosition(new Point2D(1000, 0), 0.0)));
+        //SCAN BARCODE AND PLACE INITIAL ELEMENT IF POSSIBLE
+        tasks.add(drive(0, 500, 0.0));
+        tasks.add(new Deposit());
+        tasks.add(drive(0, 0, 0));
+        tasks.add(drive(0, 0, 90.0));
+        tasks.add(drive(1000, 0, 0.0));
+
         autoController.setTasks(tasks);
         autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
@@ -74,6 +81,10 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         return shippingX / 107;
     }
 
+    DriveToPoint drive(double x, double y, double rot) {
+        return new DriveToPoint(new RobotPosition(new Point2D(x, y), rot));
+    }
+
     @Override
     public void runOpMode()
     {
@@ -99,7 +110,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 //Detect the barcode and place box to the corresponding level
 
-//Move back to spawn with the intake face the warehouse
+//Move back to the start with the intake facing the warehouse
 
 //Detect the weight of the freight if possible
 

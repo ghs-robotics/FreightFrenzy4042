@@ -49,7 +49,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      * todo what unit of measurement is distance????? Gonna assume that it is in mm
      * @param distance The distance to extend to if retracted.
      */
-    public void toggleExtension(double distance) {
+    //Should return current distance extended
+    public double toggleExtension(double distance) { //300 is the minimum required for purple bucket to be off robot
         int currentTicks = extenderMotor.getCurrentPosition();
         boolean isExtended = currentTicks > 5 || currentTicks < -5;
         if (isExtended) {
@@ -63,14 +64,15 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
             );
             extenderMotor.setTargetPosition(targetTicks);
         }
+        return currentTicks;
     }
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
      */
     public void dropGameElement() {
-//        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
-        // Important note: never compare doubles or floats with == or !=, because floating point error
+        //dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+        //Important note: never compare doubles or floats with == or !=, because floating point error
         boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
         dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
         dropperServo.setPosition(dropperAngle);
@@ -82,6 +84,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //the "intake" is responsible for catching game elements
     //I have updated the method names accordingly
     */
+
     //*~INTAKE FUNCTIONS*~//
     //manages up/down positions of intake
     public void toggleBucket(){
