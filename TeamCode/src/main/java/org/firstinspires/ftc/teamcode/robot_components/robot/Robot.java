@@ -38,8 +38,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
-        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
         intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
 
@@ -95,6 +95,10 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
         intakeAngle = (intakeIsDown ? INTAKE_UP : INTAKE_DWN);
         intakeBucketFlipServo.setPosition(intakeAngle);
+    }
+
+    public void duckSpinnerJank(double power) {
+        spinnerMotor.setPower(power);
     }
 
     public void setIntakePower(double power){
