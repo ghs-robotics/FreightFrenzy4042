@@ -69,6 +69,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     }
 
     /**
+     * returns extension distance in mm. this starts at 0 when the robot starts.
+     */
+    public double getExtensionPos() {
+        int currentTicks = extenderMotor.getCurrentPosition();
+        return (currentTicks / EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT) * EXTENDER_PULLEY_INNER_CIRC;
+    }
+
+    /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
      */
     public void dropGameElement() {

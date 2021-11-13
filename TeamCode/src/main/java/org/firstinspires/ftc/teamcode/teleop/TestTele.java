@@ -101,6 +101,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
                 robot.dropGameElement();
             }
             telemetry.addData("dropper pos", robot.dropperServo.getPosition());
+            telemetry.addData("extension distance", robot.getExtensionPos());
 
             //intake
             //run intake based on how strong trigger pressed (i think)
