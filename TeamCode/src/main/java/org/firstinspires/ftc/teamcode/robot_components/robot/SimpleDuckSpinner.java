@@ -18,16 +18,17 @@ public class SimpleDuckSpinner {
     // Optional<e> prevents NullReferenceExceptions
 
     private boolean isRunning = false;
-    final double MOTOR_SPEED = 0.8;
+    private int spinnerMotorDirection = 0;
+    final double MOTOR_SPEED = 1;
     // TODO: SET DIRECTION !!!!
 
-    public SimpleDuckSpinner(DcMotor motor, double radius) {
-        this(motor, radius, null);
+    public SimpleDuckSpinner(DcMotor motor) {
+
+        this(motor, null);
     }
 
     public SimpleDuckSpinner(
             DcMotor motor,
-            double radius,
             Telemetry telemetry //,
 //            boolean useEncoders
     ){
@@ -41,38 +42,33 @@ public class SimpleDuckSpinner {
 //        this.useEncoder = useEncoders;
     }
 
-    public void startRunning() {
-        runtime.reset();
-        isRunning = true;
+    public void runForwards() {
+        spinnerMotorDirection = 1;
+    }
+    public void runBackwards() {
+        spinnerMotorDirection = -1;
     }
 
     public void stopRunning() {
-        motor.setPower(0);
-        isRunning = false;
+        spinnerMotorDirection = 0;
     }
     /**
      * call this repeatedly to run the spinner
      * @return true if done spinning, else false
      */
-    public boolean update() {
+    public void update() {
         double time = runtime.seconds();
         telemetry.ifPresent(telemetry1 -> { // if telemetry is null nothing will happen
             telemetry1.addData("duck time", time);
             telemetry1.addData("duck motor power", motor.getPower());
+            /*
             if (isRunning) {
                 telemetry1.addData("Goal motor power", MOTOR_SPEED);
             } else {
                 telemetry1.addData("Goal motor power", 0);
             }
+            */
         });
-        if (isRunning) {
-            motor.setPower(MOTOR_SPEED);
-            return false;
-        } else {
-            // setting power to zero will make the motor brake and stop
-            // TODO: use encoder to make sure the wheel doesn't slip to slow down as fast as possible
-            this.stopRunning();
-            return true;
-        }
+        motor.setPower(spinnerMotorDirection  * MOTOR_SPEED);
     }
 }

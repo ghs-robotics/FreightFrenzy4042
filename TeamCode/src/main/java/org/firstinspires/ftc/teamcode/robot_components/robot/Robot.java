@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,6 +15,7 @@ import org.firstinspires.ftc.teamcode.data.HSVConstants;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
     // Robot variables and objects
@@ -49,7 +54,10 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         intakeAngle = INTAKE_DWN;
         dropperAngle = DROPPER_MIN;
+        duckSpinner = new SimpleDuckSpinner(spinnerMotor);
+
     }
+    public SimpleDuckSpinner duckSpinner;
 
     /**
      * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
