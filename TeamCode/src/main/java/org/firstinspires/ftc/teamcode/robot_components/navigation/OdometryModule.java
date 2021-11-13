@@ -51,7 +51,7 @@ public class OdometryModule {
         // average angles
         double avgAngle = (currentAngle + this.prevAngle)/2.0;
         double xChange = Math.cos(avgAngle) * encoderTicksToDistance(currentX - prevX);
-        double yChange = Math.sin(avgAngle) * encoderTicksToDistance(currentX - prevY);
+        double yChange = Math.sin(avgAngle) * encoderTicksToDistance(currentY - prevY);
         return new Vector2(xChange, yChange);
     }
 
