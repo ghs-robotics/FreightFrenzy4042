@@ -41,11 +41,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
+       // extenderMotor.setTargetPosition(0);
+       // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+        //intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+
 
         dropperServo.setPosition(DROPPER_MIN);
-        intakeBucketFlipServo.setPosition(INTAKE_DWN);
+        //intakeBucketFlipServo.setPosition(INTAKE_DWN);
 
         intakeAngle = INTAKE_DWN;
         dropperAngle = DROPPER_MIN;
@@ -58,6 +61,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      * @param distance The distance to extend to if retracted.
      */
     public void toggleExtension(double distance) {
+
         int currentTicks = extenderMotor.getCurrentPosition();
         boolean isExtended = currentTicks > 5 || currentTicks < -5;
         if (isExtended) {
@@ -73,7 +77,22 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         }
     }
 
+
     public void setExtenderPower(double power){
+
+        int position = extenderMotor.getCurrentPosition();
+
+
+        while(position < 0) {
+            position = extenderMotor.getCurrentPosition();
+            extenderMotor.setPower(.2);
+        }
+
+        while(position > 1200) {
+            position = extenderMotor.getCurrentPosition();
+            extenderMotor.setPower(-.2);
+        }
+
         extenderPower = power;
         extenderMotor.setPower(extenderPower);
     }
@@ -88,6 +107,11 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
         dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
         dropperServo.setPosition(dropperAngle);
+    }
+
+    public void jankToggleDropper() {
+        dropperServo.setPosition(dropperAngle);
+        dropperAngle = dropperAngle == DROPPER_MIN ? DROPPER_MAX : DROPPER_MIN;
     }
 
     /* KENNY PLS READ

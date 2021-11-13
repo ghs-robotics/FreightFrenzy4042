@@ -71,26 +71,37 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //toggles dropper, make code that goes down and then back up later
             if (controller2.a == Btn.PRESSING) {
-                robot.dropGameElement();
+                //robot.dropGameElement();
+                robot.jankToggleDropper();
             }
 
             //intake
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
 
-                robot.duckSpinnerJank(controller2.left_stick_y);
+                //robot.duckSpinnerJank(controller2.left_stick_y);
+
+                robot.setExtenderPower(controller2.left_stick_x);
+
+                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
             if(controller2.b == Btn.PRESSING) {
                // robot.toggleBucket();
             }
 
-            //extend the arm
-            if(controller2.x == Btn.PRESSING) {
-                //im gonna hardcode the distance because heck you - simon
-                robot.toggleExtension(13);
+            if (controller2.dpad_up == Btn.PRESSING) {
+                robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
+            } else if (controller2.dpad_down == Btn.PRESSING) {
+                robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
             }
+            telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
-
+            //extend the arm
+            if(controller2.x == Btn.PRESSED) {
+                telemetry.addData("button x controller 2", "pressed");
+                //im gonna hardcode the distance because heck you - simon
+                robot.toggleExtension(50);
+            }
 
             telemetry.update();
         }
