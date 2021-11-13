@@ -26,8 +26,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public DcMotor spinnerMotor;
     public Servo dropperServo;
     public Servo intakeFlipServo;
-    private final double DROPPER_MAX = 0.8;
-    private final double DROPPER_MIN = 0.35;
+    private final double DROPPER_MAX = -0.8;
+    private final double DROPPER_MIN = -0.35;
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
 
