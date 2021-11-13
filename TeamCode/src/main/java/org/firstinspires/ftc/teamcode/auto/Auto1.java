@@ -35,9 +35,9 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     // Declare OpMode members
     private CVModule robot;
     private AutoController autoController = new AutoController();
-    private OpenCvWebcam webcam;
-    private CVPipeline pipeline;
-    private WebcamName webcamName;
+    //private OpenCvWebcam webcam;
+    //private CVPipeline pipeline;
+    //private WebcamName webcamName;
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         tasks.add(drive(0, 500, 0.0));
         tasks.add(new Deposit());
         tasks.add(drive(0, 0, 0));
-        tasks.add(drive(0, 0, 90.0));
+        //tasks.add(drive(0, 0, 90.0)); No need to turn 90 probably???
         tasks.add(drive(1000, 0, 0.0));
 
         autoController.setTasks(tasks);
@@ -53,7 +53,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     }
 
 //TODO idk if the camera should be initialized here
-    public void initializeCV() {
+    /*public void initializeCV() {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
         pipeline= new CVPipeline();
@@ -70,10 +70,10 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                     // Usually this is where you'll want to start streaming from the camera (see section 4)
                 }
             }
-            public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
-        });
+            public void onError(int errorCode) {/* This will be called if the camera could not be opened*///}
+        /*});
         waitForStart();
-    }
+    } */
 
     int detectBarcode() {
         int shippingX = 0;
@@ -88,15 +88,15 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     @Override
     public void runOpMode()
     {
-        initializeCV();
+        //initializeCV();
         initializeTasks();
         waitForStart();
 
         while(opModeIsActive()) {
-            telemetry.addData("Boxes", pipeline.returnResultsBoxes());
+            //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
-            telemetry.update();
+            //telemetry.update();
             autoController.update();
         }
     }

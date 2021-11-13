@@ -15,7 +15,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
     protected double intakePower = 0;
-    double dropperAngle;
+    double dropperTargetAngle;
     double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
@@ -25,8 +25,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public DcMotor spinnerMotor;
     public Servo dropperServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_MAX = 0.8;
-    private final double DROPPER_MIN = 0.35;
+    private final double DROPPER_MAX = -0.8;
+    private final double DROPPER_MIN = -0.35;
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
 
@@ -37,7 +37,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
+        extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
         intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
@@ -73,9 +73,16 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public void dropGameElement() {
         //dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
         //Important note: never compare doubles or floats with == or !=, because floating point error
-        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
-        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
-        dropperServo.setPosition(dropperAngle);
+        dropperTargetAngle = (dropperIsMax() ? DROPPER_MIN : DROPPER_MAX); // toggle
+        dropperServo.setPosition(dropperTargetAngle);
+    }
+
+    public boolean dropperIsMax() { //return a number between 0 and 1
+        return Math.abs(dropperServo.getPosition() - DROPPER_MAX) < 0.1;
+    }
+
+    public boolean dropperIsMin() {
+        return Math.abs(dropperServo.getPosition() - DROPPER_MIN) < 0.1;
     }
 
     /* KENNY PLS READ

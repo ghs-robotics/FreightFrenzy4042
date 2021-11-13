@@ -14,15 +14,18 @@ public class Deposit implements Task {
 
     private boolean extended;
     private boolean dropped;
+    private boolean lifted;
     private boolean returned;
+    private boolean holdingElement;
 
     private final double TICKSTODIST = 0.09363; //Multiply by this to convert from ticks to mm
 
     public Deposit() {
         extended = false;
         dropped = false;
-
+        lifted = false;
         returned = false;
+        holdingElement = true;
     }
 
     public void init() {}
@@ -35,8 +38,15 @@ public class Deposit implements Task {
             }
         } else if (!dropped) {
             robot.dropGameElement();
-            robot.dropGameElement();
             dropped = true;
+        } else if (!lifted) {
+            if (robot.dropperIsMin()) {
+                robot.dropGameElement();
+                holdingElement = false;
+            }
+            if (robot.dropperIsMax() && !holdingElement) {
+                lifted = true;
+            }
         } else {
             double extendedDist = robot.toggleExtension(-300) * TICKSTODIST;
             if (Math.abs(extendedDist + 300) < 50) {
