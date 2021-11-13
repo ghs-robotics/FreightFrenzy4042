@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -25,8 +26,8 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public DcMotor spinnerMotor;
     public Servo dropperServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_MAX = 0.8;
-    private final double DROPPER_MIN = 0.35;
+    private final double DROPPER_MAX = -0.8;
+    private final double DROPPER_MIN = -0.35;
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
 
@@ -37,10 +38,16 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        extenderMotor = hardwareMap.get(DcMotor.class, "extenderMotor");
+        extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
         intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+
+        dropperServo.setPosition(DROPPER_MIN);
+        intakeBucketFlipServo.setPosition(INTAKE_DWN);
+
+        intakeAngle = INTAKE_DWN;
+        dropperAngle = DROPPER_MIN;
     }
 
     /**
@@ -86,7 +93,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //manages up/down positions of intake
     public void toggleBucket(){
         boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
-        intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
+        intakeAngle = (intakeIsDown ? INTAKE_UP : INTAKE_DWN);
         intakeBucketFlipServo.setPosition(intakeAngle);
     }
 
@@ -94,8 +101,4 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         intakePower = power;
         intakeMotor.setPower(intakePower);
     }
-
-
-
-
 }
