@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -21,24 +23,28 @@ public class SimpleDuckSpinner {
     final double MOTOR_SPEED = 0.8;
     // TODO: SET DIRECTION !!!!
 
-    public SimpleDuckSpinner(DcMotor motor, double radius) {
-        this(motor, radius, null);
+    public SimpleDuckSpinner(DcMotor motor, double radius, DcMotorSimple.Direction dir) {
+        this(motor, radius, null, dir);
     }
 
     public SimpleDuckSpinner(
             DcMotor motor,
             double radius,
-            Telemetry telemetry //,
-//            boolean useEncoders
+            Telemetry telemetry,
+            DcMotorSimple.Direction dir
     ){
         this.motor = motor;
-        motor.setDirection(DcMotor.Direction.FORWARD);
+        motor.setDirection(dir);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.runtime = new ElapsedTime();
         this.telemetry = Optional.ofNullable(telemetry);
 
 //        this.useEncoder = useEncoders;
+    }
+
+    public void setDirection(DcMotorSimple.Direction dir) {
+        this.motor.setDirection(dir);
     }
 
     public void startRunning() {

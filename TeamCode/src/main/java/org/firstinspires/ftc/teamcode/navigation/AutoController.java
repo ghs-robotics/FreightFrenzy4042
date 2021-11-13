@@ -11,6 +11,10 @@ public class AutoController {
 
     public RobotPosition currentPosition;
 
+    public AutoController(Robot robot) {
+        this.robot = robot;
+    }
+
     /**
      * Initialize with a series of points
      * @param tasks the series of points to drive to. probably in an ArrayList
