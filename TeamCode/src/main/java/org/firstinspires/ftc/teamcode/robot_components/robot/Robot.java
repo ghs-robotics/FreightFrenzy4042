@@ -16,6 +16,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
     protected double intakePower = 0;
+    protected double extenderPower = 0;
     double dropperAngle;
     double intakeAngle;
     //public CRServo intakeCRServo;
@@ -71,6 +72,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
             extenderMotor.setTargetPosition(targetTicks);
         }
     }
+
+    public void setExtenderPower(double power){
+        extenderPower = power;
+        extenderMotor.setPower(extenderPower);
+    }
+
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN

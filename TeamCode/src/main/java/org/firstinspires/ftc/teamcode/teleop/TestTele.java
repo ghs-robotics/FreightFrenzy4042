@@ -67,7 +67,11 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
-            //OPERATOR FUNCTIONS
+            //OPERATOR FUNCTIONS SUMMARY
+            //DROPPER TOGGLE: A
+            //INTAKE: RIGHT TRIGGER
+            //TOGGLE EXTENSION (MAYBE BROKEN): X
+            //RUN EXTENDER MOTOR: LEFT STICK Y
 
             //toggles dropper, make code that goes down and then back up later
             if (controller2.a == Btn.PRESSING) {
@@ -78,17 +82,23 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_trigger);
 
-            //turn bucket up/down
-            if(controller2.b == Btn.PRESSING) {
+            //turn bucket up/down, BUCKET HAS BEEN REMOVED LMAO
+            /*if(controller2.b == Btn.PRESSING) {
                 telemetry.addData("button b","pressed");
                 robot.toggleBucket();
             }
+
+             */
 
             //extend the arm
             if(controller2.x == Btn.PRESSING) {
                 //im gonna hardcode the distance because heck you - simon
                 robot.toggleExtension(13);
             }
+
+            //run extention motor
+            robot.setExtenderPower(0.9 * controller2.left_stick_y);
+
 
 
 
