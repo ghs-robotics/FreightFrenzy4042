@@ -35,7 +35,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DriveToPoint());
+        //tasks.add(new DriveToPoint());
         autoController.setTasks(tasks);
     }
 

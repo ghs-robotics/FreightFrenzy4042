@@ -76,13 +76,14 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //intake
             //run intake based on how strong trigger pressed (i think)
-            boolean triggerPressed = Math.abs(controller2.right_trigger - Controller.TRIGGER_PRESSED) < .01;
-            if (triggerPressed) {
+           // boolean triggerPressed = Math.abs(controller2.right_trigger - Controller.TRIGGER_PRESSED) < .01;
+            //if (triggerPressed) {
                 robot.setIntakePower(0.9 * controller2.right_trigger);
-            }
+            //}
 
             //turn bucket up/down
             if(controller2.b == Btn.PRESSING) {
+                telemetry.addData("button b","pressed");
                 robot.toggleBucket();
             }
 

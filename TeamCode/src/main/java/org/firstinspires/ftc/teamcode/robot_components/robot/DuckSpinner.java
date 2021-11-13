@@ -20,7 +20,6 @@ public class DuckSpinner {
     private ElapsedTime runtime = null;
     private Optional<Telemetry> telemetry; // used to log power if not null
                                            // Optional<e> prevents NullReferenceExceptions
-
     private boolean isRunning = false;
 //    private boolean useEncoder = false;
     //inputs: radius from center of wheel to duck and current velocity
@@ -55,7 +54,7 @@ public class DuckSpinner {
         this.muGSquared = Math.pow((frictionCoefficient * G_CONST), 2);
         this.radius = radius;
         this.runtime = new ElapsedTime();
-        this.telemetry = Optional.ofNullable(telemetry);
+        //this.telemetry = Optional.ofNullable(telemetry);
 
 //        this.useEncoder = useEncoders;
     }
@@ -96,8 +95,10 @@ public class DuckSpinner {
      * call this repeatedly to run the spinner
      * @return true if done spinning, else false
      */
+
     public boolean update() {
         double time = runtime.seconds();
+        /*
         telemetry.ifPresent(telemetry1 -> { // if telemetry is null nothing will happen
             telemetry1.addData("duck time", time);
             telemetry1.addData("duck motor power", motor.getPower());
@@ -107,6 +108,7 @@ public class DuckSpinner {
                 telemetry1.addData("Goal motor power", 0);
             }
         });
+        */
         if (isRunning) {
 
             motor.setPower(calcPower(calcAccel(getVelocity() * SPINNER_TABLE_RATIO)));
