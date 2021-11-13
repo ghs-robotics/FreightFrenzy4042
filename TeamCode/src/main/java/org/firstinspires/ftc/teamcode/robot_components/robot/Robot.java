@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -35,13 +36,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-        spinnerMotor = hardwareMap.get(DcMotor.class, "duckSpinner");
+        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setTargetPosition(0);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeFlipServo = hardwareMap.get(Servo.class, "intakeRot");
+        intakeFlipServo = hardwareMap.get(Servo.class, "intakeServo");
     }
 
     /**
