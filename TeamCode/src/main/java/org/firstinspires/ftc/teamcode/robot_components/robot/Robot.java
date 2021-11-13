@@ -41,6 +41,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
         intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+
+        dropperServo.setPosition(DROPPER_MIN);
+        intakeBucketFlipServo.setPosition(INTAKE_DWN);
+
+        intakeAngle = INTAKE_DWN;
+        dropperTargetAngle = DROPPER_MIN;
     }
 
     /**
@@ -96,7 +102,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //manages up/down positions of intake
     public void toggleBucket(){
         boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
-        intakeAngle = (intakeIsDown ? INTAKE_DWN : INTAKE_UP);
+        intakeAngle = (intakeIsDown ? INTAKE_UP : INTAKE_DWN);
         intakeBucketFlipServo.setPosition(intakeAngle);
     }
 
