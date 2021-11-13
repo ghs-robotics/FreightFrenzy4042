@@ -108,31 +108,16 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
-    public void calculateDrivePowers(double x, double y, double rot) { // rot is rotation
-        calculateDrivePowers(x, y, rot, false);
+    public void calculateDrivePowers(double x, double y, double r) {
+
+        r = -r;
+// set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
+        rightFrontPower = (y - x + r);
+        leftFrontPower = (y + x - r);
+        leftRearPower = (y - x - r);
+        rightRearPower = (y + x + r);
     }
 
-    // Calculates powers for mecanum wheel drive in meta mode
-    public void calculateDrivePowers(double x1, double y1, double x2, double y2) {
-        double r2 = Math.hypot(x2, y2);
-        double angleOfRotation = Math.atan2(y2, x2); // Angle to rotate to (with launcher side)
-        setTargetGyroAngle(Math.toDegrees(angleOfRotation));
-        double rot = r2 * getMetaGyroPIDValue();
-        calculateDrivePowers(x1, y1, rot, true);
-    }
-
-    // Helper method for completing drive power calculations
-    public void calculateDrivePowers(double x, double y, double rot, boolean meta) {
-        double r = Math.hypot(x, y);
-        double angleOfMotion = Math.atan2(y, x) - Math.PI / 4;
-        if (meta) {
-            angleOfMotion -= Math.toRadians(gyro.getAngle() + metaOffset); // Factor in meta drive
-        }
-        leftFrontPower = Range.clip(r * Math.cos(angleOfMotion) + rot, -1.0, 1.0) * speed;
-        rightFrontPower = Range.clip(r * Math.sin(angleOfMotion) - rot, -1.0, 1.0) * speed;
-        leftRearPower = Range.clip(r * Math.sin(angleOfMotion) + rot, -1.0, 1.0) * speed;
-        rightRearPower = Range.clip(r * Math.cos(angleOfMotion) - rot, -1.0, 1.0) * speed;
-    }
 
     // Returns how many seconds have passed since the timer was last reset
     public double elapsedSecs() {

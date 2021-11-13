@@ -27,10 +27,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public DcMotor spinnerMotor;
     public Servo dropperServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_MAX = -0.8;
-    private final double DROPPER_MIN = -0.35;
+    private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
+    private final double DROPPER_MIN = 0.3;
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
+    private final double EXT_OUT = 2500;
+    private final double EXT_IN = 0;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -83,12 +85,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         int position = extenderMotor.getCurrentPosition();
 
 
-        while(position < 0) {
+        while(position < EXT_IN) {
             position = extenderMotor.getCurrentPosition();
             extenderMotor.setPower(.2);
         }
 
-        while(position > 1200) {
+        while(position > EXT_OUT) {
             position = extenderMotor.getCurrentPosition();
             extenderMotor.setPower(-.2);
         }

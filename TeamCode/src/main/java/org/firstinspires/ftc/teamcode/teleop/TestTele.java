@@ -56,8 +56,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             robot.calculateDrivePowers(
                     controller1.left_stick_x,
                     controller1.left_stick_y,
-                    controller1.right_stick_x,
-                    controller1.right_stick_y
+                    controller1.right_stick_x
             );
             robot.sendDrivePowers();
 
@@ -70,7 +69,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            if (controller2.a == Btn.PRESSING) {
+            if (controller2.a == Btn.PRESSED) {
                 //robot.dropGameElement();
                 robot.jankToggleDropper();
             }
@@ -79,13 +78,14 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
 
-                //robot.duckSpinnerJank(controller2.left_stick_y);
+                robot.duckSpinnerJank(controller2.left_stick_y);
 
-                robot.setExtenderPower(controller2.left_stick_x);
+                robot.setExtenderPower(-controller2.left_stick_x);
 
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
             if(controller2.b == Btn.PRESSING) {
+
                // robot.toggleBucket();
             }
 
