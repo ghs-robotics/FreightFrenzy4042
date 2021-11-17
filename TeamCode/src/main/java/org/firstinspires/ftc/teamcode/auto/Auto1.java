@@ -1,13 +1,17 @@
+
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
+import org.firstinspires.ftc.teamcode.navigation.Point2D;
+import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
@@ -15,6 +19,7 @@ import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -27,20 +32,30 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    private CVModule robot;
-    private AutoController autoController = new AutoController();
+    private AutoController autoController;
     private OpenCvWebcam webcam;
     private CVPipeline pipeline;
     private WebcamName webcamName;
+    private Robot robot;
+    //private Telemetry telemetry;
 
     public void initializeTasks() {
+
         List<Task> tasks = new ArrayList<>();
-        //tasks.add(new DriveToPoint());
+        //tasks.add(drive(0, 500, 0.0));
+        //tasks.add(new Deposit());
+        //.add(drive(0, 0, 0));
+        //tasks.add(drive(0, 0, 90.0));
+        tasks.add(drive(0, -1000, 0.0, telemetry));
+
+        telemetry.addData("task 1", tasks.get(0));
+        telemetry.update();
         autoController.setTasks(tasks);
+        autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
 
 //TODO idk if the camera should be initialized here
-    public void initializeCV() {
+    /*public void initializeCV() {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         pipeline= new CVPipeline();
         final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
@@ -57,22 +72,31 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                     // Usually this is where you'll want to start streaming from the camera (see section 4)
                 }
             }
-            public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
+            public void onError(int errorCode) {/* This will be called if the camera could not be opened*//*}
         });
+    }*/
+
+    DriveToPoint drive(double x, double y, double rot, Telemetry telemetry) {
+        return new DriveToPoint(new RobotPosition(new Point2D(x, y), rot));
     }
 
     @Override
     public void runOpMode()
     {
-        initializeCV();
+        robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
+        //initializeCV();
         waitForStart();
+        autoController = new AutoController(telemetry,robot);
+        robot.elapsedTime.reset();
+        initializeTasks();
+
 
         while(opModeIsActive()){
-            telemetry.addData("Boxes", pipeline.returnResultsBoxes());
+            //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
             telemetry.update();
-            sleep(100);
+            autoController.update();
         }
     }
 }
@@ -83,9 +107,9 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //top - spawn point closer to the warehouse
 //bottom spawn point closer to the carousal
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //Move back to spawn with the intake face the warehouse
+//Move back to spawn with the intake face the warehouse
 
 //Auto mode for prioritizing freight delivery - top
 
@@ -102,11 +126,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the warehouse
 
 
-        //Auto mode for prioritizing0 freight delivery - bottom
+//Auto mode for prioritizing0 freight delivery - bottom
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //Move around our teammate's robot with the intake face the warehouse
+//Move around our teammate's robot with the intake face the warehouse
 
 //Auto mode for prioritizing0 freight delivery - bottom
 
@@ -123,11 +147,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the warehouse
 
 
-        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
+//Auto mode for teammate prioritizing freight delivery and no anti-collision system
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+//If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
 
 //Auto mode for teammate prioritizing freight delivery and no anti-collision system
 
@@ -139,11 +163,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for teammate with bad auto - top
+//Auto mode for teammate with bad auto - top
 
-        //Detect the barcode and place the box to corresponding level
+//Detect the barcode and place the box to corresponding level
 
-        //Move around the teammate's robot to knock off the duck
+//Move around the teammate's robot to knock off the duck
 
 //Auto mode for teammate with bad auto - top
 
@@ -162,11 +186,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the warehouse
 
 
-        //Auto mode for teammate with bad auto - bottom
+//Auto mode for teammate with bad auto - bottom
 
-        //Detect the barcode
+//Detect the barcode
 
-        //Move to the carousal and knock off the duck
+//Move to the carousal and knock off the duck
 
 //Auto mode for teammate with bad auto - bottom
 
@@ -189,11 +213,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the warehouse
 
 
-        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+//Auto mode for prioritizing carousal and possibly balancing the shared hub
 
-        //Detect the barcode and place game element to corresponding level
+//Detect the barcode and place game element to corresponding level
 
-        //Move to the carousal to knock off the duck
+//Move to the carousal to knock off the duck
 
 //Auto mode for prioritizing carousal and possibly balancing the shared hub
 
@@ -211,11 +235,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //                   If we can't park both robots in the warehouse
 ///////////////////////////////////////////////////////////////////////////////////////
 
-        //Auto mode for prioritizing freight delivery - top
+//Auto mode for prioritizing freight delivery - top
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //Move back to spawn with the intake face the warehouse
+//Move back to spawn with the intake face the warehouse
 
 //Auto mode for prioritizing freight delivery - top
 
@@ -232,11 +256,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the alliance shipping hub
 
 
-        //Auto mode for prioritizing0 freight delivery - bottom
+//Auto mode for prioritizing0 freight delivery - bottom
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //Move around our teammate's robot with the intake face the warehouse
+//Move around our teammate's robot with the intake face the warehouse
 
 //Auto mode for prioritizing0 freight delivery - bottom
 
@@ -253,11 +277,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the alliance shipping hub
 
 
-        //Auto mode for teammate prioritizing freight delivery and no anti-collision system
+//Auto mode for teammate prioritizing freight delivery and no anti-collision system
 
-        //Detect the barcode and place box to the corresponding level
+//Detect the barcode and place box to the corresponding level
 
-        //If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
+//If teammate places down their box, navigate around them, pick it up and deliver to corresponding shipping hub level
 
 //Auto mode for teammate prioritizing freight delivery and no anti-collision system
 
@@ -269,11 +293,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
 
 
-        //Auto mode for teammate with bad auto - top
+//Auto mode for teammate with bad auto - top
 
-        //Detect the barcode and place the box to corresponding level
+//Detect the barcode and place the box to corresponding level
 
-        //Move around the teammate's robot to knock off the duck
+//Move around the teammate's robot to knock off the duck
 
 //Auto mode for teammate with bad auto - top
 
@@ -292,11 +316,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the alliance shipping hub
 
 
-        //Auto mode for teammate with bad auto - bottom
+//Auto mode for teammate with bad auto - bottom
 
-        //Detect the barcode
+//Detect the barcode
 
-        //Move to the carousal and knock off the duck
+//Move to the carousal and knock off the duck
 
 //Auto mode for teammate with bad auto - bottom
 
@@ -319,11 +343,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 //Park in the alliance shipping hub
 
 
-        //Auto mode for prioritizing carousal and possibly balancing the shared hub
+//Auto mode for prioritizing carousal and possibly balancing the shared hub
 
-        //Detect the barcode and place game element to corresponding level
+//Detect the barcode and place game element to corresponding level
 
-        //Move to the carousal to knock off the duck
+//Move to the carousal to knock off the duck
 
 //Auto mode for prioritizing carousal and possibly balancing the shared hub
 
