@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
-import org.firstinspires.ftc.teamcode.robot_components.robot.SimpleDuckSpinner;
 
-@RequiresApi(api = Build.VERSION_CODES.N) // enable java 8
+import java.util.Objects;
+
 @TeleOp(name="TestTele", group="Linear Opmode")
 public class TestTele extends LinearOpMode implements FieldPositions {
     
@@ -30,7 +25,6 @@ public class TestTele extends LinearOpMode implements FieldPositions {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         controller1 = new Controller(gamepad1); // Whoever presses start + a
         controller2 = new Controller(gamepad2); // Whoever presses start + b
-        SimpleDuckSpinner spinner = new SimpleDuckSpinner(robot.spinnerMotor, 0.0, telemetry, DcMotorSimple.Direction.FORWARD);
 
 //        robot;
 
@@ -46,14 +40,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
         robot.resetGyroAngle();
         robot.resetElapsedTime();
 
-        double runtimeSeconds = 0.0;
-        double runtimeSecondsLast = 0.0;
-
         while (opModeIsActive()) {
-            runtimeSeconds = robot.elapsedTime.seconds();
-            double deltaTime = runtimeSeconds - runtimeSecondsLast;
-            runtimeSecondsLast = runtimeSeconds;
-
 
             // Registers controller input
             controller1.update();
@@ -69,24 +56,9 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             robot.calculateDrivePowers(
                     controller1.left_stick_x,
                     controller1.left_stick_y,
-                    controller1.right_stick_x,
-                    controller1.right_stick_y
+                    controller1.right_stick_x
             );
             robot.sendDrivePowers();
-
-            if (controller1.x == Btn.PRESSED) {
-                spinner.setDirection(DcMotorSimple.Direction.FORWARD);
-                spinner.startRunning();
-            }
-
-            if (controller1.b == Btn.PRESSED) {
-                spinner.setDirection(DcMotorSimple.Direction.REVERSE);
-                spinner.startRunning();
-            }
-
-            if (controller1.y == Btn.PRESSED) {
-                spinner.stopRunning();
-            }
 
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
@@ -97,40 +69,41 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            if (controller2.a == Btn.PRESSING) {
-                robot.dropGameElement();
+            if (controller2.a == Btn.PRESSED) {
+                //robot.dropGameElement();
+                robot.jankToggleDropper();
             }
-            telemetry.addData("dropper pos", robot.dropperServo.getPosition());
-            telemetry.addData("extension distance", robot.getExtensionPos());
 
             //intake
-            //run intake based on how strong trigger pressed (i think)
-//            boolean triggerPressed = Math.abs(controller2.right_trigger - Controller.TRIGGER_PRESSED) < .01;
-//            if (triggerPressed) {
-//                robot.setIntakePower(0.9 * controller2.right_trigger);
-//            }
-            robot.setIntakePower(controller2.right_trigger);
+            //run intake based on how strong the right trigger is pressed
+                robot.setIntakePower(0.9 * controller2.right_stick_y);
 
+                robot.duckSpinnerJank(controller2.left_stick_y);
+
+                robot.setExtenderPower(-controller2.left_stick_x);
+
+                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
             if(controller2.b == Btn.PRESSING) {
-                robot.toggleIntakeServo();
+
+               // robot.toggleBucket();
             }
+
+            if (controller2.dpad_up == Btn.PRESSING) {
+                robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
+            } else if (controller2.dpad_down == Btn.PRESSING) {
+                robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
+            }
+            telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
             //extend the arm
-            if(controller2.x == Btn.PRESSING) {
-                //im gonna hardcode the distance because frick you - simon
-                robot.toggleExtension(13);
+            if(controller2.x == Btn.PRESSED) {
+                telemetry.addData("button x controller 2", "pressed");
+                //im gonna hardcode the distance because heck you - simon
+                robot.toggleExtension(50);
             }
 
-            if (controller2.left_stick_y > 0.1 || controller2.left_stick_y < -0.1) {
-                robot.extenderMotor.setTargetPosition(
-                        (int) Math.round (
-                                robot.extenderMotor.getTargetPosition()
-                                + controller2.left_stick_y * deltaTime
-                        )
-                );
-            }
-
+            telemetry.update();
         }
     }
 }

@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -28,45 +27,44 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    private AutoController autoController;
+    private CVModule robot;
+    private AutoController autoController = new AutoController();
     private OpenCvWebcam webcam;
     private CVPipeline pipeline;
     private WebcamName webcamName;
 
     public void initializeTasks() {
         List<Task> tasks = new ArrayList<>();
-//        tasks.add(new DriveToPoint());
+        //tasks.add(new DriveToPoint());
         autoController.setTasks(tasks);
     }
 
 //TODO idk if the camera should be initialized here
     public void initializeCV() {
-//        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
-//        pipeline= new CVPipeline();
-//        final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
-//
-//        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-//        {
-//            @Override
-//            public void onOpened()
-//            {
-//                waitForStart();
-//                while(opModeIsActive()){
-//                    camera.setPipeline(pipeline);
-//                    camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
-//                    // Usually this is where you'll want to start streaming from the camera (see section 4)
-//                }
-//            }
-//            public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
-//        });
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
+        pipeline= new CVPipeline();
+        final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                waitForStart();
+                while(opModeIsActive()){
+                    camera.setPipeline(pipeline);
+                    camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+                    // Usually this is where you'll want to start streaming from the camera (see section 4)
+                }
+            }
+            public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
+        });
     }
 
     @Override
     public void runOpMode()
     {
-//        initializeCV();
-        autoController = new AutoController(new Robot(hardwareMap, telemetry));
-        initializeTasks();
+        initializeCV();
         waitForStart();
 
         while(opModeIsActive()){
@@ -74,7 +72,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
             telemetry.update();
-            autoController.update();
+            sleep(100);
         }
     }
 }
