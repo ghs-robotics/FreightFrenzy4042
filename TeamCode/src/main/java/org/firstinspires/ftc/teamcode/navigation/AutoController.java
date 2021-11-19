@@ -11,7 +11,7 @@ public class AutoController {
 
     public RobotPosition currentPosition;
 
-    public AutoController(Robot robot) {
+    public AutoController() {
         this.robot = robot;
     }
 

@@ -3,15 +3,12 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-import java.util.Objects;
-
 @TeleOp(name="TestTele", group="Linear Opmode")
-public class TestTele extends LinearOpMode implements FieldPositions {
+public class TestTele extends LinearOpMode{
     
     // Declare OpMode members
     Robot robot;
@@ -69,21 +66,27 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            if (controller2.a == Btn.PRESSED) {
+            /*if (controller2.a == Btn.PRESSED) {
                 //robot.dropGameElement();
                 robot.jankToggleDropper();
-            }
+            }*/
 
             //intake
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
 
-                robot.duckSpinnerJank(controller2.left_stick_y);
+                //robot.duckSpinnerJank(controller2.left_stick_y);
 
-                robot.setExtenderPower(-controller2.left_stick_x);
+                //robot.setExtenderPower(-controller2.left_stick_x);
 
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
+
+            //there is a 3 ms delay between when you press the button and the servo starts spinning
+            if (controller2.y == Btn.PRESSED ) {
+                robot.spinnerServo.setPower(1);
+            }
+
             if(controller2.b == Btn.PRESSING) {
 
                // robot.toggleBucket();

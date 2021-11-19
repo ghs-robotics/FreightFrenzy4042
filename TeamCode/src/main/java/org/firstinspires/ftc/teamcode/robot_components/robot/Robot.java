@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
-import org.firstinspires.ftc.teamcode.data.HSVConstants;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
-public class Robot extends DriveBase implements HSVConstants, FieldPositions {
+public class Robot extends DriveBase{
 
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
@@ -25,7 +24,9 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
+    public CRServo spinnerServo;
     public Servo dropperServo;
+    //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
     private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
     private final double DROPPER_MIN = 0.3;
@@ -39,13 +40,15 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
+        //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
+        spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
+        //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
         //intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
 
 
@@ -104,16 +107,11 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
      */
     public void dropGameElement() {
-//        dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
+        //dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
         // Important note: never compare doubles or floats with == or !=, because floating point error
         boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
         dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
         dropperServo.setPosition(dropperAngle);
-    }
-
-    public void jankToggleDropper() {
-        dropperServo.setPosition(dropperAngle);
-        dropperAngle = dropperAngle == DROPPER_MIN ? DROPPER_MAX : DROPPER_MIN;
     }
 
     /* KENNY PLS READ
