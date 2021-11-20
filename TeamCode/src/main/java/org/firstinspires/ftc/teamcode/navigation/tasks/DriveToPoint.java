@@ -14,6 +14,7 @@ public class DriveToPoint implements Task {
 
     public RobotPosition targetPosition;
     public RobotPosition errorMargin;
+    //public double driveTime;
 
     public DriveToPoint(RobotPosition targetPosition) {
         // default error margin of 1.5cm, 10 degrees
@@ -23,6 +24,8 @@ public class DriveToPoint implements Task {
     public DriveToPoint(RobotPosition targetPosition, RobotPosition errorMargin) {
         this.targetPosition = targetPosition;
         this.errorMargin = errorMargin;
+        //driveTime = targetPosition.position.length() / 762.5;
+
     }
 
 

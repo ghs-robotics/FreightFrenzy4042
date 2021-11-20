@@ -1,9 +1,11 @@
+
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto_helpers.Nav;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
@@ -19,6 +21,7 @@ import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -37,13 +40,15 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 public class Auto1 extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
-    private CVModule robot;
-    private AutoController autoController = new AutoController();
+    //private CVModule robot;
+    private Robot robot;
+    private AutoController autoController;
     //private OpenCvWebcam webcam;
     //private CVPipeline pipeline;
     //private WebcamName webcamName;
 
     public void initializeTasks() {
+
         List<Task> tasks = new ArrayList<>();
         //SCAN BARCODE AND PLACE INITIAL ELEMENT IF POSSIBLE
         tasks.add(drive(0, 500, 0.0));
@@ -52,7 +57,10 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
         //tasks.add(drive(0, 0, 90.0)); No need to turn 90 probably???
         tasks.add(drive(1000, 0, 0.0));
 
+        telemetry.addData("task 1", tasks.get(0));
+        telemetry.update();
         autoController.setTasks(tasks);
+        autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
 
 //TODO idk if the camera should be initialized here
@@ -73,10 +81,18 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
                     // Usually this is where you'll want to start streaming from the camera (see section 4)
                 }
             }
-            public void onError(int errorCode) {/* This will be called if the camera could not be opened*///}
+            public void onError(int errorCode) {/* This will be called if the camera could not be opened*//*}
+        });
+    }*/
+
+    DriveToPoint drive(double x, double y, double rot, Telemetry telemetry) {
+        return new DriveToPoint(new RobotPosition(new Point2D(x, y), rot));
+    }
+
+    public void onError(int errorCode) {/* This will be called if the camera could not be opened*///}
         /*});
         waitForStart();
-    } */
+    } */}
 
     int detectBarcode() {
         int shippingX = 0;
@@ -91,15 +107,20 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     @Override
     public void runOpMode()
     {
+        robot = new Robot(hardwareMap, telemetry);
+        // new CVModule(hardwareMap, telemetry);
+        waitForStart();
+        autoController = new AutoController(telemetry, robot);
+        robot.elapsedTime.reset();
         //initializeCV();
         initializeTasks();
-        waitForStart();
+
 
         while(opModeIsActive()) {
             //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
-            //telemetry.update();
+            telemetry.update();
             autoController.update();
         }
     }

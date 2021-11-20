@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.navigation;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 import java.util.List;
@@ -11,9 +12,15 @@ public class AutoController {
     private final double TICKSPERROT = 232.16;
     private final double ROTSPERTURN = 9.525;
     private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter
+    public Telemetry telemetry;
 
     public RobotPosition currentPosition;
     public RobotPosition startingPosition;
+
+    public AutoController(Telemetry telemetry,  Robot robot) {
+        this.telemetry = telemetry;
+        this.robot = robot;
+    }
 
     /**
      * Initialize with a series of points
@@ -38,6 +45,8 @@ public class AutoController {
         // not done...
         Task currentTask = this.tasks.get(currentTaskIdx);
         boolean done = currentTask.update(currentPosition, robot);
+        telemetry.addData("Done?", done);
+        telemetry.update();
         if (done) switchToNextTask();
         return false;
     }

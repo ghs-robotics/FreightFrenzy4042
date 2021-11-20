@@ -16,6 +16,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //protected double spinnerPower = 0; maybe delete?
     protected double intakePower = 0;
     double dropperTargetAngle;
+    protected double extenderPower = 0;
     double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
@@ -25,10 +26,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     public DcMotor spinnerMotor;
     public Servo dropperServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_MAX = -0.8;
-    private final double DROPPER_MIN = -0.35;
+    private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
+    private final double DROPPER_MIN = 0.3;
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
+    private final double EXT_OUT = 2500;
+    private final double EXT_IN = 0;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -37,13 +40,16 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
-        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       // extenderMotor.setTargetPosition(0);
+       // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+        //intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+
 
         dropperServo.setPosition(DROPPER_MIN);
-        intakeBucketFlipServo.setPosition(INTAKE_DWN);
+        //intakeBucketFlipServo.setPosition(INTAKE_DWN);
 
         intakeAngle = INTAKE_DWN;
         dropperTargetAngle = DROPPER_MIN;
@@ -57,6 +63,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
      */
     //Should return current distance extended
     public double toggleExtension(double distance) { //300 is the minimum required for purple bucket to be off robot
+
         int currentTicks = extenderMotor.getCurrentPosition();
         boolean isExtended = currentTicks > 5 || currentTicks < -5;
         if (isExtended) {
@@ -72,6 +79,27 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         }
         return currentTicks;
     }
+
+
+    public void setExtenderPower(double power){
+
+        int position = extenderMotor.getCurrentPosition();
+
+
+        while(position < EXT_IN) {
+            position = extenderMotor.getCurrentPosition();
+            extenderMotor.setPower(.2);
+        }
+
+        while(position > EXT_OUT) {
+            position = extenderMotor.getCurrentPosition();
+            extenderMotor.setPower(-.2);
+        }
+
+        extenderPower = power;
+        extenderMotor.setPower(extenderPower);
+    }
+
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
@@ -91,6 +119,11 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         return Math.abs(dropperServo.getPosition() - DROPPER_MIN) < 0.1;
     }
 
+    public void jankToggleDropper() {
+        dropperServo.setPosition(dropperTargetAngle);
+        dropperTargetAngle = dropperTargetAngle == DROPPER_MIN ? DROPPER_MAX : DROPPER_MIN;
+    }
+
     /* KENNY PLS READ
     //just to clarify, the "bucket" is the part that is responsible for
     //holding the game element
@@ -106,12 +139,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         intakeBucketFlipServo.setPosition(intakeAngle);
     }
 
+    public void duckSpinnerJank(double power) {
+        spinnerMotor.setPower(power);
+    }
+
     public void setIntakePower(double power){
         intakePower = power;
         intakeMotor.setPower(intakePower);
     }
-
-
-
-
 }

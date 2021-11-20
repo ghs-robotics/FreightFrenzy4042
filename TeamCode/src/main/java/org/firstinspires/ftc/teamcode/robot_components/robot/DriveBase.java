@@ -108,21 +108,18 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
-    public double[] calculateDrivePowers(double x, double y, double rot) { //Expects something between -1 and 1 // rot is rotation
-        return calculateDrivePowers(x, y, rot, false);
-    }
+    public void calculateDrivePowers(double x, double y, double r) {
 
-    // Calculates powers for mecanum wheel drive in meta mode
-    public double[] calculateDrivePowers(double x1, double y1, double x2, double y2) {
-        double r2 = Math.hypot(x2, y2);
-        double angleOfRotation = Math.atan2(y2, x2); // Angle to rotate to (with launcher side)
-        setTargetGyroAngle(Math.toDegrees(angleOfRotation));
-        double rot = r2 * getMetaGyroPIDValue();
-        return calculateDrivePowers(x1, y1, rot, true);
+        r = -r;
+// set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
+        rightFrontPower = (y - x + r);
+        leftFrontPower = (y + x - r);
+        leftRearPower = (y - x - r);
+        rightRearPower = (y + x + r);
     }
 
     // Helper method for completing drive power calculations
-    public double[] calculateDrivePowers(double x, double y, double rot, boolean meta) {
+    public double[] calculateDrivePowersOld(double x, double y, double rot, boolean meta) {
         double r = Math.hypot(x, y);
         double angleOfMotion = Math.atan2(y, x) - Math.PI / 4;
         if (meta) {
