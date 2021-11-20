@@ -41,6 +41,7 @@ public class DriveToPoint implements Task {
         // todo: this is kinda jank and should use PID or something
         robot.calculateDrivePowers(Range.clip(errorPID.x, -1, 1),
                 Range.clip(errorPID.y, -1, 1), Range.clip(rotErrorPID, -1, 1));
+        robot.sendDrivePowers();
 
         return arrived(currentPosition);
     }
