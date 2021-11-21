@@ -25,7 +25,7 @@ public class AutoController {
     /**
      * Initialize with a series of points
      * @param tasks the series of points to drive to. probably in an ArrayList
-     * @param startingPosition The starting locationd and orientation of the robot
+     * @param startingPosition The starting location and orientation of the robot
      */
     public void initialize(List<Task> tasks, RobotPosition startingPosition) {
         this.tasks = tasks;

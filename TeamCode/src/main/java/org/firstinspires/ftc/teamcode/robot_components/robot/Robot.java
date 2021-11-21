@@ -21,6 +21,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
     public DcMotor intakeMotor;
+    public DcMotor odometerMotor;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
@@ -32,6 +33,10 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double INTAKE_UP = 0.9;
     private final double EXT_OUT = 2500;
     private final double EXT_IN = 0;
+    private final double ODOM_TICKS_PER_ROT = 232.16; //Placeholder. Figure this out!
+    private final double ODOM_CIRCUMFERENCE = 150.8; //Circumference of the odometer given a 48mm diameter
+    public final double ODOM_TICKS_TO_DIST = ODOM_CIRCUMFERENCE / ODOM_TICKS_PER_ROT;
+    //Trial results:
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -40,8 +45,9 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
+        odometerMotor = hardwareMap.get(DcMotor.class, "odometerMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
@@ -80,6 +86,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         return currentTicks;
     }
 
+    public double getOdomPosition() {
+        double distance = odometerMotor.getCurrentPosition() * ODOM_TICKS_TO_DIST;
+        if (distance != 0) {
+            return distance;
+        } else {
+            return 3.4404;
+        }
+    }
 
     public void setExtenderPower(double power){
 

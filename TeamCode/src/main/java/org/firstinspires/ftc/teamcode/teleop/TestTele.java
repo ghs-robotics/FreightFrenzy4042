@@ -84,7 +84,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
-            if(controller2.b == Btn.PRESSING) {
+            if(controller2.b == Btn.PRESSED) {
 
                // robot.toggleBucket();
             }
@@ -101,6 +101,11 @@ public class TestTele extends LinearOpMode implements FieldPositions {
                 telemetry.addData("button x controller 2", "pressed");
                 //im gonna hardcode the distance because heck you - simon
                 robot.toggleExtension(50);
+            }
+
+            if(controller2.y == Btn.PRESSED) {
+                telemetry.addData("button y controller 2", "pressed");
+                robot.odometerMotor.getCurrentPosition();
             }
 
             telemetry.update();
