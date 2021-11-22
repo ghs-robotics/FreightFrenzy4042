@@ -82,7 +82,10 @@ public class MainTele extends LinearOpMode{
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
 
+            //there is a delay between when you press the button and the servo starts spinning
+            //moved duck spinner code here because the y button seems it will be used for something else
             if(controller2.b == Btn.PRESSING) {
+                robot.spinnerServo.setPower(1);
             }
 
             //extend the arm
@@ -92,10 +95,6 @@ public class MainTele extends LinearOpMode{
                 robot.toggleExtension(50);
             }
 
-            //there is a delay between when you press the button and the servo starts spinning
-            if (controller2.y == Btn.PRESSED ) {
-                robot.spinnerServo.setPower(1);
-            }
 
             if (controller2.dpad_up == Btn.PRESSING) {
                 robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
