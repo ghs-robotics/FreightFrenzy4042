@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @TeleOp(name="TestTele", group="Linear Opmode")
-public class TestTele extends LinearOpMode{
+public class MainTele extends LinearOpMode{
     
     // Declare OpMode members
     Robot robot;
@@ -49,12 +49,15 @@ public class TestTele extends LinearOpMode{
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS PRESS START A
-            //DRIVER FUNCTIONS
+            // NOTE: NEED TO REFINE CONTROLS WITH DRIVE TEAM
+            // DRIVER FUNCTIONS
+
             robot.calculateDrivePowers(
                     controller1.left_stick_x,
                     controller1.left_stick_y,
                     controller1.right_stick_x
             );
+
             robot.sendDrivePowers();
 
             // -----------------------------------------------------------------------------------------
@@ -66,30 +69,32 @@ public class TestTele extends LinearOpMode{
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            /*if (controller2.a == Btn.PRESSED) {
+            if (controller2.a == Btn.PRESSED) {
                 //robot.dropGameElement();
-                robot.jankToggleDropper();
-            }*/
+            }
 
             //intake
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
-
-                //robot.duckSpinnerJank(controller2.left_stick_y);
 
                 //robot.setExtenderPower(-controller2.left_stick_x);
 
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
 
-            //there is a 3 ms delay between when you press the button and the servo starts spinning
-            if (controller2.y == Btn.PRESSED ) {
-                robot.spinnerServo.setPower(1);
+            if(controller2.b == Btn.PRESSING) {
             }
 
-            if(controller2.b == Btn.PRESSING) {
+            //extend the arm
+            if(controller2.x == Btn.PRESSED) {
+                telemetry.addData("button x controller 2", "pressed");
+                //im gonna hardcode the distance because heck you - simon
+                robot.toggleExtension(50);
+            }
 
-               // robot.toggleBucket();
+            //there is a delay between when you press the button and the servo starts spinning
+            if (controller2.y == Btn.PRESSED ) {
+                robot.spinnerServo.setPower(1);
             }
 
             if (controller2.dpad_up == Btn.PRESSING) {
@@ -99,12 +104,6 @@ public class TestTele extends LinearOpMode{
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
-            //extend the arm
-            if(controller2.x == Btn.PRESSED) {
-                telemetry.addData("button x controller 2", "pressed");
-                //im gonna hardcode the distance because heck you - simon
-                robot.toggleExtension(50);
-            }
 
             telemetry.update();
         }

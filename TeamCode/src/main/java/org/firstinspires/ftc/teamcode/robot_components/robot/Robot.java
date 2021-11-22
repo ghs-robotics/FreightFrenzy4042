@@ -29,7 +29,7 @@ public class Robot extends DriveBase{
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
     private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
-    private final double DROPPER_MIN = 0.3;
+    private final double DROPPER_MIN = 0.3; //Need testing
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
     private final double EXT_OUT = 2500;
@@ -46,10 +46,9 @@ public class Robot extends DriveBase{
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
+        dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
         spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
         //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
-        //intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
 
 
         dropperServo.setPosition(DROPPER_MIN);
@@ -122,15 +121,6 @@ public class Robot extends DriveBase{
     */
     //*~INTAKE FUNCTIONS*~//
     //manages up/down positions of intake
-    public void toggleBucket(){
-        boolean intakeIsDown = Math.abs(intakeAngle - INTAKE_DWN) < 0.001;
-        intakeAngle = (intakeIsDown ? INTAKE_UP : INTAKE_DWN);
-        intakeBucketFlipServo.setPosition(intakeAngle);
-    }
-
-    public void duckSpinnerJank(double power) {
-        spinnerMotor.setPower(power);
-    }
 
     public void setIntakePower(double power){
         intakePower = power;
