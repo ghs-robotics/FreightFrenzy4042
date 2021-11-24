@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 import java.util.Objects;
 
-@TeleOp(name="TestTele", group="Linear Opmode")
-public class TestTele extends LinearOpMode implements FieldPositions {
+@TeleOp(name="MotorFix", group="Linear Opmode")
+public class MotorFix extends LinearOpMode implements FieldPositions {
 
     // Declare OpMode members
     Robot robot;
@@ -70,42 +70,31 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
             //toggles dropper, make code that goes down and then back up later
             if (controller2.a == Btn.PRESSED) {
-                //robot.dropGameElement();
-                robot.jankToggleDropper();
+                double startTime = robot.elapsedSecs();
+                robot.startMotor(0);
+                while(startTime + 5 < robot.elapsedSecs()) {}
+                robot.stopMotors();
             }
 
-            //intake
-            //run intake based on how strong the right trigger is pressed
-                robot.setIntakePower(0.9 * controller2.right_stick_y);
-
-                robot.duckSpinnerJank( 0.3 * controller2.left_stick_y);
-
-                robot.setExtenderPower(-controller2.left_stick_x);
-
-                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
-            //turn bucket up/down
-            if(controller2.b == Btn.PRESSED) {
-
-               // robot.toggleBucket();
+            if (controller2.b == Btn.PRESSED) {
+                double startTime = robot.elapsedSecs();
+                robot.startMotor(1);
+                while(startTime + 5 < robot.elapsedSecs()) {}
+                robot.stopMotors();
             }
 
-            if (controller2.dpad_up == Btn.PRESSING) {
-                robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
-            } else if (controller2.dpad_down == Btn.PRESSING) {
-                robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
-            }
-            telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
-
-            //extend the arm
-            if(controller2.x == Btn.PRESSED) {
-                telemetry.addData("button x controller 2", "pressed");
-                //im gonna hardcode the distance because heck you - simon
-                robot.toggleExtension(50);
+            if (controller2.x == Btn.PRESSED) {
+                double startTime = robot.elapsedSecs();
+                robot.startMotor(2);
+                while(startTime + 5 < robot.elapsedSecs()) {}
+                robot.stopMotors();
             }
 
-            if(controller2.y == Btn.PRESSED) {
-                telemetry.addData("button y controller 2", "pressed");
-                //robot.odometerMotor.getCurrentPosition();
+            if (controller2.y == Btn.PRESSED) {
+                double startTime = robot.elapsedSecs();
+                robot.startMotor(3);
+                while(startTime + 5 < robot.elapsedSecs()) {}
+                robot.stopMotors();
             }
 
             telemetry.update();

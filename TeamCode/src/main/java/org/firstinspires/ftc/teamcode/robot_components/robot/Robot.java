@@ -21,7 +21,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
     public DcMotor intakeMotor;
-    public DcMotor odometerMotor;
+    //public DcMotor odometerMotor;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
@@ -47,7 +47,7 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
-        odometerMotor = hardwareMap.get(DcMotor.class, "odometerMotor");
+        //odometerMotor = hardwareMap.get(DcMotor.class, "odometerMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo");
@@ -86,14 +86,14 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
         return currentTicks;
     }
 
-    public double getOdomPosition() {
+    /*public double getOdomPosition() {
         double distance = odometerMotor.getCurrentPosition() * ODOM_TICKS_TO_DIST;
         if (distance != 0) {
             return distance;
         } else {
             return 3.4404;
         }
-    }
+    } */
 
     public void setExtenderPower(double power){
 

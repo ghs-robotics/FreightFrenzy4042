@@ -87,6 +87,32 @@ public class DriveBase {
         batteryVoltage = getBatteryVoltage();
     }
 
+    public void startMotor(int motor) {//0 = leftFront, 1 = rightFront, 2 = leftRear, 3 = rightRear
+        switch(motor) {
+            case 0:
+                leftFrontPower = 1;
+                break;
+            case 1:
+                rightFrontPower = 1;
+                break;
+            case 2:
+                leftRearPower = 1;
+                break;
+            case 3:
+                rightRearPower = 1;
+                break;
+        }
+        sendDrivePowers();
+    }
+
+    public void stopMotors() {
+        leftFrontPower = 0;
+        rightFrontPower = 0;
+        leftRearPower = 0;
+        rightRearPower = 0;
+        sendDrivePowers();
+    }
+
     // Displays drive motor powers on the DS phone
     public void addTelemetryData() {
         telemetry.addData("LF power: ", leftFrontPower);

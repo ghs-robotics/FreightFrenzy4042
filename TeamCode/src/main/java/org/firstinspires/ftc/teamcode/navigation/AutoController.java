@@ -51,7 +51,7 @@ public class AutoController {
         return false;
     }
 
-    public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
+    /*public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
         //Gives the number of encoder ticks (232.16 ticks is 1 rotation)
         double degreesTurned = robot.gyro.getAngle(); //Get gyro angle to subtract from robot rotations
         double leftFrontTicks = robot.leftFrontDrive.getCurrentPosition();
@@ -69,6 +69,13 @@ public class AutoController {
 
         return new RobotPosition(startingPosition.position.add(new Point2D(xDist, yDist)),
                 startingPosition.rotation + degreesTurned);
+    } */
+    public RobotPosition updateCurrentPosition() {
+        double posY = 0;//.getOdomPosition();
+        telemetry.addData("posY", posY);
+        telemetry.update();
+        return new RobotPosition(startingPosition.position.add(new Point2D(0, posY)),
+                startingPosition.rotation + robot.gyro.getAngle());
     }
 
     private void switchToNextTask() {
