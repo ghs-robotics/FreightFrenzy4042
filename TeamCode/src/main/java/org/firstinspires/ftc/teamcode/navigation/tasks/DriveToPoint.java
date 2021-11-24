@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.navigation.tasks;
 
+import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
@@ -12,6 +14,7 @@ public class DriveToPoint implements Task {
 
     public RobotPosition targetPosition;
     public RobotPosition errorMargin;
+    public double driveTime;
 
     public DriveToPoint(RobotPosition targetPosition) {
         // default error margin of 1.5cm, 10 degrees
@@ -21,6 +24,8 @@ public class DriveToPoint implements Task {
     public DriveToPoint(RobotPosition targetPosition, RobotPosition errorMargin) {
         this.targetPosition = targetPosition;
         this.errorMargin = errorMargin;
+        //driveTime = targetPosition.position.length() / 762.5;
+
     }
 
 
@@ -31,10 +36,30 @@ public class DriveToPoint implements Task {
     public boolean update(RobotPosition currentPosition, Robot robot) {
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
-        double rotError = targetPosition.rotation - currentPosition.rotation;
+        Point2D errorPID = error.scale(0.001);
+
+        /*double rotError = targetPosition.rotation - currentPosition.rotation;
+        double rotErrorPID = rotError * 0.01; */
 
         // todo: this is kinda jank and should use PID or something
-        robot.calculateDrivePowers(error.x, error.y, rotError);
+
+
+        /*if (robot.elapsedSecs() < driveTime) {
+            robot.calculateDrivePowers(Range.clip(errorPID.x, -1, 1),
+                    Range.clip(errorPID.y, -1, 1), 0.0);
+            robot.sendDrivePowers();
+        } else {
+            robot.calculateDrivePowers(0, 0, 0);
+            robot.sendDrivePowers();
+        } */
+        //1.25 tiles a second
+        if (robot.elapsedSecs() < 1.6) {
+            robot.calculateDrivePowers(0, 0.5, 0);
+            robot.sendDrivePowers();
+        } else {
+            robot.calculateDrivePowers(0, 0, 0);
+            robot.sendDrivePowers();
+        }
 
         return arrived(currentPosition);
     }
