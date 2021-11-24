@@ -78,7 +78,7 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
 
-                robot.duckSpinnerJank(controller2.left_stick_y);
+                robot.duckSpinnerJank( 0.3 * controller2.left_stick_y);
 
                 robot.setExtenderPower(-controller2.left_stick_x);
 

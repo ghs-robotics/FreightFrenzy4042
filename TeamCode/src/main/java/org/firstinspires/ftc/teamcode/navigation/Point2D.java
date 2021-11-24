@@ -18,6 +18,15 @@ public class Point2D {
         return new Point2D(this.x - other.x, this.y - other.y);
     }
 
+    public Point2D scale(double scalar) {
+        return new Point2D(this.x * scalar, this.y * scalar);
+    }
+
+    public double distanceTo(Point2D other) {
+        Point2D sub = other.subtract(this);
+        return Math.hypot(sub.x, sub.y);
+    }
+
     public double length() {
         return Math.sqrt(x * x + y * y);
     }
