@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 /**
  * Drive to a point on the field.
+ * @warning THIS IS PROBABLY BROKEN
  */
 public class DriveToPoint implements Task {
 
     public RobotPosition targetPosition;
     public RobotPosition errorMargin;
-    public double driveTime;
 
     public DriveToPoint(RobotPosition targetPosition) {
         // default error margin of 1.5cm, 10 degrees
@@ -38,30 +38,25 @@ public class DriveToPoint implements Task {
         Point2D error = targetPosition.position.subtract(currentPosition.position);
         Point2D errorPID = error.scale(0.001);
 
-        /*double rotError = targetPosition.rotation - currentPosition.rotation;
-        double rotErrorPID = rotError * 0.01; */
+        double rotError = targetPosition.rotation - currentPosition.rotation;
+        double rotErrorPID = rotError * 0.01;
 
         // todo: this is kinda jank and should use PID or something
 
+        boolean arrived = arrived(currentPosition);
 
-        /*if (robot.elapsedSecs() < driveTime) {
+        // TODO THIS DOESN'T REALLY WORK MOST LIKELY
+
+        if (!arrived) {
             robot.calculateDrivePowers(Range.clip(errorPID.x, -1, 1),
                     Range.clip(errorPID.y, -1, 1), 0.0);
             robot.sendDrivePowers();
         } else {
             robot.calculateDrivePowers(0, 0, 0);
             robot.sendDrivePowers();
-        } */
-        //1.25 tiles a second
-        if (robot.elapsedSecs() < 1.6) {
-            robot.calculateDrivePowers(0, 0.5, 0);
-            robot.sendDrivePowers();
-        } else {
-            robot.calculateDrivePowers(0, 0, 0);
-            robot.sendDrivePowers();
         }
 
-        return arrived(currentPosition);
+        return arrived;
     }
 
     private boolean arrived(RobotPosition currentPosition) {
