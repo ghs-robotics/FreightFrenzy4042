@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -25,10 +27,12 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
+    public CRServo spinnerServo;
     public Servo dropperServo;
+    //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
     private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
-    private final double DROPPER_MIN = 0.3;
+    private final double DROPPER_MIN = 0.3; //Need testing
     private final double INTAKE_DWN = 0;
     private final double INTAKE_UP = 0.9;
     private final double EXT_OUT = 2500;
@@ -43,15 +47,16 @@ public class Robot extends DriveBase implements HSVConstants, FieldPositions {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-        spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
+        //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         //odometerMotor = hardwareMap.get(DcMotor.class, "odometerMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        dropperServo = hardwareMap.get(Servo.class, "dropperServo");
-        //intakeBucketFlipServo = hardwareMap.get(Servo.class, "intakeServo");
+        dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
+        spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
+        //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
 
 
         dropperServo.setPosition(DROPPER_MIN);

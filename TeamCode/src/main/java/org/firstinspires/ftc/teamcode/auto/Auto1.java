@@ -1,14 +1,13 @@
-
 package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.cv_objects.CVManager;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
@@ -21,10 +20,6 @@ import java.util.List;
 
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 //Identify barcode and deliver initial shipping element (~3 seconds) +20 points
 //Collect and deliver 3 freight to alliance shipping hub (~18 seconds) +18 points

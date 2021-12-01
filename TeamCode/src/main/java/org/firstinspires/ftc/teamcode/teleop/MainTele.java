@@ -3,12 +3,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
-
-import java.util.Objects;
 
 @TeleOp(name="TestTele", group="Linear Opmode")
 public class TestTele extends LinearOpMode implements FieldPositions {
@@ -52,12 +49,15 @@ public class TestTele extends LinearOpMode implements FieldPositions {
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS PRESS START A
-            //DRIVER FUNCTIONS
+            // NOTE: NEED TO REFINE CONTROLS WITH DRIVE TEAM
+            // DRIVER FUNCTIONS
+
             robot.calculateDrivePowers(
                     controller1.left_stick_x,
                     controller1.left_stick_y,
                     controller1.right_stick_x
             );
+
             robot.sendDrivePowers();
 
             // -----------------------------------------------------------------------------------------
@@ -84,9 +84,11 @@ public class TestTele extends LinearOpMode implements FieldPositions {
 
                 telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
-            if(controller2.b == Btn.PRESSED) {
 
-               // robot.toggleBucket();
+            //there is a delay between when you press the button and the servo starts spinning
+            //moved duck spinner code here because the y button seems it will be used for something else
+            if(controller2.b == Btn.PRESSING) {
+                robot.spinnerServo.setPower(1);
             }
 
             if (controller2.dpad_up == Btn.PRESSING) {

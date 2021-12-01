@@ -24,10 +24,6 @@ public class DriveBase {
     // Drive speed ranges from 0 to 1
     public double speed = 1;
 
-    // For meta-drive
-    // Specifies the direction of meta mode
-    // 90 degrees is optimal for when the driver is standing on side of field
-    public int metaOffset = 90;
 
     // Mecanum wheel drive motors
     public DcMotor leftFrontDrive;
@@ -37,7 +33,6 @@ public class DriveBase {
 
     public Gyro gyro; // Keeps track of robot's angle
     public PIDController gyroPID; // Controls the angle for automated functions
-    public PIDController metaGyroPID; // Controls the angle in meta mode
     public double targetGyroAngle = 0; // gyroscope will target this angle
 
     // For displaying things on the DS phone
@@ -75,7 +70,6 @@ public class DriveBase {
 
         // gyroPID works best when Ki = 0
         gyroPID = new PIDController(0.0330, 0.0000, 0.0020, 0.2);
-        metaGyroPID = new PIDController(0.0230, 0.0000, 0.0020, 0.2); // Used to be 0.0100, 0, 0
 
         // Initializes telemetry
         this.telemetry = telemetry;
@@ -135,9 +129,8 @@ public class DriveBase {
 
     // Calculates powers for mecanum wheel drive
     public void calculateDrivePowers(double x, double y, double r) {
-
         r = -r;
-// set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
+    // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
         rightFrontPower = (y - x + r);
         leftFrontPower = (y + x - r);
         leftRearPower = (y - x - r);
@@ -200,9 +193,6 @@ public class DriveBase {
         return -gyroPID.calcVal(getGyroError());
     }
 
-    public double getMetaGyroPIDValue() {
-        return -metaGyroPID.calcVal(getGyroError());
-    }
 
 
     // Hardcoded movement based on time

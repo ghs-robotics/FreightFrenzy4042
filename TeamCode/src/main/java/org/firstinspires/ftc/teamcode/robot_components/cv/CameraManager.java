@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.data.HSVConstants;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -20,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // IMPORTANT NOTE: WHILE CAMERAS ARE STREAMING, THERE MAY BE LOTS OF LAG IN TELEOP!!
 // That lag can be avoided by either not streaming or setting the waitTime higher in
 // our pipelines (thus decreasing FPS)
-public class CameraManager implements HSVConstants {
+public class CameraManager{
 
     private int cameraMonitorViewId;
     private boolean streaming = false; // true if cameras are streaming image input
