@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.navigation.tasks;
 
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
@@ -48,8 +47,8 @@ public class DriveToPoint implements Task {
         // TODO THIS DOESN'T REALLY WORK MOST LIKELY
 
         if (!arrived) {
-            robot.calculateDrivePowers(Range.clip(errorPID.x, -1, 1),
-                    Range.clip(errorPID.y, -1, 1), 0.0);
+            robot.calculateDrivePowers(Math.max(-1, Math.min(1, errorPID.x)),
+                    Math.max(-1, Math.min(1, errorPID.y)), 0.0);
             robot.sendDrivePowers();
         } else {
             robot.calculateDrivePowers(0, 0, 0);
