@@ -17,23 +17,25 @@ public class Deposit implements Task {
     private boolean lifted;
     private boolean returned;
     private boolean holdingElement;
+    private double targetDist;
 
     private final double TICKSTODIST = 0.09363; //Multiply by this to convert from ticks to mm
 
-    public Deposit() {
+    public Deposit(double targetDist) { //Full extension dist = 300
         extended = false;
         dropped = false;
         lifted = false;
         returned = false;
         holdingElement = true;
+        this.targetDist = targetDist;
     }
 
     public void init() {}
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
         if (!extended) {
-            double extendedDist = robot.toggleExtension(300) * TICKSTODIST;
-            if (Math.abs(extendedDist - 300) < 50) {
+            double extendedDist = robot.toggleExtension(targetDist) * TICKSTODIST;
+            if (Math.abs(extendedDist - targetDist) < 50) {
                 extended = true;
             }
         } else if (!dropped) {
@@ -48,11 +50,11 @@ public class Deposit implements Task {
                 lifted = true;
             }
         } else {
-            double extendedDist = robot.toggleExtension(-300) * TICKSTODIST;
-            if (Math.abs(extendedDist + 300) < 50) {
+            double extendedDist = robot.toggleExtension(-targetDist) * TICKSTODIST;
+            if (Math.abs(extendedDist + targetDist) < 50) {
                 returned = true;
             }
         }
-        return (extended && dropped && returned);
+        return (extended && dropped && lifted && returned && !holdingElement);
     }
 }

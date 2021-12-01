@@ -43,10 +43,11 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
 
         List<Task> tasks = new ArrayList<>();
         //SCAN BARCODE AND PLACE INITIAL ELEMENT IF POSSIBLE
+        //int barcodeLevel = manager.detectBarcode();
         //tasks.add(drive(0, 500, 0.0));
-        //tasks.add(new Deposit());
-        //tasks.add(drive(0, 0, 0));
-        //tasks.add(drive(0, 0, 90.0)); No need to turn 90 probably???
+        //tasks.add(new Deposit(barcodeLevel * 100));
+        //tasks.add(drive(-1000, 0, 0.0));
+        //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
         //tasks.add(drive(1000, 0, 0.0));
 
         telemetry.addData("task 1", tasks.get(0));
