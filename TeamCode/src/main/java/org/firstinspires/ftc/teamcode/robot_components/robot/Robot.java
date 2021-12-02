@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.robot_components.robot;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,6 +15,7 @@ public class Robot extends DriveBase{
 
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
+    public static Telemetry telemetry;
     protected double intakePower = 0;
     protected double extenderPower = 0;
     double dropperAngle;
@@ -26,6 +28,7 @@ public class Robot extends DriveBase{
     public DcMotor spinnerMotor;
     public CRServo spinnerServo;
     public Servo dropperServo;
+    public DigitalChannel limitSwitch;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
     private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
@@ -34,11 +37,15 @@ public class Robot extends DriveBase{
     private final double INTAKE_UP = 0.9;
     private final double EXT_OUT = 2500;
     private final double EXT_IN = 0;
+    private final    int EXT_ERROR = 10;
+    private final double EXT_SPEED = .5;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
+
+        Robot.telemetry = telemetry;
 
         //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
@@ -50,6 +57,7 @@ public class Robot extends DriveBase{
         spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
         //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
 
+        limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
 
         dropperServo.setPosition(DROPPER_MIN);
         //intakeBucketFlipServo.setPosition(INTAKE_DWN);
@@ -59,48 +67,40 @@ public class Robot extends DriveBase{
     }
 
     /**
-     * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
-     * to be set up properly with RunMode.RUN_TO_POSITION.
-     * todo what unit of measurement is distance????? Gonna assume that it is in mm
-     * @param distance The distance to extend to if retracted.
+     * because RUN TO POSITION MODE does not seem to work, im gonna do a pro gamer move and
+     * program it myself
+     * - simon
+     *
+     * This method working by moving the arm to the intended target position
+     *
+     * target position should be within the extender's tick range
+     *
+     * @param targetPosition
      */
-    public void toggleExtension(double distance) {
+    public void toggleArm(int targetPosition) {
 
-        int currentTicks = extenderMotor.getCurrentPosition();
-        boolean isExtended = currentTicks > 5 || currentTicks < -5;
-        if (isExtended) {
-            // retract
-            extenderMotor.setTargetPosition(0);
-        } else {
-            // extend
-            int targetTicks = (int) Math.round(
-                    (distance / EXTENDER_PULLEY_INNER_CIRC /* num. revolutions*/)
-                    * EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT
-            );
-            extenderMotor.setTargetPosition(targetTicks);
+        if(targetPosition < EXT_IN || targetPosition > EXT_OUT) {
+            telemetry.addData("ERROR: ", "target position is our of range!");
+            telemetry.update();
+            return;
+        }
+
+        int armPosition = extenderMotor.getCurrentPosition();
+
+        if(Math.abs(targetPosition - armPosition) < EXT_ERROR) return;
+
+        if(targetPosition < armPosition) {
+            extenderMotor.setPower(EXT_SPEED);
+        } else if(targetPosition < armPosition) {
+            extenderMotor.setPower(-EXT_SPEED);
         }
     }
 
-
-    public void setExtenderPower(double power){
-
-        int position = extenderMotor.getCurrentPosition();
-
-
-        while(position < EXT_IN) {
-            position = extenderMotor.getCurrentPosition();
-            extenderMotor.setPower(.2);
+    public void retractArm() {
+        while(!limitSwitch.getState()) {
+            extenderMotor.setPower(-EXT_SPEED);
         }
-
-        while(position > EXT_OUT) {
-            position = extenderMotor.getCurrentPosition();
-            extenderMotor.setPower(-.2);
-        }
-
-        extenderPower = power;
-        extenderMotor.setPower(extenderPower);
     }
-
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN

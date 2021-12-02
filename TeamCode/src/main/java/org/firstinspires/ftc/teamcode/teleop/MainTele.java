@@ -11,9 +11,11 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 public class MainTele extends LinearOpMode{
     
     // Declare OpMode members
-    Robot robot;
-    Controller controller1;
-    Controller controller2;
+    private Robot robot;
+    private Controller controller1;
+    private Controller controller2;
+    private boolean shouldGoToHigh = true;
+    private boolean shouldGoToLow = true;
 
     @Override
     public void runOpMode() {
@@ -75,11 +77,11 @@ public class MainTele extends LinearOpMode{
 
             //intake
             //run intake based on how strong the right trigger is pressed
-                robot.setIntakePower(0.9 * controller2.right_stick_y);
+            robot.setIntakePower(0.9 * controller2.right_stick_y);
 
                 //robot.setExtenderPower(-controller2.left_stick_x);
 
-                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
+            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
 
             //there is a delay between when you press the button and the servo starts spinning
@@ -89,13 +91,25 @@ public class MainTele extends LinearOpMode{
             } else
                 robot.spinnerServo.setPower(0);
 
-            //extend the arm
-            if(controller2.x ) {
-                telemetry.addData("button x controller 2", "pressed");
+            //extends the arm to the high goal
+            if(controller2.y) {
                 //im gonna hardcode the distance because heck you - simon
-                robot.toggleExtension(50);
+                if(shouldGoToHigh)
+                    robot.toggleArm(800);
+                else
+                    robot.retractArm();
+                shouldGoToHigh = !shouldGoToHigh;
             }
 
+            //extends the arm to the low goal
+            if(controller2.a) {
+
+                if(shouldGoToLow)
+                    robot.toggleArm(200);
+                else
+                    robot.retractArm();
+                shouldGoToLow = !shouldGoToLow;
+            }
 
             if (controller2.dpad_up == Btn.PRESSING) {
                 robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
