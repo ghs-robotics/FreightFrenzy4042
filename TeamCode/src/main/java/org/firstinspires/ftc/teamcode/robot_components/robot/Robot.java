@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
-public class Robot extends DriveBase{
+public class Robot extends DriveBase {
 
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
