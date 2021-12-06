@@ -20,7 +20,8 @@ public class Robot extends DriveBase{
     double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
-    public DcMotor intakeMotor;
+    public DcMotor intakeMotorFront;
+    public DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
@@ -41,8 +42,9 @@ public class Robot extends DriveBase{
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotorFront = hardwareMap.get(DcMotor.class, "intakeMotorFront");
+        intakeMotorFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotorBack = hardwareMap.get(DcMotor.class, "intakeMotorBack");
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -124,6 +126,6 @@ public class Robot extends DriveBase{
 
     public void setIntakePower(double power){
         intakePower = power;
-        intakeMotor.setPower(intakePower);
+        intakeMotorFront.setPower(intakePower);
     }
 }
