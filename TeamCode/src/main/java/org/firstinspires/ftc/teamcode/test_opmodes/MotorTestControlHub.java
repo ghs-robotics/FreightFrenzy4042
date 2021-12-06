@@ -47,12 +47,12 @@ public class MotorTestControlHub extends LinearOpMode {
             // Registers controller input
             controller1.update();
 
-            if(controller1.a == Btn.PRESSED) {
+            if(controller1.a) {
                 motor1.setPower(.5);
                 motor2.setPower(.5);
             }
 
-            if(controller1.b == Btn.PRESSED) {
+            if(controller1.b) {
                 motor1.setPower(0);
                 motor2.setPower(0);
             }
