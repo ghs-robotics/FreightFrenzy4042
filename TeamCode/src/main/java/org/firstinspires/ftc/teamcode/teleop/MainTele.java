@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-@TeleOp(name="TestTele", group="Linear Opmode")
+@TeleOp(name="MainTele", group="Linear Opmode")
 public class MainTele extends LinearOpMode{
     
     // Declare OpMode members
@@ -69,7 +69,7 @@ public class MainTele extends LinearOpMode{
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            if (controller2.a == Btn.PRESSED) {
+            if (controller2.a) {
                 //robot.dropGameElement();
             }
 
@@ -85,12 +85,13 @@ public class MainTele extends LinearOpMode{
 
             //there is a delay between when you press the button and the servo starts spinning
             //moved duck spinner code here because the y button seems it will be used for something else
-            if(controller2.b == Btn.PRESSING) {
+            if(controller2.b) {
                 robot.spinnerServo.setPower(1);
-            }
+            } else
+                robot.spinnerServo.setPower(0);
 
             //extend the arm
-            if(controller2.x == Btn.PRESSED) {
+            if(controller2.x ) {
                 telemetry.addData("button x controller 2", "pressed");
                 //im gonna hardcode the distance because heck you - simon
                 robot.toggleExtension(50);
@@ -103,7 +104,6 @@ public class MainTele extends LinearOpMode{
                 robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
-
 
             telemetry.update();
         }
