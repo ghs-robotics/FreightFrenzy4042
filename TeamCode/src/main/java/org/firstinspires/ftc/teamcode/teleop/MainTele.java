@@ -15,6 +15,10 @@ public class MainTele extends LinearOpMode{
     Controller controller1;
     Controller controller2;
 
+    private boolean shouldGoToHigh = true;
+    private boolean shouldGoToLow = true;
+
+
     @Override
     public void runOpMode() {
 
@@ -69,10 +73,24 @@ public class MainTele extends LinearOpMode{
             //OPERATOR FUNCTIONS
 
             //toggles dropper, make code that goes down and then back up later
-            if (controller2.a) {
-                //robot.dropGameElement();
+//extends the arm to the high goal
+            if(controller2.y == Btn.PRESSING) {
+                //im gonna hardcode the distance because heck you - simon
+                if(shouldGoToHigh)
+                    robot.drive(-2000);
+                else
+                    robot.drive(-10);
+                shouldGoToHigh = !shouldGoToHigh;
             }
 
+            //extends the arm to the low goal
+            if(controller2.a == Btn.PRESSING) {
+                if(shouldGoToLow)
+                    robot.drive(-1000);
+                else
+                    robot.drive(-10);
+                shouldGoToLow = !shouldGoToLow;
+            }
             //intake
             //run intake based on how strong the right trigger is pressed
                 robot.setIntakePower(0.9 * controller2.right_stick_y);
@@ -84,17 +102,10 @@ public class MainTele extends LinearOpMode{
 
             //there is a delay between when you press the button and the servo starts spinning
             //moved duck spinner code here because the y button seems it will be used for something else
-            if(controller2.b) {
+            if(gamepad2.b) {
                 robot.spinnerServo.setPower(1);
             } else
                 robot.spinnerServo.setPower(0);
-
-            //extend the arm
-            if(controller2.x ) {
-                telemetry.addData("button x controller 2", "pressed");
-                //im gonna hardcode the distance because heck you - simon
-                robot.toggleExtension(50);
-            }
 
 
             if (controller2.dpad_up == Btn.PRESSING) {

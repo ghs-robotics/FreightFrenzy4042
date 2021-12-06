@@ -41,9 +41,10 @@ public class Robot extends DriveBase{
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorFront");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
+        extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
@@ -81,6 +82,11 @@ public class Robot extends DriveBase{
         }
     }
 
+    public void drive(int target) {
+        extenderMotor.setTargetPosition(target);
+        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extenderMotor.setPower(1);
+    }
 
     public void setExtenderPower(double power){
 
