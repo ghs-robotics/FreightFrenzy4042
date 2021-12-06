@@ -52,6 +52,7 @@ public class Robot extends DriveBase{
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorFront");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
+        extenderMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // extenderMotor.setTargetPosition(0);
        // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing

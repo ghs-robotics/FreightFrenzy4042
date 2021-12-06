@@ -96,7 +96,7 @@ public class MainTele extends LinearOpMode{
             if(gamepad2.y) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh)
-                    robot.toggleArm(800);
+                    robot.toggleArm(400);
                 else
                     robot.retractArm();
                 shouldGoToHigh = !shouldGoToHigh;
@@ -105,7 +105,7 @@ public class MainTele extends LinearOpMode{
             //extends the arm to the low goal
             if(gamepad2.a) {
                 if(shouldGoToLow)
-                    robot.toggleArm(200);
+                    robot.toggleArm(400);
                 else
                     robot.retractArm();
                 shouldGoToLow = !shouldGoToLow;
@@ -117,8 +117,7 @@ public class MainTele extends LinearOpMode{
                 robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
-            telemetry.addData("limit switch", robot.limitSwitch.getState());
-            telemetry.addData("limit switch mode", robot.limitSwitch.getMode() == DigitalChannel.Mode.INPUT);
+            telemetry.addData("distance left", Math.abs(robot.extenderMotor.getCurrentPosition() - 400));
 
             telemetry.update();
         }
