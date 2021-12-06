@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot_components.robot;
 
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -48,7 +49,7 @@ public class Robot extends DriveBase{
         Robot.telemetry = telemetry;
 
         //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorFront");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
        // extenderMotor.setTargetPosition(0);
@@ -58,6 +59,7 @@ public class Robot extends DriveBase{
         //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
 
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
+        limitSwitch.setMode(DigitalChannel.Mode.OUTPUT);
 
         dropperServo.setPosition(DROPPER_MIN);
         //intakeBucketFlipServo.setPosition(INTAKE_DWN);

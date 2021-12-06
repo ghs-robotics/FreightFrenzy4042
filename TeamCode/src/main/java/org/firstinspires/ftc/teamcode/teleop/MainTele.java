@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-@TeleOp(name="TestTele", group="Linear Opmode")
+@TeleOp(name="MainTele", group="Linear Opmode")
 public class MainTele extends LinearOpMode{
     
     // Declare OpMode members
@@ -60,7 +61,7 @@ public class MainTele extends LinearOpMode{
                     controller1.right_stick_x
             );
 
-            robot.sendDrivePowers();
+            //robot.sendDrivePowers();
 
             // -----------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------
@@ -92,7 +93,7 @@ public class MainTele extends LinearOpMode{
                 robot.spinnerServo.setPower(0);
 
             //extends the arm to the high goal
-            if(controller2.y) {
+            if(gamepad2.y) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh)
                     robot.toggleArm(800);
@@ -102,8 +103,7 @@ public class MainTele extends LinearOpMode{
             }
 
             //extends the arm to the low goal
-            if(controller2.a) {
-
+            if(gamepad2.a) {
                 if(shouldGoToLow)
                     robot.toggleArm(200);
                 else
@@ -117,6 +117,8 @@ public class MainTele extends LinearOpMode{
                 robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
+            telemetry.addData("limit switch", robot.limitSwitch.getState());
+            telemetry.addData("limit switch mode", robot.limitSwitch.getMode() == DigitalChannel.Mode.INPUT);
 
             telemetry.update();
         }

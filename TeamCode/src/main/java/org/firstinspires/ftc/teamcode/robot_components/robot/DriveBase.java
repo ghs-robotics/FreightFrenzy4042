@@ -24,7 +24,6 @@ public class DriveBase {
     // Drive speed ranges from 0 to 1
     public double speed = 1;
 
-
     // Mecanum wheel drive motors
     public DcMotor leftFrontDrive;
     public DcMotor rightFrontDrive;
@@ -102,13 +101,36 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
+
+    //much of this code is based off of this article https://compendium.readthedocs.io/en/latest/tasks/drivetrains/mecanum.html
     public void calculateDrivePowers(double x, double y, double r) {
-        r = -r;
-    // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
-        rightFrontPower = (y - x + r);
-        leftFrontPower = (y + x - r);
-        leftRearPower = (y - x - r);
-        rightRearPower = (y + x + r);
+
+        double translationAngle = Math.atan2(y,x);
+        double translationPower = Math.hypot(x,y);
+        double turnPower = r;
+
+        // calculate motor power
+        double ADPower = translationPower * Math.sqrt(2) * 0.5 * (Math.sin(translationAngle) + Math.cos(translationAngle));
+        double BCPower = translationPower * Math.sqrt(2) * 0.5 * (Math.sin(translationAngle) - Math.cos(translationAngle));
+
+        // check if turning power will interfere with normal translation
+        // check ADPower to see if trying to apply turnPower would put motor power over 1.0 or under -1.0
+        double turningScale = Math.max(Math.abs(ADPower + turnPower), Math.abs(ADPower - turnPower));
+        // check BCPower to see if trying to apply turnPower would put motor power over 1.0 or under -1.0
+        turningScale = Math.max(turningScale, Math.max(Math.abs(BCPower + turnPower), Math.abs(BCPower - turnPower)));
+
+        // adjust turn power scale correctly
+        if (Math.abs(turningScale) < 1.0)
+        {
+            turningScale = 1.0;
+        }
+
+        // set the motors, and divide them by turningScale to make sure none of them go over the top, which would alter the translation angle
+        leftFrontPower = ((ADPower - turningScale) / turningScale);
+        leftRearPower = ((BCPower - turningScale) / turningScale);
+        rightFrontPower = ((BCPower + turningScale) / turningScale);
+        rightRearPower = ((ADPower + turningScale) / turningScale);
+
     }
 
 
