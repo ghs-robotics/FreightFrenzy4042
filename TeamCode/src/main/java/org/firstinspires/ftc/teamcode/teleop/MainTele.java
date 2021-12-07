@@ -18,6 +18,7 @@ public class MainTele extends LinearOpMode{
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
 
+    private boolean extended = true;
 
     @Override
     public void runOpMode() {
@@ -72,47 +73,63 @@ public class MainTele extends LinearOpMode{
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
 
-            //toggles dropper, make code that goes down and then back up later
-//extends the arm to the high goal
+            // make sure you make the target negative
+            boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
+            boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
+
             if(controller2.y == Btn.PRESSING) {
                 //im gonna hardcode the distance because heck you - simon
-                if(shouldGoToHigh)
-                    robot.drive(-2000);
-                else
-                    robot.drive(-10);
+                if(shouldGoToHigh) {
+                    robot.moveEntenderTo(-3700);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveEntenderTo(-10);
+                }
+
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
             //extends the arm to the low goal
             if(controller2.a == Btn.PRESSING) {
-                if(shouldGoToLow)
-                    robot.drive(-1000);
-                else
-                    robot.drive(-10);
+                if(shouldGoToLow) {
+                    robot.moveEntenderTo(-1500);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveEntenderTo(-10);
+                }
                 shouldGoToLow = !shouldGoToLow;
             }
-            //intake
+
+            boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
+            boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
+
+            //front intake
             //run intake based on how strong the right trigger is pressed
-                robot.setFrontIntakePower(0.9 * controller2.right_stick_y);
-                robot.setBackIntakePower(0.9 * controller2.left_stick_y);
+            if(FRONT_INTAKE) {
+                robot.setFrontIntakePower(0.9);
+                robot.forwardDropperPosition();
+            } else {
+                robot.setFrontIntakePower(0);
+            }
 
-                //robot.setExtenderPower(-controller2.left_stick_x);
+            //back intake
+            if(BACK_INTAKE) {
+                robot.setBackIntakePower(0.9);
+                robot.backDropperPosition();
+            } else {
+                robot.setBackIntakePower(0);
+            }
 
-                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
-            //turn bucket up/down
+            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
             //there is a delay between when you press the button and the servo starts spinning
-            //moved duck spinner code here because the y button seems it will be used for something else
-            if(gamepad2.b) {
+            //duck spinner
+            boolean SPINNER = controller2.b == Btn.PRESSED;
+
+            if(SPINNER) {
                 robot.spinnerServo.setPower(1);
-            } else
+            } else {
                 robot.spinnerServo.setPower(0);
-
-
-            if (controller2.dpad_up == Btn.PRESSING) {
-                robot.dropperServo.setPosition(robot.dropperServo.getPosition() + 0.05);
-            } else if (controller2.dpad_down == Btn.PRESSING) {
-                robot.dropperServo.setPosition(robot.dropperServo.getPosition() - 0.05);
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
