@@ -93,7 +93,8 @@ public class MainTele extends LinearOpMode{
             }
             //intake
             //run intake based on how strong the right trigger is pressed
-                robot.setIntakePower(0.9 * controller2.right_stick_y);
+                robot.setFrontIntakePower(0.9 * controller2.right_stick_y);
+                robot.setBackIntakePower(0.9 * controller2.left_stick_y);
 
                 //robot.setExtenderPower(-controller2.left_stick_x);
 

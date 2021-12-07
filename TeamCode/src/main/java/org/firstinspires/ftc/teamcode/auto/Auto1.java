@@ -25,6 +25,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Autonomous
 public class Auto1 extends LinearOpMode {
@@ -40,6 +43,7 @@ public class Auto1 extends LinearOpMode {
 
         List<Task> tasks = new ArrayList<>();
         //tasks.add(new DriveToPoint());
+//        tasks.add(new SimpleDrive(0, 1, 0, 2));
         autoController.setTasks(tasks);
     }
 
@@ -71,7 +75,7 @@ public class Auto1 extends LinearOpMode {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         //initializeCV();
         waitForStart();
-        autoController = new AutoController(telemetry,robot);
+        //autoController = new AutoController(telemetry,robot);
         robot.elapsedTime.reset();
         initializeTasks();
 
