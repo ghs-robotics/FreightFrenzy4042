@@ -39,8 +39,20 @@ public class Auto1 extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //tasks.add(new DriveToPoint());
+        //manager.init();
+        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        //tasks.add(drive(500, 0, 0.0));
+        //tasks.add(new Deposit(barcodeLevel * 100));
+        //tasks.add(drive(0, -1000, 0.0));
+        //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
+        //tasks.add(drive(1000, 0, 0.0));
+
+        //telemetry.addData("barcode", barcodeLevel);
+
+        telemetry.addData("task 1", tasks.get(0));
+        telemetry.update();
         autoController.setTasks(tasks);
+        autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
 
 //TODO idk if the camera should be initialized here
@@ -71,7 +83,7 @@ public class Auto1 extends LinearOpMode {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         //initializeCV();
         waitForStart();
-        autoController = new AutoController(telemetry,robot);
+        autoController = new AutoController(hardwareMap, telemetry,robot);
         robot.elapsedTime.reset();
         initializeTasks();
 

@@ -41,6 +41,11 @@ public class OdometryModule {
         return new int[] {deadWheelX.getCurrentPosition(), deadWheelY.getCurrentPosition()};
     }
 
+    public int[] getMillimeterDist() {
+        return new int[]{(int)encoderTicksToDistance(deadWheelX.getCurrentPosition()),
+                (int)encoderTicksToDistance(deadWheelY.getCurrentPosition())};
+    }
+
     /**
      * get the distance travelled since this function was last called
      */
