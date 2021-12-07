@@ -142,7 +142,7 @@ public class DriveBase {
         double r = Math.hypot(x, y);
         double angleOfMotion = Math.atan2(y, x) - Math.PI / 4;
         if (meta) {
-            angleOfMotion -= Math.toRadians(gyro.getAngle() + metaOffset); // Factor in meta drive
+            angleOfMotion -= Math.toRadians(gyro.getAngle()); // Factor in meta drive
         }
         leftFrontPower = Range.clip(r * Math.cos(angleOfMotion) + rot, -1.0, 1.0) * speed;
         rightFrontPower = Range.clip(r * Math.sin(angleOfMotion) - rot, -1.0, 1.0) * speed;

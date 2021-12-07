@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.data.FieldPositions;
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import java.util.Objects;
 
 @TeleOp(name="MotorFix", group="Linear Opmode")
-public class MotorFix extends LinearOpMode implements FieldPositions {
+public class MotorFix extends LinearOpMode {
 
     // Declare OpMode members
     Robot robot;

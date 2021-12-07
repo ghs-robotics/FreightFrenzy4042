@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -14,7 +13,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 public class CVManager {
 
-    private CVModule module;
     private OpenCvWebcam webcam;
     private CVPipeline pipeline;
     private WebcamName webcamName;
@@ -38,7 +36,6 @@ public class CVManager {
     }
 
     public void init() {
-        module = new CVModule(hardwareMap, telemetry);
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
         pipeline= new CVPipeline();
         final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
@@ -65,5 +62,9 @@ public class CVManager {
         //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
         //telemetry.addData("Ducks", pipeline.returnResultsDucks());
         telemetry.update();
+    }
+
+    public int detectBarcode() { //currently returns the x and not an x converted to barcode
+        return pipeline.returnResultsBoxes().toArray()[0].x;
     }
 }

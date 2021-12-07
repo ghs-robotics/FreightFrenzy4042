@@ -14,12 +14,11 @@ import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule
 public class EncoderTestTele extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor rightFrontDrive = null;
+    private DcMotor odometerX = null;
 //    private DcMotor leftRearDrive = null;
 //    private DcMotor rightRearDrive = null;
     private Gyro gyro;
-    private OdometryModule odo;
+    private OdometryModule odometryModule;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -27,12 +26,9 @@ public class EncoderTestTele extends OpMode {
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "odo");
-//        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
-//        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
+        odometerX = hardwareMap.get(DcMotor.class, "odo");
         gyro = new Gyro(hardwareMap);
-        odo = new OdometryModule(leftFrontDrive, rightFrontDrive, gyro);
+        odometryModule = new OdometryModule(odometerX, odometerX, gyro);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -63,7 +59,7 @@ public class EncoderTestTele extends OpMode {
      */
     @Override
     public void loop() {
-        int encoderValues[] = odo.getRawEncoderValues();
+        int encoderValues[] = odometryModule.getMillimeterDist();
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());

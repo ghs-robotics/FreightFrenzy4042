@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 //Identify barcode and deliver initial shipping element (~3 seconds) +20 points
@@ -27,7 +26,7 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 //Park in warehouse (~3 seconds) +10 points
 
 @Autonomous
-public class Auto1 extends LinearOpMode implements FieldPositions {
+public class Auto1 extends LinearOpMode {
 
     // Declare OpMode members
     private Robot robot;
@@ -37,13 +36,15 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //SCAN BARCODE AND PLACE INITIAL ELEMENT IF POSSIBLE
-        //int barcodeLevel = manager.detectBarcode();
-        //tasks.add(drive(0, 500, 0.0));
+        manager.init();
+        int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        //tasks.add(drive(500, 0, 0.0));
         //tasks.add(new Deposit(barcodeLevel * 100));
-        //tasks.add(drive(-1000, 0, 0.0));
+        //tasks.add(drive(0, -1000, 0.0));
         //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
         //tasks.add(drive(1000, 0, 0.0));
+
+        telemetry.addData("barcode", barcodeLevel);
 
         telemetry.addData("task 1", tasks.get(0));
         telemetry.update();
@@ -75,7 +76,7 @@ public class Auto1 extends LinearOpMode implements FieldPositions {
     {
         robot = new Robot(hardwareMap, telemetry);
         waitForStart();
-        autoController = new AutoController(telemetry, robot);
+        autoController = new AutoController(hardwareMap, telemetry, robot);
         robot.elapsedTime.reset();
         manager = new CVManager(hardwareMap, telemetry);
         manager.startCamera();

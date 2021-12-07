@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.navigation;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 import java.util.List;
@@ -9,22 +14,26 @@ public class AutoController {
     private List<Task> tasks;
     private int currentTaskIdx = 0;
     private Robot robot;
-    private final double TICKSPERROT = 232.16;
+    /*private final double TICKSPERROT = 232.16;
     private final double ROTSPERTURN = 9.525;
-    private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter
+    private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter */
     public Telemetry telemetry;
+    public HardwareMap hardwareMap;
 
     public RobotPosition currentPosition;
     public RobotPosition startingPosition;
 
-    public AutoController(Telemetry telemetry,  Robot robot) {
+    private DcMotor odometerY = null;
+    private OdometryModule odometryModule;
+    private Gyro gyro;
+
+    public AutoController(HardwareMap hardwareMap, Telemetry telemetry, Robot robot) {
+        this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         this.robot = robot;
     }
 
-    public AutoController() {
-        this.robot = robot;
-    }
+    public AutoController() {}
 
     /**
      * Initialize with a series of points
@@ -35,6 +44,9 @@ public class AutoController {
         this.tasks = tasks;
         this.startingPosition = startingPosition;
         this.currentPosition = startingPosition;
+        gyro = new Gyro(hardwareMap);
+        odometerY = hardwareMap.get(DcMotor.class, "odo");
+        odometryModule = new OdometryModule(odometerY, odometerY, gyro);
     }
 
     /**
@@ -75,10 +87,12 @@ public class AutoController {
                 startingPosition.rotation + degreesTurned);
     } */
     public RobotPosition updateCurrentPosition() {
-        double posY = 0;//.getOdomPosition();
-        telemetry.addData("posY", posY);
-        telemetry.update();
-        return new RobotPosition(startingPosition.position.add(new Point2D(0, posY)),
+        int posX = odometryModule.getMillimeterDist()[0];
+        int posY = odometryModule.getMillimeterDist()[1];
+        //telemetry.addData("posX", posX);
+        //telemetry.addData("posY", posY);
+        //telemetry.update();
+        return new RobotPosition(startingPosition.position.add(new Point2D(posX, posY)),
                 startingPosition.rotation + robot.gyro.getAngle());
     }
 

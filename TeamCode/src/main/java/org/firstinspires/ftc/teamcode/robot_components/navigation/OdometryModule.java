@@ -11,7 +11,7 @@ public class OdometryModule {
     private Gyro gyro;
 
     final int TICKS_PER_REVOLUTION = 8192;
-    final double WHEEL_DIAMETER_MM = 35.0; // not radius!
+    final double WHEEL_DIAMETER_MM = 38.0; // in mm
     final double WHEEL_CIRCUMFERENCE_MM = WHEEL_DIAMETER_MM * Math.PI;
 
     private double deadWheelXRaw;
@@ -39,6 +39,11 @@ public class OdometryModule {
      */
     public int[] getRawEncoderValues() {
         return new int[] {deadWheelX.getCurrentPosition(), deadWheelY.getCurrentPosition()};
+    }
+
+    public int[] getMillimeterDist() {
+        return new int[]{(int)encoderTicksToDistance(deadWheelX.getCurrentPosition()),
+                            (int)encoderTicksToDistance(deadWheelY.getCurrentPosition())};
     }
 
     /**

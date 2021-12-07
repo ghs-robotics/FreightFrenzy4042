@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-@TeleOp(name="TestTele", group="Linear Opmode")
-public class TestTele extends LinearOpMode implements FieldPositions {
+@TeleOp(name="MainTele", group="Linear Opmode")
+public class MainTele extends LinearOpMode {
 
     // Declare OpMode members
     Robot robot;

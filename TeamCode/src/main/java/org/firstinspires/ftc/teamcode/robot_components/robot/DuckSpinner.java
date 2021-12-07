@@ -91,6 +91,14 @@ public class DuckSpinner {
         return (deltaTicks / deltaTime);
     }
 
+    public ElapsedTime getRuntime() {
+        return runtime;
+    }
+
+    public boolean isPowered() {
+        return isRunning;
+    }
+
     /**
      * call this repeatedly to run the spinner
      * @return true if done spinning, else false
