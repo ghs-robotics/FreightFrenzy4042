@@ -77,7 +77,7 @@ public class MainTele extends LinearOpMode{
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
-            if(controller2.y == Btn.PRESSING) {
+            if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
                     robot.moveEntenderTo(-3700);
@@ -90,7 +90,7 @@ public class MainTele extends LinearOpMode{
             }
 
             //extends the arm to the low goal
-            if(controller2.a == Btn.PRESSING) {
+            if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
                     robot.moveEntenderTo(-1500);
                     robot.neutralDropperPosition();
