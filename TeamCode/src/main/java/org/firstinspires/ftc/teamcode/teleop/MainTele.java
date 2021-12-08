@@ -72,6 +72,8 @@ public class MainTele extends LinearOpMode{
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
+            /*ADD CODE: FINE CONTROL ARM VIA RIGHT JOYSTICK Y, DROPPER VIA DPAD LEFT RIGHT
+            * RESET DROPPER TO NEUTRAL ON R JOYSTICK PRESSED*/
 
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
@@ -99,12 +101,12 @@ public class MainTele extends LinearOpMode{
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
-
+            //both intakes can run on same joystick
+            //toggle between slow and fast by left joysick pressed OR by left joystick held
             boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
             boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
 
             //front intake
-            //run intake based on how strong the right trigger is pressed
             if(FRONT_INTAKE) {
                 robot.setFrontIntakePower(0.9);
                 robot.forwardDropperPosition();
@@ -118,6 +120,15 @@ public class MainTele extends LinearOpMode{
                 robot.backDropperPosition();
             } else {
                 robot.setBackIntakePower(0);
+            }
+
+            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSED;
+            if(TOGGLE_INTAKE_SPEED) {
+                robot.setBackIntakePower(controller2.left_stick_y*0.1);
+                robot.setFrontIntakePower(controller2.left_stick_y*0.1);
+            }else{
+                robot.setFrontIntakePower(controller2.left_stick_y);
+                robot.setBackIntakePower(controller2.left_stick_y);
             }
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
