@@ -74,7 +74,12 @@ public class MainTele extends LinearOpMode{
             //OPERATOR FUNCTIONS
             /*ADD CODE: FINE CONTROL ARM VIA RIGHT JOYSTICK Y, DROPPER VIA L/R BUMPER
             * RESET DROPPER TO NEUTRAL, forwards, backwards ON R JOYSTICK PRESSED*/
-
+            /*
+            * Y: extend to high arm position, A: extend to low arm position
+            * B: duckspinner
+            * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
+            * left stick y: both intakes forwards/backwards, hold left stick for slow mode
+            * right stick y: */
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
@@ -133,6 +138,10 @@ public class MainTele extends LinearOpMode{
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
+            boolean DROP_NEUTRAL = controller2.right_stick_button == Btn.PRESSED;
+            if(DROP_NEUTRAL){
+                robot.neutralDropperPosition();
+            }
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
             boolean SPINNER = controller2.b == Btn.PRESSED;
