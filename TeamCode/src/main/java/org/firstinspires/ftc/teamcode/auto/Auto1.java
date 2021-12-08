@@ -42,8 +42,7 @@ public class Auto1 extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //tasks.add(new DriveToPoint());
-//        tasks.add(new SimpleDrive(0, 1, 0, 2));
+
         autoController.setTasks(tasks);
     }
 

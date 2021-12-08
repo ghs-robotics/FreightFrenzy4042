@@ -80,7 +80,7 @@ public class MainTele extends LinearOpMode{
 
                 //robot.setExtenderPower(-controller2.left_stick_x);
 
-                telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
+                telemetry.addData("extender encoder", robot.extenderMotor.getCurrentPosition()+"");
             //turn bucket up/down
 
             //there is a delay between when you press the button and the servo starts spinning
