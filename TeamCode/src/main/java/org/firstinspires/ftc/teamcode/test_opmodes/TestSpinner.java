@@ -79,14 +79,14 @@ public class TestSpinner extends LinearOpMode {
 //                spinner.startRunning();
 //                started = true;
 //            }
-
+/*
             if (controller1.b) {
                 spinner.startRunning();
             }
             if (controller1.x) {
                 spinner.stopRunning();
             }
-
+*/
             spinner.update();
             telemetry.update();
 

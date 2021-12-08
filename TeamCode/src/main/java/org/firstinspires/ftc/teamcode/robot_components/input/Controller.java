@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 // Our custom controller class that gives us more control (no pun intended)
 public class Controller extends Gamepad{
     Gamepad gamepad;
-    /*
+
     public Btn a;
     public Btn b;
     public Btn x;
-    public Btn y;*/
+    public Btn y;
     public Btn dpad_right;
     public Btn dpad_up;
     public Btn dpad_left;
@@ -66,12 +66,12 @@ public class Controller extends Gamepad{
 
     // Update controller input
     public void update() {
-        /*
+
         a = check(a, gamepad.a);
         b = check(b, gamepad.b);
         x = check(x, gamepad.x);
         y = check(y, gamepad.y);
-*/
+
         dpad_right = check(dpad_right, gamepad.dpad_right);
         dpad_up    = check(dpad_up,    gamepad.dpad_up);
         dpad_left  = check(dpad_left,  gamepad.dpad_left);
