@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot_components.robot;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,7 +20,7 @@ public class Robot extends DriveBase {
     double dropperAngle;
     double intakeAngle;
     //public CRServo intakeCRServo;
-    public DcMotor extenderMotor;
+    public DcMotorEx extenderMotor;
     public DcMotor intakeMotorFront;
     public DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
@@ -35,6 +36,7 @@ public class Robot extends DriveBase {
     private final double EXT_OUT = 2500;
     private final double EXT_IN = 0;
 
+
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
 
@@ -44,7 +46,7 @@ public class Robot extends DriveBase {
         intakeMotorFront.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotorBack = hardwareMap.get(DcMotor.class, "intakeMotorBack");
         intakeMotorBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
+        extenderMotor = hardwareMap.get(DcMotorEx.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
         spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");

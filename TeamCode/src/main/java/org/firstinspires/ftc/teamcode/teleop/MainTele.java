@@ -1,27 +1,44 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-@TeleOp(name="MainTele", group="Linear Opmode")
-public class MainTele extends LinearOpMode{
-    
+@TeleOp(name="MainTele", group="Iterative Opmode")
+public class MainTele extends LinearOpMode {
+
     // Declare OpMode members
     Robot robot;
     Controller controller1;
     Controller controller2;
+
 
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
 
     private boolean extended = true;
 
+
+    // Declare OpMode members.
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftFrontDrive = null;
+    private DcMotor rightFrontDrive = null;
+    //    private DcMotor leftRearDrive = null;
+//    private DcMotor rightRearDrive = null;
+    private Gyro gyro;
+    private OdometryModule odo;
+
     @Override
     public void runOpMode() {
+
 
         // Code to run ONCE when the driver hits INIT
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
