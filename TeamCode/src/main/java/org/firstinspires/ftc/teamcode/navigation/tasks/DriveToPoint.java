@@ -47,6 +47,8 @@ public class DriveToPoint implements Task {
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
         Point2D errorPID = error.scale(0.00170).exponent(4);
+        errorPID.x *= (error.x / Math.abs(error.x));
+        errorPID.y *= (error.y / Math.abs(error.y));
         //0.00145 = 0.93, 0.00150 = 0.96, 0.00160 = 0.98
 
         double rotError = targetPosition.rotation - currentPosition.rotation;
