@@ -26,16 +26,6 @@ public class MainTele extends LinearOpMode {
 
     private boolean extended = true;
 
-
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor rightFrontDrive = null;
-    //    private DcMotor leftRearDrive = null;
-//    private DcMotor rightRearDrive = null;
-    private Gyro gyro;
-    private OdometryModule odo;
-
     @Override
     public void runOpMode() {
 
