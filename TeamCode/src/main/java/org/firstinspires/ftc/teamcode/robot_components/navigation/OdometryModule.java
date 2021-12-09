@@ -24,11 +24,25 @@ public class OdometryModule {
     private int prevY;
     private double prevAngle;
     Telemetry telemetry;
+    public boolean hasXMotor;
+    public boolean hasYMotor;
 
     public int startingTicksX;
     public int startingTicksY;
 
+    public OdometryModule(DcMotor y, Gyro g) {
+        this.hasXMotor = false;
+        this.hasYMotor = true;
+        this.deadWheelY = y;
+        this.prevX = this.prevY = 0;
+        this.prevAngle = 0.0;
+        this.gyro = g;
+        this.startingTicksY = y.getCurrentPosition();
+    }
+
     public OdometryModule(DcMotor x, DcMotor y, Gyro g) {
+        this.hasXMotor = true;
+        this.hasYMotor = true;
         this.deadWheelX = x;
         this.deadWheelY = y;
         this.prevX = this.prevY = 0;
@@ -47,13 +61,13 @@ public class OdometryModule {
      * @return array containing {x, y} encoder ticks.
      */
     public int[] getRawEncoderValues() {
-        return new int[] {deadWheelX.getCurrentPosition() - startingTicksX,
-                deadWheelY.getCurrentPosition() - startingTicksY};
+        return new int[] {hasXMotor ? deadWheelX.getCurrentPosition() - startingTicksX : 0,
+                hasYMotor ? deadWheelY.getCurrentPosition() - startingTicksY : 0};
     }
 
     public int[] getMillimeterDist() {
-        return new int[]{(int)encoderTicksToDistance(deadWheelX.getCurrentPosition() - startingTicksX),
-                (int)encoderTicksToDistance(deadWheelY.getCurrentPosition() - startingTicksY)};
+        return new int[]{hasXMotor ? (int)encoderTicksToDistance(deadWheelX.getCurrentPosition() - startingTicksX) : 0,
+                hasYMotor ? (int)encoderTicksToDistance(deadWheelY.getCurrentPosition() - startingTicksY) : 0};
     }
 
     /**

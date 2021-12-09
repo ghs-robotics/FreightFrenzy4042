@@ -16,6 +16,7 @@ public class DriveToPoint implements Task {
     public RobotPosition targetPosition;
     public RobotPosition errorMargin;
     public Telemetry telemetry;
+    public double totalDistance;
 
     public DriveToPoint(RobotPosition targetPosition) {
         // default error margin of 1.5cm, 10 degrees
@@ -25,6 +26,7 @@ public class DriveToPoint implements Task {
     public DriveToPoint(RobotPosition targetPosition, RobotPosition errorMargin) {
         this.targetPosition = targetPosition;
         this.errorMargin = errorMargin;
+        totalDistance = 0; //Put this temporarily until distance is found
         //driveTime = targetPosition.position.length() / 762.5;
 
     }
@@ -36,6 +38,10 @@ public class DriveToPoint implements Task {
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
 
+        if (totalDistance == 0) {
+            totalDistance = currentPosition.position.distanceTo(targetPosition.position);
+        }
+
         telemetry = robot.telemetry;
 
         telemetry.addData("cx: ", currentPosition.position.x);
@@ -45,8 +51,11 @@ public class DriveToPoint implements Task {
 
         telemetry.update();
 
+        double startSlowing = 0.58823529 * totalDistance; //Error at which slow should start to happen
+        //This ^ number should be 588.23529 for 1000m total distance
+
         Point2D error = targetPosition.position.subtract(currentPosition.position);
-        Point2D errorPID = error.scale(0.00170).exponent(4);
+        Point2D errorPID = error.scale(1/startSlowing).exponent(4); //At 1000mm, 0.00170 and 4
         errorPID.x *= (error.x / Math.abs(error.x));
         errorPID.y *= (error.y / Math.abs(error.y));
         //0.00145 = 0.93, 0.00150 = 0.96, 0.00160 = 0.98
