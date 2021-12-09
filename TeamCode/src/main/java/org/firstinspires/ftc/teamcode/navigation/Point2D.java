@@ -22,6 +22,10 @@ public class Point2D {
         return new Point2D(this.x * scalar, this.y * scalar);
     }
 
+    public Point2D exponent(double exponent) {
+        return new Point2D(Math.pow(this.x, exponent), Math.pow(this.y, exponent));
+    }
+
     public double distanceTo(Point2D other) {
         Point2D sub = other.subtract(this);
         return Math.hypot(sub.x, sub.y);

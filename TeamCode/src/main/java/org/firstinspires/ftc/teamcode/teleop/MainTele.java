@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
-@TeleOp(name="TestTele", group="Linear Opmode")
+@TeleOp(name="MainTele", group="Linear Opmode")
 public class MainTele extends LinearOpMode{
     
     // Declare OpMode members
@@ -53,9 +53,9 @@ public class MainTele extends LinearOpMode{
             // DRIVER FUNCTIONS
 
             robot.calculateDrivePowers(
-                    controller1.left_stick_x,
+                    -1 * controller1.left_stick_x,
                     controller1.left_stick_y,
-                    controller1.right_stick_x
+                    -1 * controller1.right_stick_x
             );
 
             robot.sendDrivePowers();

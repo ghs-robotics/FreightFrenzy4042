@@ -46,6 +46,9 @@ public class AutoController {
         this.currentPosition = startingPosition;
         gyro = new Gyro(hardwareMap);
         odometerY = hardwareMap.get(DcMotor.class, "odo");
+        telemetry.addData("odo", odometerY);
+        telemetry.addData("gyro", gyro);
+        telemetry.update();
         odometryModule = new OdometryModule(odometerY, odometerY, gyro);
     }
 
@@ -61,8 +64,8 @@ public class AutoController {
         // not done...
         Task currentTask = this.tasks.get(currentTaskIdx);
         boolean done = currentTask.update(currentPosition, robot);
-        telemetry.addData("Done?", done);
-        telemetry.update();
+        //telemetry.addData("Done?", done);
+        //telemetry.update();
         if (done) switchToNextTask();
         return false;
     }
@@ -70,8 +73,6 @@ public class AutoController {
     public RobotPosition updateCurrentPosition() {
         int posX = odometryModule.getMillimeterDist()[0];
         int posY = odometryModule.getMillimeterDist()[1];
-        telemetry.addData("posX", posX);
-        telemetry.addData("posY", posY);
         telemetry.update();
         return new RobotPosition(startingPosition.position.add(new Point2D(posX, posY)),
                 startingPosition.rotation + robot.gyro.getAngle());

@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.robot_components.navigation;
 
+import android.os.DropBoxManager;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.data.Vector2;
 
 public class OdometryModule {
@@ -20,6 +23,10 @@ public class OdometryModule {
     private int prevX;
     private int prevY;
     private double prevAngle;
+    Telemetry telemetry;
+
+    public int startingTicksX;
+    public int startingTicksY;
 
     public OdometryModule(DcMotor x, DcMotor y, Gyro g) {
         this.deadWheelX = x;
@@ -27,6 +34,8 @@ public class OdometryModule {
         this.prevX = this.prevY = 0;
         this.prevAngle = 0.0;
         this.gyro = g;
+        this.startingTicksX = x.getCurrentPosition();
+        this.startingTicksY = y.getCurrentPosition();
     }
 
     //use the gyroscope for getting angle
@@ -38,12 +47,13 @@ public class OdometryModule {
      * @return array containing {x, y} encoder ticks.
      */
     public int[] getRawEncoderValues() {
-        return new int[] {deadWheelX.getCurrentPosition(), deadWheelY.getCurrentPosition()};
+        return new int[] {deadWheelX.getCurrentPosition() - startingTicksX,
+                deadWheelY.getCurrentPosition() - startingTicksY};
     }
 
     public int[] getMillimeterDist() {
-        return new int[]{(int)encoderTicksToDistance(deadWheelX.getCurrentPosition()),
-                (int)encoderTicksToDistance(deadWheelY.getCurrentPosition())};
+        return new int[]{(int)encoderTicksToDistance(deadWheelX.getCurrentPosition() - startingTicksX),
+                (int)encoderTicksToDistance(deadWheelY.getCurrentPosition() - startingTicksY)};
     }
 
     /**

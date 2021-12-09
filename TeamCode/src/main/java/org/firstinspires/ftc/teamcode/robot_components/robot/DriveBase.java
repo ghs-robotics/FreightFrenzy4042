@@ -22,7 +22,8 @@ public class DriveBase {
     protected double batteryVoltage;
 
     // Drive speed ranges from 0 to 1
-    public double speed = 1;
+    public double speed = 1.0;
+    public double autoSpeed = 0.8;
 
 
     // Mecanum wheel drive motors
@@ -105,12 +106,23 @@ public class DriveBase {
     public void calculateDrivePowers(double x, double y, double r) {
         r = -r;
     // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
-        rightFrontPower = (y - x + r);
-        leftFrontPower = (y + x - r);
-        leftRearPower = (y - x - r);
-        rightRearPower = (y + x + r);
+        rightFrontPower = speed * (y - x + r);
+        leftFrontPower = speed * (y + x - r);
+        leftRearPower = speed * (y - x - r);
+        rightRearPower = speed * (y + x + r);
     }
 
+    public void calculateDrivePowersOffset(double x, double y, double r, double offset) {
+        x = x * Math.cos(offset) - y * Math.sin(offset);
+        y = x * Math.sin(offset) + y * Math.cos(offset);
+
+        r = -r;
+        // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
+        rightFrontPower = autoSpeed * (y - x + r);
+        leftFrontPower = autoSpeed * (y + x - r);
+        leftRearPower = autoSpeed * (y - x - r);
+        rightRearPower = autoSpeed * (y + x + r);
+    }
 
     // Returns how many seconds have passed since the timer was last reset
     public double elapsedSecs() {

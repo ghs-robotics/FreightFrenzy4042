@@ -41,7 +41,7 @@ public class Robot extends DriveBase{
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorFront");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
        // extenderMotor.setTargetPosition(0);

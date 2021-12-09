@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.navigation.Point2D;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
+import org.firstinspires.ftc.teamcode.navigation.tasks.Stop;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
 import java.util.ArrayList;
@@ -35,17 +36,19 @@ public class Auto1 extends LinearOpMode {
     private OpenCvWebcam webcam;
     private CVPipeline pipeline;
     private WebcamName webcamName;
+    private Object Spin;
 
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
         //manager.init();
         //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
-        //tasks.add(drive(500, 0, 0.0));
+        tasks.add(drive(1000, 1000, 0.0));
         //tasks.add(new Deposit(barcodeLevel * 100));
         //tasks.add(drive(0, -1000, 0.0));
         //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
         //tasks.add(drive(1000, 0, 0.0));
+        tasks.add(new Stop());
 
         //telemetry.addData("barcode", barcodeLevel);
 
@@ -75,6 +78,10 @@ public class Auto1 extends LinearOpMode {
             }
             public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
             });
+    }
+
+    DriveToPoint drive(double x, double y, double rot) {
+        return new DriveToPoint(new RobotPosition(new Point2D(x, y), rot));
     }
 
     @Override
