@@ -32,6 +32,7 @@ public class Robot extends DriveBase {
     private final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
     private final double DROPPER_NEUTRAL = 0.5;
     private final double DROPPER_BACK = 0.7; //Maybe increase this to 0.6 or so
+    public double DROPPER_CURRENT = 0;
     private final double EXT_OUT = 2500;
     private final double EXT_IN = 0;
 
@@ -135,4 +136,6 @@ public class Robot extends DriveBase {
     public void neutralDropperPosition() {
         dropperServo.setPosition(DROPPER_NEUTRAL);
     }
+
+    public void getDropperPosition() {DROPPER_CURRENT = dropperServo.getPosition();}
 }

@@ -79,7 +79,8 @@ public class MainTele extends LinearOpMode{
             * B: duckspinner
             * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
             * left stick y: both intakes forwards/backwards, hold left stick for slow mode
-            * right stick y: */
+            * right stick y:
+            * L/R BUMPERS: adjust servo negative/positive*/
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
@@ -142,6 +143,19 @@ public class MainTele extends LinearOpMode{
             if(DROP_NEUTRAL){
                 robot.neutralDropperPosition();
             }
+
+            boolean DROP_DECREASE = controller1.left_bumper == Btn.PRESSED;
+            if(DROP_DECREASE){
+                robot.getDropperPosition();
+                robot.dropperServo.setPosition(robot.DROPPER_CURRENT -= 0.05);
+            }
+
+            boolean DROP_INCREASE = controller1.right_bumper == Btn.PRESSED;
+            if(DROP_INCREASE){
+                robot.getDropperPosition();
+                robot.dropperServo.setPosition(robot.DROPPER_CURRENT += 0.05);
+            }
+
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
             boolean SPINNER = controller2.b == Btn.PRESSED;
