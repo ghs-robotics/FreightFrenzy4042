@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
-public class Robot extends DriveBase{
+public class Robot extends DriveBase {
 
     // Robot variables and objects
     //protected double spinnerPower = 0; maybe delete?
@@ -20,7 +20,8 @@ public class Robot extends DriveBase{
     double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
-    public DcMotor intakeMotor;
+    public DcMotor intakeMotorFront;
+    public DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
@@ -28,10 +29,9 @@ public class Robot extends DriveBase{
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_MAX = 0.45; //Maybe increase this to 0.6 or so
-    private final double DROPPER_MIN = 0.3; //Need testing
-    private final double INTAKE_DWN = 0;
-    private final double INTAKE_UP = 0.9;
+    private final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
+    private final double DROPPER_NEUTRAL = 0.5;
+    private final double DROPPER_BACK = 0.7; //Maybe increase this to 0.6 or so
     private final double EXT_OUT = 2500;
     private final double EXT_IN = 0;
 
@@ -40,22 +40,17 @@ public class Robot extends DriveBase{
 
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
-        //spinnerMotor = hardwareMap.get(DcMotor.class, "spinnerMotor");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorFront");
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotorFront = hardwareMap.get(DcMotor.class, "intakeMotorFront");
+        intakeMotorFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotorBack = hardwareMap.get(DcMotor.class, "intakeMotorBack");
+        intakeMotorBack.setDirection(DcMotorSimple.Direction.REVERSE);
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
-       // extenderMotor.setTargetPosition(0);
-       // extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
         spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
-        //spinnerServo = hardwareMap.get(Servo.class, "spinnerServo");
 
 
-        dropperServo.setPosition(DROPPER_MIN);
-        //intakeBucketFlipServo.setPosition(INTAKE_DWN);
-
-        intakeAngle = INTAKE_DWN;
-        dropperAngle = DROPPER_MIN;
+        dropperServo.setPosition(DROPPER_BACK);
     }
 
     /**
@@ -81,6 +76,11 @@ public class Robot extends DriveBase{
         }
     }
 
+    public void moveEntenderTo(int target) {
+        extenderMotor.setTargetPosition(target);
+        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extenderMotor.setPower(1);
+    }
 
     public void setExtenderPower(double power){
 
@@ -105,13 +105,6 @@ public class Robot extends DriveBase{
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
      */
-    public void dropGameElement() {
-        //dropperAngle = (dropperAngle != 0.80 ? 0.80 : 0.35);
-        // Important note: never compare doubles or floats with == or !=, because floating point error
-        boolean dropperIsMax = Math.abs(dropperAngle - DROPPER_MAX) < 0.001;
-        dropperAngle = (dropperIsMax ? DROPPER_MIN : DROPPER_MAX); // toggle
-        dropperServo.setPosition(dropperAngle);
-    }
 
     /* KENNY PLS READ
     //just to clarify, the "bucket" is the part that is responsible for
@@ -122,8 +115,24 @@ public class Robot extends DriveBase{
     //*~INTAKE FUNCTIONS*~//
     //manages up/down positions of intake
 
-    public void setIntakePower(double power){
+    public void setFrontIntakePower(double power){
         intakePower = power;
-        intakeMotor.setPower(intakePower);
+        intakeMotorFront.setPower(intakePower);
+    }
+    public void setBackIntakePower(double power){
+        intakePower = power;
+        intakeMotorBack.setPower(intakePower);
+    }
+
+    public void forwardDropperPosition() {
+        dropperServo.setPosition(DROPPER_FORWARD);
+    }
+
+    public void backDropperPosition() {
+        dropperServo.setPosition(DROPPER_BACK);
+    }
+
+    public void neutralDropperPosition() {
+        dropperServo.setPosition(DROPPER_NEUTRAL);
     }
 }

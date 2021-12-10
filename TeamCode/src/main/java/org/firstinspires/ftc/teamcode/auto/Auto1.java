@@ -26,6 +26,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Autonomous
 public class Auto1 extends LinearOpMode {

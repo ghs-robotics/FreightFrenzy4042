@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.robot_components.input;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 // Our custom controller class that gives us more control (no pun intended)
-public class Controller {
+public class Controller extends Gamepad{
     Gamepad gamepad;
 
     public Btn a;
@@ -37,11 +37,11 @@ public class Controller {
     // Use for each controller in TeleOp
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
-
+        /*
         a = Btn.RELEASED;
         b = Btn.RELEASED;
         x = Btn.RELEASED;
-        y = Btn.RELEASED;
+        y = Btn.RELEASED;*/
         dpad_right = Btn.RELEASED;
         dpad_up = Btn.RELEASED;
         dpad_left = Btn.RELEASED;
@@ -66,6 +66,7 @@ public class Controller {
 
     // Update controller input
     public void update() {
+
         a = check(a, gamepad.a);
         b = check(b, gamepad.b);
         x = check(x, gamepad.x);
