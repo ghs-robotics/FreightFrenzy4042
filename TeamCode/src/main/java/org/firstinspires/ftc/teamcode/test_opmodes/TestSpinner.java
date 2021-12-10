@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
@@ -28,7 +29,7 @@ public class TestSpinner extends LinearOpMode {
         // Code to run ONCE when the driver hits INIT
 //        robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         controller1 = new Controller(gamepad1); // Whoever presses start + a
-        DcMotor spinnerServo = hardwareMap.get(DcMotor.class, "spinnerServo");
+        CRServo spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
         // TODO: what coefficient and radius should this be?
         spinner = new DuckSpinner(spinnerServo, 0.5, .1, telemetry);
 

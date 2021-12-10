@@ -37,20 +37,36 @@ public class SimpleDuckSpinner {
         this.telemetry = telemetry;
     }
 
+    public boolean checkIfRunning() {
+        return isRunning;
+    }
+
     public void startRunningForwards() {
         runtime.reset();
         servoDirection = 1;
         isRunning = true;
+        spinnerServo.setPower(1);
     }
+
+    public double getRuntime() { //Returns runtime in seconds
+        return runtime.seconds();
+    }
+
+    public double getPower() {
+        return spinnerServo.getPower();
+    }
+
     public void startRunningBackwards() {
         runtime.reset();
         servoDirection = -1;
         isRunning = true;
+        spinnerServo.setPower(-1);
     }
     public void stopRunning() {
         runtime.reset();
         servoDirection = 0;
         isRunning = false;
+        spinnerServo.setPower(0);
     }
     /**
      * call this repeatedly to run the spinner
@@ -59,10 +75,10 @@ public class SimpleDuckSpinner {
     public void update() {
         double time = runtime.seconds();
         if(telemetry != null) {
-            telemetry.addData("duck time: ", time);
-            telemetry.addData("duck motor power: ", spinnerServo.getPower());
-            telemetry.addData("Goal motor power: ", SERVO_SPEED * servoDirection);
+            //telemetry.addData("Duck time: ", time);
+            //telemetry.addData("Duck motor power: ", spinnerServo.getPower());
+            //telemetry.addData("Goal motor power: ", SERVO_SPEED * servoDirection);
         }
-        spinnerServo.setPower(SERVO_SPEED * servoDirection);
+        //spinnerServo.setPower(SERVO_SPEED * servoDirection);
     }
 }

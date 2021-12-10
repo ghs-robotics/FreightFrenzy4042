@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.robot_components.robot;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,7 +15,7 @@ import java.util.Optional;
 
 @RequiresApi(api = Build.VERSION_CODES.N) // needed to use Optional (not actually, but android studio complains)
 public class DuckSpinner {
-    DcMotor motor = null;
+    CRServo motor = null;
     double muGSquared;
     double radius;
     double w4r2; //This will be the angular velocity of the spinner ^4 times spinner radius^2
@@ -37,20 +39,18 @@ public class DuckSpinner {
 
     // TODO: SET DIRECTION !!!!
 
-    public DuckSpinner(DcMotor motor, double frictionCoefficient, double radius) {
+    public DuckSpinner(CRServo motor, double frictionCoefficient, double radius) {
         this(motor, frictionCoefficient, radius, null);
     }
 
     public DuckSpinner(
-            DcMotor motor,
+            CRServo motor,
             double frictionCoefficient,
             double radius,
             Telemetry telemetry //,
 //            boolean useEncoders
     ){
         this.motor = motor;
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.muGSquared = Math.pow((frictionCoefficient * G_CONST), 2);
         this.radius = radius;
         this.runtime = new ElapsedTime();
@@ -83,13 +83,22 @@ public class DuckSpinner {
         motor.setPower(0);
         isRunning = false;
     }
-    public double getVelocity() {
+    /*public double getVelocity() {
         long deltaTicks = (motor.getCurrentPosition() - previousTicks);
         double deltaTime = VElapsedTime.seconds() - previousElapsedTime;
         previousTicks = motor.getCurrentPosition();
         previousElapsedTime = VElapsedTime.seconds();
         return (deltaTicks / deltaTime);
+    } */
+
+    public ElapsedTime getRuntime() {
+        return runtime;
     }
+
+    public boolean isPowered() {
+        return isRunning;
+    }
+
 
     /**
      * call this repeatedly to run the spinner
@@ -111,7 +120,7 @@ public class DuckSpinner {
         */
         if (isRunning) {
 
-            motor.setPower(calcPower(calcAccel(getVelocity() * SPINNER_TABLE_RATIO)));
+            //motor.setPower(calcPower(calcAccel(getVelocity() * SPINNER_TABLE_RATIO)));
             return false;
         } else {
             // setting power to zero will make the motor brake and stop

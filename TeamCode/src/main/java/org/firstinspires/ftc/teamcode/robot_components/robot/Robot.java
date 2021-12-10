@@ -64,7 +64,7 @@ public class Robot extends DriveBase{
      * todo what unit of measurement is distance????? Gonna assume that it is in mm
      * @param distance The distance to extend to if retracted.
      */
-    public void toggleExtension(double distance) {
+    public int toggleExtension(double distance) {
 
         int currentTicks = extenderMotor.getCurrentPosition();
         boolean isExtended = currentTicks > 5 || currentTicks < -5;
@@ -79,6 +79,7 @@ public class Robot extends DriveBase{
             );
             extenderMotor.setTargetPosition(targetTicks);
         }
+        return currentTicks;
     }
 
 
@@ -101,6 +102,13 @@ public class Robot extends DriveBase{
         extenderMotor.setPower(extenderPower);
     }
 
+    public boolean dropperIsMax() { //return a number between 0 and 1
+        return Math.abs(dropperServo.getPosition() - DROPPER_MAX) < 0.1;
+    }
+
+    public boolean dropperIsMin() {
+        return Math.abs(dropperServo.getPosition() - DROPPER_MIN) < 0.1;
+    }
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
