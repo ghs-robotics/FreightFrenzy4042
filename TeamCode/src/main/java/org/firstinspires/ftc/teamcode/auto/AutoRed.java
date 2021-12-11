@@ -54,7 +54,9 @@ public class AutoRed extends LinearOpMode {
         //manager.init();
         //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
         tasks.add(new Deposit());
-        tasks.add(drive(-1200, -1200, 0.0));
+        //tasks.add(drive(1500, 1500, 0.0));
+        //tasks.add(new DuckSpin(robot, -1));
+        tasks.add(drive(-1500, -1500, 0.0));
 
         /*tasks.add(drive(1000, 1000, 0.0));
         tasks.add(new DuckSpin(robot, -1)); //Forwards = 1, backwards = -1

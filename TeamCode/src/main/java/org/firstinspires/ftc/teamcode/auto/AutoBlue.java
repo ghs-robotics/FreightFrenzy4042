@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.cv_objects.CVManager;
 import org.firstinspires.ftc.teamcode.cv_objects.CVPipeline;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
 import org.firstinspires.ftc.teamcode.navigation.Point2D;
@@ -42,28 +43,21 @@ public class AutoBlue extends LinearOpMode {
     // Declare OpMode members
     private Robot robot;
     private AutoController autoController = new AutoController(); //had to do context actions and get rid of a parameter in order for the code to build
-    private OpenCvWebcam webcam;
-    private CVPipeline pipeline;
-    private WebcamName webcamName;
+    private CVManager manager;
     private Object Spin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //manager.init();
-        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        /*manager.init();
+        int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        manager.cameraTelemetry();
+        tasks.add(new Deposit(barcodeLevel)); */
         tasks.add(new Deposit());
-        tasks.add(drive(1200, 1200, 0.0));
-
-        /*tasks.add(drive(1000, 1000, 0.0));
-        tasks.add(new DuckSpin(robot, -1)); //Forwards = 1, backwards = -1
-        tasks.add(drive(-1000, -1000, 0.0)); */
-        //tasks.add(drive(0, 0, 0.0));
         //tasks.add(new Deposit(barcodeLevel * 100));
-        //tasks.add(drive(0, -1000, 0.0));
-        //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
-        //tasks.add(drive(1000, 0, 0.0));
+        tasks.add(drive(1500, 1500, 0.0));
+
         tasks.add(new Stop());
 
         //telemetry.addData("barcode", barcodeLevel);
@@ -72,28 +66,6 @@ public class AutoBlue extends LinearOpMode {
         telemetry.update();
         autoController.setTasks(tasks);
         autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
-    }
-
-//TODO idk if the camera should be initialized here
-    public void initializeCV() {
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
-        pipeline= new CVPipeline();
-        final OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                waitForStart();
-                while(opModeIsActive()){
-                    camera.setPipeline(pipeline);
-                    camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
-                    // Usually this is where you'll want to start streaming from the camera (see section 4)
-                }
-            }
-            public void onError(int errorCode) {/* This will be called if the camera could not be opened*/}
-            });
     }
 
     DriveToPoint drive(double x, double y, double rot) {
@@ -105,17 +77,16 @@ public class AutoBlue extends LinearOpMode {
     public void runOpMode()
     {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
-        //initializeCV();
         waitForStart();
         autoController = new AutoController(hardwareMap, telemetry,robot);
         robot.elapsedTime.reset();
+        manager = new CVManager(hardwareMap, telemetry);
+        manager.startCamera();
         initializeTasks();
 
 
         while(opModeIsActive()){
-            //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
-            //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
-            //telemetry.addData("Ducks", pipeline.returnResultsDucks());
+            manager.cameraTelemetry();
             telemetry.update();
             autoController.update();
         }

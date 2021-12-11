@@ -20,9 +20,17 @@ public class Deposit implements Task {
     private double targetDist;
     private double initialTime;
 
-    private final double TICKSTODIST = 0.09363; //Multiply by this to convert from ticks to mm
+    //private final double TICKSTODIST = 0.09363; //Multiply by this to convert from ticks to mm
+    private static final double FULLY_RETRACTED = -10;
+    private static final double FULLY_EXTENDED = -3700;
+    private static final double ERROR_MARGIN = 50;
+    private static final double EXTENDED_WAIT_TIME = 3; //In seconds
 
-    public Deposit() { //Full extension dist = 300
+    public Deposit() {
+        this(FULLY_EXTENDED);
+    }
+
+    public Deposit(double targetDist) { //Full extension = -3700
         extended = false;
         dropped = false;
         lifted = false;
@@ -35,9 +43,9 @@ public class Deposit implements Task {
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
         if (!extended) {
-            double extendedDist = robot.moveEntenderTo(-3700);
+            double extendedDist = robot.moveEntenderTo((int)(targetDist));
             robot.neutralDropperPosition();
-            if (Math.abs(extendedDist + 3700) < 50) {
+            if (Math.abs(extendedDist - targetDist) < ERROR_MARGIN) {
                 extended = true;
             }
         } else if (!dropped) {
@@ -45,9 +53,9 @@ public class Deposit implements Task {
             initialTime = robot.elapsedSecs();
             dropped = true;
         }
-        if ((robot.elapsedSecs() - initialTime) > 3) {
-            double extendedDist = robot.moveEntenderTo(-10);
-            if (Math.abs(extendedDist + 10) < 50) {
+        if ((robot.elapsedSecs() - initialTime) > EXTENDED_WAIT_TIME) {
+            double extendedDist = robot.moveEntenderTo((int)FULLY_RETRACTED);
+            if (Math.abs(extendedDist - FULLY_RETRACTED) < ERROR_MARGIN) {
                 returned = true;
             }
         }

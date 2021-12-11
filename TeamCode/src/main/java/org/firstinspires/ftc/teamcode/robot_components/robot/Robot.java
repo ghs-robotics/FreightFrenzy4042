@@ -128,7 +128,7 @@ public class Robot extends DriveBase {
         intakeMotorBack.setPower(intakePower);
     }
     public void setSpinnerPower(double power){
-        spinnerPower = power * 0.5;
+        spinnerPower = power;
         spinnerMotor.setPower(spinnerPower);
     }
 
