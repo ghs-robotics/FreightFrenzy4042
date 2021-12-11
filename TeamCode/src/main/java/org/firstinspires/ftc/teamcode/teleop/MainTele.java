@@ -159,13 +159,15 @@ public class MainTele extends LinearOpMode{
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
             /*boolean SPINNER = controller2.b == Btn.PRESSED;*/
-            robot.spinnerServo.setPower(controller2.right_trigger);
+            //robot.spinnerServo.setPower(controller2.right_trigger);
+
             /*if(SPINNER) {
                 robot.spinnerServo.setPower(1);
             } else {
                 robot.spinnerServo.setPower(0);
             }
             telemetry.addData("b", SPINNER); */
+            robot.setSpinnerPower(controller2.right_trigger);
             telemetry.addData("right trigger", controller2.right_trigger);
             telemetry.addData("spinner power", robot.spinnerServo.getPower());
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());

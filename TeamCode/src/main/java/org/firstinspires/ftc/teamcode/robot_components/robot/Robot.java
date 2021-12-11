@@ -16,6 +16,7 @@ public class Robot extends DriveBase {
     //protected double spinnerPower = 0; maybe delete?
     protected double intakePower = 0;
     protected double extenderPower = 0;
+    protected double spinnerPower = 0;
     double dropperAngle;
     double intakeAngle;
     //public CRServo intakeCRServo;
@@ -123,6 +124,10 @@ public class Robot extends DriveBase {
     public void setBackIntakePower(double power){
         intakePower = power;
         intakeMotorBack.setPower(intakePower);
+    }
+    public void setSpinnerPower(double power){
+        spinnerPower = power * 0.5;
+        spinnerMotor.setPower(spinnerPower);
     }
 
     public void forwardDropperPosition() {
