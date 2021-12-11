@@ -66,7 +66,13 @@ public class AutoController {
         boolean done = currentTask.update(currentPosition, robot);
         //telemetry.addData("Done?", done);
         //telemetry.update();
-        if (done) switchToNextTask();
+        if (done) {
+            if (currentTaskIdx + 1 <= tasks.size()) {
+                switchToNextTask();
+            } else {
+                return true;
+            }
+        }
         return false;
     }
 
