@@ -88,7 +88,7 @@ public class MainTele extends LinearOpMode{
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
-                    robot.moveEntenderTo(-3700);
+                    robot.moveEntenderTo(-3750);
                     robot.neutralDropperPosition();
                 } else {
                     robot.moveEntenderTo(-10);
@@ -168,6 +168,7 @@ public class MainTele extends LinearOpMode{
             }
             telemetry.addData("b", SPINNER); */
             robot.setSpinnerPower(controller2.right_trigger);
+            robot.setSpinnerPower(-1 * controller2.left_trigger);
             telemetry.addData("right trigger", controller2.right_trigger);
             telemetry.addData("spinner power", robot.spinnerServo.getPower());
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());

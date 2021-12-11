@@ -30,7 +30,7 @@ public class TestSpinner extends LinearOpMode {
         controller1 = new Controller(gamepad1); // Whoever presses start + a
         DcMotor spinnerServo = hardwareMap.get(DcMotor.class, "spinnerServo");
         // TODO: what coefficient and radius should this be?
-        spinner = new DuckSpinner(spinnerServo, 0.5, .1, telemetry);
+        //spinner = new DuckSpinner(spinnerServo, 0.5, .1, telemetry, robot);
 
 //        robot;
 

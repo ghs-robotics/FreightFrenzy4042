@@ -18,7 +18,7 @@ public class DuckSpinner {
     double radius;
     double w4r2; //This will be the angular velocity of the spinner ^4 times spinner radius^2
     private ElapsedTime runtime = null;
-    private Optional<Telemetry> telemetry; // used to log power if not null
+    private Telemetry telemetry; // used toa log power if not null
                                            // Optional<e> prevents NullReferenceExceptions
     private boolean isRunning = false;
 //    private boolean useEncoder = false;
@@ -33,19 +33,22 @@ public class DuckSpinner {
     double previousElapsedTime = 0;
     double SPINNER_TABLE_RATIO = 8; //Ratio between the spinner radius and table radius
     private ElapsedTime VElapsedTime;
+    private double startTime;
+    private Robot robot;
 
 
     // TODO: SET DIRECTION !!!!
 
-    public DuckSpinner(DcMotor motor, double frictionCoefficient, double radius) {
-        this(motor, frictionCoefficient, radius, null);
+    public DuckSpinner(DcMotor motor, double frictionCoefficient, double radius, Robot robot) {
+        this(motor, frictionCoefficient, radius, null, robot);
     }
 
     public DuckSpinner(
             DcMotor motor,
             double frictionCoefficient,
             double radius,
-            Telemetry telemetry //,
+            Telemetry telemetry,
+            Robot robot//,
 //            boolean useEncoders
     ){
         this.motor = motor;
@@ -54,6 +57,9 @@ public class DuckSpinner {
         this.muGSquared = Math.pow((frictionCoefficient * G_CONST), 2);
         this.radius = radius;
         this.runtime = new ElapsedTime();
+        this.telemetry = telemetry;
+        this.startTime = 0;
+        this.robot = robot;
         //this.telemetry = Optional.ofNullable(telemetry);
 
 //        this.useEncoder = useEncoders;
@@ -76,6 +82,7 @@ public class DuckSpinner {
 
     public void startRunning() {
         runtime.reset();
+        startTime = robot.elapsedSecs();
         isRunning = true;
     }
 
@@ -83,13 +90,22 @@ public class DuckSpinner {
         motor.setPower(0);
         isRunning = false;
     }
-    public double getVelocity() {
+
+    public double getRuntime() {
+        return robot.elapsedSecs() - startTime;
+    }
+
+    public boolean isPowered() {
+        return isRunning;
+    }
+
+    /*(public double getVelocity() {
         long deltaTicks = (motor.getCurrentPosition() - previousTicks);
         double deltaTime = VElapsedTime.seconds() - previousElapsedTime;
         previousTicks = motor.getCurrentPosition();
         previousElapsedTime = VElapsedTime.seconds();
         return (deltaTicks / deltaTime);
-    }
+    } */
 
     /**
      * call this repeatedly to run the spinner
@@ -97,7 +113,7 @@ public class DuckSpinner {
      */
 
     public boolean update() {
-        double time = runtime.seconds();
+        //double time = runtime.seconds();
         /*
         telemetry.ifPresent(telemetry1 -> { // if telemetry is null nothing will happen
             telemetry1.addData("duck time", time);
@@ -109,9 +125,11 @@ public class DuckSpinner {
             }
         });
         */
+        telemetry.addData("runtime: ", runtime.seconds());
+        telemetry.update();
         if (isRunning) {
 
-            motor.setPower(calcPower(calcAccel(getVelocity() * SPINNER_TABLE_RATIO)));
+            motor.setPower(1);
             return false;
         } else {
             // setting power to zero will make the motor brake and stop

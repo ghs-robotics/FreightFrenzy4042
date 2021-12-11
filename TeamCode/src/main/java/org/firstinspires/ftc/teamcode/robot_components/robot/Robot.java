@@ -79,10 +79,11 @@ public class Robot extends DriveBase {
         }
     }
 
-    public void moveEntenderTo(int target) {
+    public double moveEntenderTo(int target) {
         extenderMotor.setTargetPosition(target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);
+        return extenderMotor.getCurrentPosition();
     }
 
     public void setExtenderPower(double power){
