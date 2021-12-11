@@ -51,13 +51,14 @@ public class DriveToPoint implements Task {
 
         telemetry.update();
 
-        double startSlowing = 0.58823529 * totalDistance; //Error at which slow should start to happen
+        //double startSlowing = 0.58823529 * totalDistance; //Error at which slow should start to happen
         //This ^ number should be 588.23529 for 1000m total distance
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
-        Point2D errorPID = error.scale(1/startSlowing).exponent(4); //At 1000mm, 0.00170 and 4
-        errorPID.x *= (error.x / Math.abs(error.x));
-        errorPID.y *= (error.y / Math.abs(error.y));
+        Point2D errorPID = error;
+        //Point2D errorPID = error.scale(1/startSlowing).exponent(4); //At 1000mm, 0.00170 and 4
+        //errorPID.x *= (error.x / Math.abs(error.x));
+        //errorPID.y *= (error.y / Math.abs(error.y));
         //0.00145 = 0.93, 0.00150 = 0.96, 0.00160 = 0.98
 
         double rotError = targetPosition.rotation - currentPosition.rotation;
@@ -71,10 +72,10 @@ public class DriveToPoint implements Task {
 
         if (!arrived) {
             robot.calculateDrivePowersOffset(Math.max(-1, Math.min(1, errorPID.x)),
-                    Math.max(-1, Math.min(1, errorPID.y)), Math.max(-1, Math.min(1, rotErrorPID)), 120);
+                    Math.max(-1, Math.min(1, errorPID.y)), Math.max(-1, Math.min(1, rotErrorPID)), 45);
             robot.sendDrivePowers();
         } else {
-            robot.calculateDrivePowersOffset(0, 0, 0, 120);
+            robot.calculateDrivePowersOffset(0, 0, 0, 130);
             robot.sendDrivePowers();
         }
 

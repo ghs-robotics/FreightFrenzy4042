@@ -143,7 +143,7 @@ public class MainTele extends LinearOpMode{
             if(DROP){
                 robot.dropperServo.setPosition(((controller2.right_stick_y)+1)/2);
             }else {
-                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.right_stick_y) + 1) / 2, 0.7), 0.3));
+                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.right_stick_y) + 1) / 2, 0.76), 0.3));
             }
             telemetry.addData( "right stick pressed", controller2.right_stick_button == Btn.PRESSED);
 

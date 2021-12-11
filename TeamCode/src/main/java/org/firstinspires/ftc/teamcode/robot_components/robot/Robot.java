@@ -50,6 +50,7 @@ public class Robot extends DriveBase {
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
         spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
+        spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
 
 
         dropperServo.setPosition(DROPPER_BACK);

@@ -47,6 +47,8 @@ public class Auto1 extends LinearOpMode {
         //manager.init();
         //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
         tasks.add(drive(1000, 1000, 0.0));
+        //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
+        tasks.add(drive(-1000, -1000, 0.0));
         //tasks.add(drive(0, 0, 0.0));
         //tasks.add(new Deposit(barcodeLevel * 100));
         //tasks.add(drive(0, -1000, 0.0));

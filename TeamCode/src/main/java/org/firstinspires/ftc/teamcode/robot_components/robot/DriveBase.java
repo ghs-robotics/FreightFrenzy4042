@@ -113,6 +113,7 @@ public class DriveBase {
     }
 
     public void calculateDrivePowersOffset(double x, double y, double r, double offset) {
+        offset = Math.toRadians(offset);
         x = x * Math.cos(offset) - y * Math.sin(offset);
         y = x * Math.sin(offset) + y * Math.cos(offset);
 
@@ -122,6 +123,11 @@ public class DriveBase {
         leftFrontPower = autoSpeed * (y + x - r);
         leftRearPower = autoSpeed * (y - x - r);
         rightRearPower = autoSpeed * (y + x + r);
+        /*telemetry.addData("lf", leftFrontPower);
+        telemetry.addData("lr", leftRearPower);
+        telemetry.addData("rf", rightFrontPower);
+        telemetry.addData("rr", rightRearPower);
+        telemetry.update(); */
     }
 
     // Returns how many seconds have passed since the timer was last reset
