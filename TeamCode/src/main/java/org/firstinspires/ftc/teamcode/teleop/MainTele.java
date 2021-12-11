@@ -79,8 +79,8 @@ public class MainTele extends LinearOpMode{
             * B: duckspinner
             * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
             * left stick y: both intakes forwards/backwards, hold left stick for slow mode
-            * right stick y:
-            * L/R BUMPERS: adjust servo negative/positive*/
+            * right stick y: change dropper position, up = back, dwn = fwds
+            * L/R BUMPERS: set servo pos*/
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
@@ -115,7 +115,7 @@ public class MainTele extends LinearOpMode{
             //front intake
             if(FRONT_INTAKE) {
                 robot.setFrontIntakePower(0.9);
-                robot.forwardDropperPosition();
+                robot.backDropperPosition();
             } else {
                 robot.setFrontIntakePower(0);
             }
@@ -123,12 +123,12 @@ public class MainTele extends LinearOpMode{
             //back intake
             if(BACK_INTAKE) {
                 robot.setBackIntakePower(0.9);
-                robot.backDropperPosition();
+                robot.forwardDropperPosition();
             } else {
                 robot.setBackIntakePower(0);
             }
 
-            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSED;
+            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
             if(TOGGLE_INTAKE_SPEED) {
                 robot.setBackIntakePower(controller2.left_stick_y*0.1);
                 robot.setFrontIntakePower(controller2.left_stick_y*0.1);
@@ -144,16 +144,15 @@ public class MainTele extends LinearOpMode{
                 robot.neutralDropperPosition();
             }
 
-            boolean DROP_DECREASE = controller1.left_bumper == Btn.PRESSED;
-            if(DROP_DECREASE){
-                robot.getDropperPosition();
-                robot.dropperServo.setPosition(robot.DROPPER_CURRENT -= 0.05);
-            }
+            robot.dropperServo.setPosition(((-1 * controller2.right_stick_y)+1)/2);
 
-            boolean DROP_INCREASE = controller1.right_bumper == Btn.PRESSED;
-            if(DROP_INCREASE){
-                robot.getDropperPosition();
-                robot.dropperServo.setPosition(robot.DROPPER_CURRENT += 0.05);
+            boolean DROP_BACK = controller1.left_bumper == Btn.PRESSED;
+            if(DROP_BACK){
+                robot.backDropperPosition();
+            }
+            boolean DROP_FORWARD = controller1.right_bumper == Btn.PRESSED;
+            if(DROP_FORWARD){
+                robot.forwardDropperPosition();
             }
 
             //there is a delay between when you press the button and the servo starts spinning

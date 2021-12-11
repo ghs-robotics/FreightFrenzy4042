@@ -137,5 +137,4 @@ public class Robot extends DriveBase {
         dropperServo.setPosition(DROPPER_NEUTRAL);
     }
 
-    public void getDropperPosition() {DROPPER_CURRENT = dropperServo.getPosition();}
 }
