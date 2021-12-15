@@ -20,6 +20,8 @@ public class MainTele extends LinearOpMode{
 
     private boolean extended = true;
 
+    private final double INTAKE_POWER = 0.9;
+
     @Override
     public void runOpMode() {
 
@@ -88,10 +90,10 @@ public class MainTele extends LinearOpMode{
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
-                    robot.moveEntenderTo(-3750);
+                    robot.moveEntenderTo((int)Robot.EXT_OUT);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
@@ -100,10 +102,10 @@ public class MainTele extends LinearOpMode{
             //extends the arm to the low goal
             if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
-                    robot.moveEntenderTo(-1500);
+                    robot.moveEntenderTo((int)Robot.EXT_LOW);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
@@ -114,7 +116,7 @@ public class MainTele extends LinearOpMode{
 
             //front intake
             if(FRONT_INTAKE) {
-                robot.setFrontIntakePower(0.9);
+                robot.setFrontIntakePower(INTAKE_POWER);
                 robot.backDropperPosition();
             } else {
                 robot.setFrontIntakePower(0);
@@ -122,7 +124,7 @@ public class MainTele extends LinearOpMode{
 
             //back intake
             if(BACK_INTAKE) {
-                robot.setBackIntakePower(0.9);
+                robot.setBackIntakePower(INTAKE_POWER);
                 robot.forwardDropperPosition();
             } else {
                 robot.setBackIntakePower(0);
@@ -143,7 +145,8 @@ public class MainTele extends LinearOpMode{
             if(DROP){
                 robot.dropperServo.setPosition(((controller2.right_stick_y)+1)/2);
             }else {
-                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.right_stick_y) + 1) / 2, 0.76), 0.3));
+                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.right_stick_y) + 1) / 2,
+                        Robot.DROPPER_BACK), Robot.DROPPER_FORWARD));
             }
             telemetry.addData( "right stick pressed", controller2.right_stick_button == Btn.PRESSED);
 

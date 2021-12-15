@@ -30,12 +30,13 @@ public class Robot extends DriveBase {
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
-    private final double DROPPER_NEUTRAL = 0.5;
-    private final double DROPPER_BACK = 0.7; //Maybe increase this to 0.6 or so
+    public static final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
+    public static final double DROPPER_NEUTRAL = 0.5;
+    public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
     public double DROPPER_CURRENT = 0;
-    private final double EXT_OUT = 2500;
-    private final double EXT_IN = 0;
+    public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
+    public static final double EXT_LOW = -1500;
+    public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
