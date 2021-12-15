@@ -43,7 +43,7 @@ public class AutoBlue extends LinearOpMode {
     // Declare OpMode members
     private Robot robot;
     private AutoController autoController = new AutoController(); //had to do context actions and get rid of a parameter in order for the code to build
-    private CVManager manager;
+    //private CVManager manager;
     private Object Spin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -56,7 +56,7 @@ public class AutoBlue extends LinearOpMode {
         tasks.add(new Deposit(barcodeLevel)); */
         tasks.add(new Deposit());
         //tasks.add(new Deposit(barcodeLevel * 100));
-        tasks.add(drive(1500, 1500, 0.0));
+        tasks.add(drive(1364, 1364, 0.0));
 
         tasks.add(new Stop());
 
@@ -80,13 +80,12 @@ public class AutoBlue extends LinearOpMode {
         waitForStart();
         autoController = new AutoController(hardwareMap, telemetry,robot);
         robot.elapsedTime.reset();
-        manager = new CVManager(hardwareMap, telemetry);
-        manager.startCamera();
+        //manager = new CVManager(hardwareMap, telemetry);
+        //manager.startCamera();
         initializeTasks();
 
-
         while(opModeIsActive()){
-            manager.cameraTelemetry();
+            //manager.cameraTelemetry();
             telemetry.update();
             autoController.update();
         }

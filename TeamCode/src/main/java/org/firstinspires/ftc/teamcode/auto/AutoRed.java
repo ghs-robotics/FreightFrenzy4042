@@ -113,7 +113,6 @@ public class AutoRed extends LinearOpMode {
         robot.elapsedTime.reset();
         initializeTasks();
 
-
         while(opModeIsActive()){
             //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
