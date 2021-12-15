@@ -91,38 +91,36 @@ public class DriveBase {
         telemetry.update();
     }
 
-    // Turns the robot to a desired target angle (if called repeatedly)
-    public void adjustAngle() {
-        calculateDrivePowers(0, 0, getGyroPIDValue());
-        sendDrivePowers();
-    }
-
     // Returns true if any of the drive motors are running
     public boolean driveMotorsRunning() {
         return (leftFrontPower != 0 || rightFrontPower != 0 || leftRearPower != 0 || rightRearPower != 0);
     }
 
     // Calculates powers for mecanum wheel drive
-    public void calculateDrivePowers(double x, double y, double r) {
+    public void calculateDrivePowers(double x, double y, double r, boolean isAuto) {
         r = -r;
+
+        double multiplier = isAuto ? autoSpeed : speed; // use autospeed if isAuto else use speed
     // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
-        rightFrontPower = speed * (y - x + r);
-        leftFrontPower = speed * (y + x - r);
-        leftRearPower = speed * (y - x - r);
-        rightRearPower = speed * (y + x + r);
+        rightFrontPower = multiplier * (y - x + r);
+        leftFrontPower = multiplier * (y + x - r);
+        leftRearPower = multiplier * (y - x - r);
+        rightRearPower = multiplier * (y + x + r);
     }
 
-    public void calculateDrivePowersOffset(double x, double y, double r, double offset) {
+    public void calculateDrivePowersOffset(double x, double y, double r, double offset, boolean isAuto) {
         offset = Math.toRadians(offset);
         x = x * Math.cos(offset) - y * Math.sin(offset);
         y = x * Math.sin(offset) + y * Math.cos(offset);
 
+        double multiplier = isAuto ? autoSpeed : speed; // use autospeed if isAuto else use speed
+
         r = -r;
         // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
-        rightFrontPower = autoSpeed * (y - x + r);
-        leftFrontPower = autoSpeed * (y + x - r);
-        leftRearPower = autoSpeed * (y - x - r);
-        rightRearPower = autoSpeed * (y + x + r);
+        rightFrontPower = multiplier * (y - x + r);
+        leftFrontPower = multiplier * (y + x - r);
+        leftRearPower = multiplier * (y - x - r);
+        rightRearPower = multiplier * (y + x + r);
         /*telemetry.addData("lf", leftFrontPower);
         telemetry.addData("lr", leftRearPower);
         telemetry.addData("rf", rightFrontPower);
@@ -172,29 +170,6 @@ public class DriveBase {
         return -gyroPID.calcVal(getGyroError());
     }
 
-
-
-    // Hardcoded movement based on time
-    public void move(double x, double y, double seconds) {
-        move(x, y, seconds, false);
-    }
-
-    // Hardcoded movement based on time; if gyro is true, the robot will maintain it's current angle
-    public void move(double x, double y, double seconds, boolean gyro) {
-        if (gyro) {
-            double t = elapsedSecs();
-            while (elapsedSecs() - t < seconds) {
-                calculateDrivePowers(x, y, getGyroPIDValue());
-                sendDrivePowers();
-            }
-        } else {
-            calculateDrivePowers(x, y, 0);
-            sendDrivePowers();
-            wait(seconds);
-        }
-        stopDrive();
-    }
-
     // Resets the timer
     public void resetElapsedTime() {
         elapsedTime.reset();
@@ -205,36 +180,12 @@ public class DriveBase {
         gyro.resetAngle();
     }
 
-    // Makes the robot rotate to a certain angle
-    // maxFineTuning is the max number of seconds the robot can spend fine tuning to the correct angle
-    public void rotateToPos(double angle, double maxFineTuning) {
-        setTargetGyroAngle(angle);
-        gyroPID.resetValues();
-        double t = elapsedSecs();
-        while(getAbsoluteGyroError() > 5 && elapsedTime.seconds() - t < 5) {
-            adjustAngle();
-        }
-        t = elapsedSecs();
-        gyroPID.resetValues();
-        while ((getAbsoluteGyroError() > 1)
-                && elapsedTime.seconds() - t < maxFineTuning) {
-            adjustAngle();
-        }
-        stopDrive();
-    }
-
     // Sends power to drive motors
     public void sendDrivePowers() {
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);
         leftRearDrive.setPower(leftRearPower);
         rightRearDrive.setPower(rightRearPower);
-    }
-
-    // Sends specific driver powers to drive motors
-    public void sendDrivePowers(double x, double y, double rot) {
-        calculateDrivePowers(x, y, rot);
-        sendDrivePowers();
     }
 
     // Sets speed to desired value
@@ -249,7 +200,8 @@ public class DriveBase {
 
     // Makes the robot stop driving
     public void stopDrive() {
-        sendDrivePowers(0, 0, 0);
+        calculateDrivePowersOffset(0, 0, 0, 0, false);
+        sendDrivePowers();
     }
 
     // Toggles the drive speed between 60% and normal
