@@ -45,7 +45,6 @@ public class AutoRed extends LinearOpMode {
     private OpenCvWebcam webcam;
     private CVPipeline pipeline;
     private WebcamName webcamName;
-    private Object Spin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initializeTasks() {
