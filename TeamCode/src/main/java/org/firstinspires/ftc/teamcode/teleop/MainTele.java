@@ -18,7 +18,7 @@ public class MainTele extends LinearOpMode{
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
 
-    private boolean extended = true;
+    private boolean extended = false;
 
     @Override
     public void runOpMode() {
@@ -82,8 +82,10 @@ public class MainTele extends LinearOpMode{
                 if(shouldGoToHigh) {
                     robot.moveEntenderTo(-3700);
                     robot.neutralDropperPosition();
+                    extended = true;
                 } else {
                     robot.moveEntenderTo(-10);
+                    extended = false;
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
@@ -94,8 +96,10 @@ public class MainTele extends LinearOpMode{
                 if(shouldGoToLow) {
                     robot.moveEntenderTo(-1500);
                     robot.neutralDropperPosition();
+                    extended = true;
                 } else {
                     robot.moveEntenderTo(-10);
+                    extended = false;
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
@@ -106,6 +110,9 @@ public class MainTele extends LinearOpMode{
             //front intake
             //run intake based on how strong the right trigger is pressed
             if(FRONT_INTAKE) {
+                if(extended){
+                    robot.moveEntenderTo(-10);
+                }
                 robot.setFrontIntakePower(0.9);
                 robot.forwardDropperPosition();
             } else {
@@ -114,6 +121,9 @@ public class MainTele extends LinearOpMode{
 
             //back intake
             if(BACK_INTAKE) {
+                if(extended){
+                    robot.moveEntenderTo(-10);
+                }
                 robot.setBackIntakePower(0.9);
                 robot.backDropperPosition();
             } else {
