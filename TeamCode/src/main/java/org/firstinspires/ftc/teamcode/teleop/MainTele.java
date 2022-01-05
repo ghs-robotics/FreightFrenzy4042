@@ -167,6 +167,7 @@ public class MainTele extends LinearOpMode{
                 robot.spinnerServo.setPower(0);
             }
             telemetry.addData("b", SPINNER); */
+            robot.setSpinnerPower(controller2.left_trigger);
             robot.setSpinnerPower(controller2.right_trigger);
             telemetry.addData("right trigger", controller2.right_trigger);
             telemetry.addData("spinner power", robot.spinnerServo.getPower());

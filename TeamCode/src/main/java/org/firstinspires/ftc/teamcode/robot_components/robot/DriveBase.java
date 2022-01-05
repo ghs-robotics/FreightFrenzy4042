@@ -104,7 +104,8 @@ public class DriveBase {
     // Calculates powers for mecanum wheel drive
     public void calculateDrivePowers(double x, double y, double r) {
         r = -r;
-    // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
+    // set motor powers, assumed that positive power = forwards motion for wheel,
+        // there's often a motor.reverse() function to help with this
         rightFrontPower = (y - x + r);
         leftFrontPower = (y + x - r);
         leftRearPower = (y - x - r);
