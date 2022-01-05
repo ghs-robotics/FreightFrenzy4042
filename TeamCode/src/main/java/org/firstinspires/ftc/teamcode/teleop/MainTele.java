@@ -111,6 +111,7 @@ public class MainTele extends LinearOpMode{
             //toggle between slow and fast by left joysick pressed OR by left joystick held
             boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
             boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
+            boolean dropperPosDone = true;
 
             //front intake
             if(FRONT_INTAKE) {
@@ -136,6 +137,19 @@ public class MainTele extends LinearOpMode{
                 robot.setFrontIntakePower(controller2.left_stick_y);
                 robot.setBackIntakePower(controller2.left_stick_y);
             }
+
+            if(controller2.left_stick_x > 0) {
+                robot.setFrontIntakePower(controller2.left_stick_x);
+                robot.setBackIntakePower(-controller2.left_stick_x);
+                robot.forwardDropperPosition();
+            }else if(controller2.left_stick_x < 0) {
+                robot.setFrontIntakePower(controller2.left_stick_x);
+                robot.setBackIntakePower(-controller2.left_stick_x);
+                robot.backDropperPosition();
+            }else if(controller2.left_stick_x == 0) {
+                robot.neutralDropperPosition();
+            }
+
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
