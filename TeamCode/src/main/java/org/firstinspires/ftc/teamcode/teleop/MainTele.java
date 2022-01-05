@@ -1,15 +1,10 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robot_components.input.Btn;
 import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
-import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
-import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @TeleOp(name="MainTele", group="Iterative Opmode")
@@ -132,12 +127,12 @@ public class MainTele extends LinearOpMode {
 
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
-            boolean SPINNER = controller2.b == Btn.PRESSED;
 
-            if(SPINNER) {
-                robot.spinnerServo.setPower(1);
+
+            if(gamepad2.b) {
+                robot.spinnerServoRed.setPower(1);
             } else {
-                robot.spinnerServo.setPower(0);
+                robot.spinnerServoRed.setPower(0);
             }
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 

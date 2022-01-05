@@ -26,7 +26,8 @@ public class Robot extends DriveBase {
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
-    public CRServo spinnerServo;
+    public CRServo spinnerServoRed;
+    public CRServo spinnerServoBlue;
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
@@ -49,7 +50,8 @@ public class Robot extends DriveBase {
         extenderMotor = hardwareMap.get(DcMotorEx.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
-        spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
+        spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
+        spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
 
 
         dropperServo.setPosition(DROPPER_BACK);

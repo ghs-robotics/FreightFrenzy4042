@@ -163,9 +163,9 @@ public class TestTele extends OpMode {
         boolean SPINNER = controller2.b == Btn.PRESSED;
 
         if(SPINNER) {
-            robot.spinnerServo.setPower(1);
+            robot.spinnerServoRed.setPower(1);
         } else {
-            robot.spinnerServo.setPower(0);
+            robot.spinnerServoRed.setPower(0);
         }
         telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
