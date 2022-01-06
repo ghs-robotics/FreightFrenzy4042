@@ -59,7 +59,7 @@ public class Controller extends Gamepad{
         left_stick_x = 0;
         left_stick_y = 0;
         right_stick_x = 0;
-        right_stick_y = 0;
+        left_stick_x = 0;
         left_trigger = 0;
         right_trigger = 0;
     }
@@ -94,7 +94,7 @@ public class Controller extends Gamepad{
         left_stick_y = -gamepad.left_stick_y;
 
         right_stick_x = gamepad.right_stick_x;
-        right_stick_y = -gamepad.right_stick_y;
+        left_stick_x = -gamepad.right_stick_y;
 
         left_trigger  = gamepad.left_trigger;
         right_trigger = gamepad.right_trigger;
@@ -121,6 +121,6 @@ public class Controller extends Gamepad{
 
     // Returns true if any of the joysticks are being applied
     public boolean joyStickApplied() {
-        return (right_stick_x != 0 || right_stick_y != 0 || left_stick_x != 0 || left_stick_y != 0);
+        return (right_stick_x != 0 || left_stick_x != 0 || left_stick_x != 0 || left_stick_y != 0);
     }
 }
