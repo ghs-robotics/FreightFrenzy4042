@@ -19,6 +19,11 @@ public class DriveBase {
     protected double leftRearPower = 0;
     protected double rightRearPower = 0;
 
+    private final double LFM = 0.95;
+    private final double RFM = 0.95;
+    private final double LRM = 1;
+    private final double RRM = 0.95;
+
     protected double batteryVoltage;
 
     // Drive speed ranges from 0 to 1
@@ -108,8 +113,8 @@ public class DriveBase {
     // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
         rightFrontPower = speed * (y - x + r);
         leftFrontPower = speed * (y + x - r);
-        leftRearPower = speed * (y - x - r);
-        rightRearPower = speed * (y + x + r);
+        leftRearPower = -1 * speed * (y - x - r);
+        rightRearPower = -1 * speed * (y + x + r);
     }
 
     public void calculateDrivePowersOffset(double x, double y, double r, double offset) {
@@ -225,10 +230,10 @@ public class DriveBase {
 
     // Sends power to drive motors
     public void sendDrivePowers() {
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftRearDrive.setPower(leftRearPower);
-        rightRearDrive.setPower(rightRearPower);
+        leftFrontDrive.setPower(leftFrontPower * LFM);
+        rightFrontDrive.setPower(rightFrontPower * RFM);
+        leftRearDrive.setPower(leftRearPower * LRM);
+        rightRearDrive.setPower(rightRearPower * RRM);
     }
 
     // Sends specific driver powers to drive motors

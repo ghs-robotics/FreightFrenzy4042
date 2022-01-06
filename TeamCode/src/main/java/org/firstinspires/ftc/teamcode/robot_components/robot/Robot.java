@@ -26,7 +26,8 @@ public class Robot extends DriveBase {
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
-    public CRServo spinnerServo;
+    public CRServo spinnerServoRed;
+    public CRServo spinnerServoBlue;
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
@@ -50,8 +51,9 @@ public class Robot extends DriveBase {
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
-        spinnerServo = hardwareMap.get(CRServo.class, "spinnerServo");
         spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
+        spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
+        spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
 
 
         dropperServo.setPosition(DROPPER_BACK);
@@ -123,14 +125,36 @@ public class Robot extends DriveBase {
     public void setFrontIntakePower(double power){
         intakePower = power;
         intakeMotorFront.setPower(intakePower);
+        //moveDropperCorrectly(power);
     }
     public void setBackIntakePower(double power){
         intakePower = power;
         intakeMotorBack.setPower(intakePower);
+        //moveDropperCorrectly(-1 * power);
     }
-    public void setSpinnerPower(double power){
+    public void setSpinnerPower(double power){ //THIS IS OLD CODE WHEN WE ONLY HAD 1 SPINNER
         spinnerPower = power;
         spinnerMotor.setPower(spinnerPower);
+    }
+
+    public void spinRedDirection(double power){
+        spinnerServoRed.setPower(power);
+        spinnerServoBlue.setPower(-1 * power);
+    }
+
+    public void spinBlueDirection(double power){
+        spinnerServoBlue.setPower(power);
+        spinnerServoRed.setPower(-1 * power);
+    }
+
+    public void moveDropperCorrectly(double direction) {
+        telemetry.addData("dropper position: ", dropperServo.getPosition());
+        telemetry.update();
+        if (direction < 0 && dropperServo.getPosition() != DROPPER_BACK) {
+            this.backDropperPosition();
+        } else if (direction > 0 && dropperServo.getPosition() != DROPPER_FORWARD) {
+            this.forwardDropperPosition();
+        }
     }
 
     public void forwardDropperPosition() {
@@ -142,7 +166,7 @@ public class Robot extends DriveBase {
     }
 
     public void neutralDropperPosition() {
-        dropperServo.setPosition(DROPPER_NEUTRAL);
+        //dropperServo.setPosition(DROPPER_NEUTRAL);
     }
 
 }
