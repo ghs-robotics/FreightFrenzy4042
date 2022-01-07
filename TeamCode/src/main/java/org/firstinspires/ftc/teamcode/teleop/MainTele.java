@@ -100,7 +100,7 @@ public class MainTele extends LinearOpMode{
 
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
-
+            //right trigger is correct default pos for red and blue
             if (DUCK_FRONT > 0) {
                 robot.spinRedDirection(1);
             } else if (DUCK_BACK > 0) {
@@ -145,7 +145,7 @@ public class MainTele extends LinearOpMode{
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
-            boolean DROP = controller2.left_stick_button == Btn.PRESSED;
+            boolean DROP = controller2.right_stick_button == Btn.PRESSED;
             if(DROP){
                 robot.dropperServo.setPosition(((controller2.left_stick_x)+1)/2);
             }else {
@@ -174,8 +174,6 @@ public class MainTele extends LinearOpMode{
                 robot.spinnerServo.setPower(0);
             }
             telemetry.addData("b", SPINNER); */
-            robot.setSpinnerPower(controller2.right_trigger);
-            robot.setSpinnerPower(-1 * controller2.left_trigger);
             telemetry.addData("right trigger", controller2.right_trigger);
             telemetry.addData("spinner power", robot.spinnerServoRed.getPower());
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());

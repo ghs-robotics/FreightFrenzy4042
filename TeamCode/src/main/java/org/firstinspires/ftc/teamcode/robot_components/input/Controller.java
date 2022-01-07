@@ -59,7 +59,7 @@ public class Controller extends Gamepad{
         left_stick_x = 0;
         left_stick_y = 0;
         right_stick_x = 0;
-        left_stick_x = 0;
+        right_stick_y = 0;
         left_trigger = 0;
         right_trigger = 0;
     }
