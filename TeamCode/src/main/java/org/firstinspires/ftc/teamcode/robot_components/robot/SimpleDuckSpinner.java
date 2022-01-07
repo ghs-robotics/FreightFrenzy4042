@@ -59,8 +59,8 @@ public class SimpleDuckSpinner {
         return isRunning;
     }
 
-    public ElapsedTime getRuntime() {
-        return runtime;
+    public double getTimeRunning() {
+        return isRunning ? runtime.seconds() : -1.0;
     }
     /**
      * call this repeatedly to run the spinner

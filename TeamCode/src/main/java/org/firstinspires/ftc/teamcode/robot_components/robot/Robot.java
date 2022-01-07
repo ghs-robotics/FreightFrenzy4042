@@ -13,10 +13,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Robot extends DriveBase {
 
     // Robot variables and objects
-    //protected double spinnerPower = 0; maybe delete?
-    protected double intakePower = 0;
-    protected double extenderPower = 0;
-    protected double spinnerPower = 0;
+    private double intakePower = 0;
+    private double extenderPower = 0;
+    private double spinnerPower = 0;
     double dropperAngle;
     double intakeAngle;
     //public CRServo intakeCRServo;
@@ -25,7 +24,7 @@ public class Robot extends DriveBase {
     public DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
-    public DcMotor spinnerMotor;
+//    public DcMotor spinnerMotor;
     public CRServo spinnerServoRed;
     public CRServo spinnerServoBlue;
     public Servo dropperServo;
@@ -51,7 +50,7 @@ public class Robot extends DriveBase {
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
-        spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
+//        spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
         spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
         spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
 
@@ -131,10 +130,6 @@ public class Robot extends DriveBase {
         intakePower = power;
         intakeMotorBack.setPower(intakePower);
         //moveDropperCorrectly(-1 * power);
-    }
-    public void setSpinnerPower(double power){ //THIS IS OLD CODE WHEN WE ONLY HAD 1 SPINNER
-        spinnerPower = power;
-        spinnerMotor.setPower(spinnerPower);
     }
 
     public void spinRedDirection(double power){

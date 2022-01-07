@@ -46,7 +46,7 @@ public class DuckSpin implements Task {
         if (!spinSucceeded) {
             if (!spinner.isPowered()) {
                 spinner.startRunningForwards();
-            } else if (spinner.getRuntime().seconds() > 5){
+            } else if (spinner.getTimeRunning() > 5){
                 spinner.stopRunning();
                 spinSucceeded = true;
             }
