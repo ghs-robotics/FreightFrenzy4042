@@ -60,8 +60,7 @@ public class MainTele extends LinearOpMode{
             robot.calculateDrivePowers(
                     -1 * controller1.left_stick_x,
                     controller1.left_stick_y,
-                    -1 * controller1.right_stick_x,
-                    false
+                    1 * controller1.right_stick_x
             );
 
             robot.sendDrivePowers();
@@ -100,7 +99,7 @@ public class MainTele extends LinearOpMode{
 
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
-            //right trigger is correct default pos for red and blue
+
             if (DUCK_FRONT > 0) {
                 robot.spinRedDirection(1);
             } else if (DUCK_BACK > 0) {
@@ -136,21 +135,22 @@ public class MainTele extends LinearOpMode{
 
             boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
             if(TOGGLE_INTAKE_SPEED) {
-                robot.setBackIntakePower(-1 * controller2.left_stick_x*0.2);
-                robot.setFrontIntakePower(controller2.left_stick_x*0.2);
+                robot.setBackIntakePower(controller2.left_stick_x*0.2);
+                robot.setFrontIntakePower(-1 * controller2.left_stick_x*0.2);
             }else{
-                robot.setFrontIntakePower(-1 * controller2.left_stick_x);
-                robot.setBackIntakePower(controller2.left_stick_x);
+                robot.setFrontIntakePower(controller2.left_stick_x);
+                robot.setBackIntakePower(-1 * controller2.left_stick_x);
             }
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
-            boolean DROP = controller2.right_stick_button == Btn.PRESSED;
+            //boolean DROP = controller2.left_stick_button == Btn.PRESSED;
+            boolean DROP = robot.extenderMotor.getCurrentPosition() < -1000;
             if(DROP){
-                robot.dropperServo.setPosition(((controller2.left_stick_x)+1)/2);
+                robot.dropperServo.setPosition(1-(((controller2.left_stick_x)+1)/2));
             }else {
-                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.left_stick_x) + 1) / 2,
-                        Robot.DROPPER_BACK), Robot.DROPPER_FORWARD));
+                robot.dropperServo.setPosition(1-Math.max(Math.min(((controller2.left_stick_x) +1) / 2,
+                        Robot.DROPPER_BACK         ), Robot.DROPPER_FORWARD));
             }
             telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
 
@@ -162,6 +162,8 @@ public class MainTele extends LinearOpMode{
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
+
+
 
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner

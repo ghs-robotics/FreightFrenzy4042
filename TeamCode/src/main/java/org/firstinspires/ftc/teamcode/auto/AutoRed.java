@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Deposit;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DuckSpin;
+import org.firstinspires.ftc.teamcode.navigation.tasks.Intake;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Stop;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
@@ -50,15 +51,23 @@ public class AutoRed extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //manager.init();
-        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
-        tasks.add(new Deposit());
-        //tasks.add(drive(1500, 1500, 0.0));
-        //tasks.add(new DuckSpin(robot, -1));
-        tasks.add(drive(-1500, -1500, 0.0));
+        //tasks.add(new Deposit());
+        //tasks.add(drive(-1500, -1500, 0.0));
+        tasks.add(new Intake(1, telemetry)); //Give this 1 to intake when red, -1 to intake when blue
+        //tasks.add(drive(0, 0, 0.0));
+        //tasks.add(new Deposit());
+        //tasks.add(drive(-1500, -1500, 0.0));
+        //tasks.add(new Intake(telemetry));
+        //tasks.add(drive(0, 0, 0.0));
+        //tasks.add(new Deposit());
+        //tasks.add(drive(-1500, -1500, 0.0));
 
 
         /*tasks.add(drive(1000, 1000, 0.0));
+                //tasks.add(drive(1500, 1500, 0.0));
+        //tasks.add(new DuckSpin(robot, -1));
+                //manager.init();
+        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
         tasks.add(new DuckSpin(robot, -1)); //Forwards = 1, backwards = -1
         tasks.add(drive(-1000, -1000, 0.0)); */
         //tasks.add(drive(0, 0, 0.0));
