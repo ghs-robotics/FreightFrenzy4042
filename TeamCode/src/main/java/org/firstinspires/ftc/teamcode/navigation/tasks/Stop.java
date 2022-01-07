@@ -20,10 +20,10 @@ public class Stop implements Task {
     }
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
-        telemetry = robot.telemetry;
-        telemetry.addData("cx: ", currentPosition.position.x);
-        telemetry.addData("cy: ", currentPosition.position.y);
-        telemetry.update();
+        //telemetry = robot.telemetry;
+        //telemetry.addData("cx: ", currentPosition.position.x);
+        //telemetry.addData("cy: ", currentPosition.position.y);
+        //telemetry.update();
         return false;
     }
 }

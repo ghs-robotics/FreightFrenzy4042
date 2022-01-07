@@ -21,8 +21,8 @@ public class Robot extends DriveBase {
     double intakeAngle;
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
-    public DcMotor intakeMotorFront;
-    public DcMotor intakeMotorBack;
+    public static DcMotor intakeMotorFront;
+    public static DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
     public DcMotor spinnerMotor;
@@ -36,7 +36,7 @@ public class Robot extends DriveBase {
     public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
     public double DROPPER_CURRENT = 0;
     public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
-    public static final double EXT_LOW = -1500;
+    public static final double EXT_LOW = -1600; //previous was -1500
     public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
 
     // Constructs a robot with the mechanical functions specific to this year's competition
@@ -54,8 +54,6 @@ public class Robot extends DriveBase {
         spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
         spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
         spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
-
-
         dropperServo.setPosition(DROPPER_BACK);
     }
 
@@ -138,13 +136,13 @@ public class Robot extends DriveBase {
     }
 
     public void spinRedDirection(double power){
-        spinnerServoRed.setPower(power);
-        spinnerServoBlue.setPower(-1 * power);
+        spinnerServoRed.setPower(-1 * power);
+        spinnerServoBlue.setPower(power);
     }
 
     public void spinBlueDirection(double power){
-        spinnerServoBlue.setPower(power);
-        spinnerServoRed.setPower(-1 * power);
+        spinnerServoBlue.setPower(-1 * power);
+        spinnerServoRed.setPower(power);
     }
 
     public void moveDropperCorrectly(double direction) {
@@ -155,6 +153,11 @@ public class Robot extends DriveBase {
         } else if (direction > 0 && dropperServo.getPosition() != DROPPER_FORWARD) {
             this.forwardDropperPosition();
         }
+    }
+
+    public boolean intakeHasElement() {
+
+        return false;
     }
 
     public void forwardDropperPosition() {
