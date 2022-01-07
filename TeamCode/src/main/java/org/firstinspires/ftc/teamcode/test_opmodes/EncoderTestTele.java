@@ -18,6 +18,7 @@ public class EncoderTestTele extends OpMode {
     private DcMotor rightFrontDrive = null;
 //    private DcMotor leftRearDrive = null;
 //    private DcMotor rightRearDrive = null;
+    private DcMotor odometer = null;
     private Gyro gyro;
     private OdometryModule odo;
 
@@ -28,11 +29,11 @@ public class EncoderTestTele extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initialized");
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "odo");
+        odometer = hardwareMap.get(DcMotor.class, "odo");
 //        leftRearDrive = hardwareMap.get(DcMotor.class, "leftRearDrive");
 //        rightRearDrive = hardwareMap.get(DcMotor.class, "rightRearDrive");
         gyro = new Gyro(hardwareMap);
-        odo = new OdometryModule(leftFrontDrive, rightFrontDrive, gyro);
+        odo = new OdometryModule(odometer, odometer, gyro);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -63,7 +64,7 @@ public class EncoderTestTele extends OpMode {
      */
     @Override
     public void loop() {
-        int encoderValues[] = odo.getRawEncoderValues();
+        int encoderValues[] = odo.getMillimeterDist();
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());

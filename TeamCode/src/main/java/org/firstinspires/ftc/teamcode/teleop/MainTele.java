@@ -18,7 +18,7 @@ public class MainTele extends LinearOpMode{
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
 
-    private boolean extended = true;
+    private final double INTAKE_POWER = 1;
 
     @Override
     public void runOpMode() {
@@ -58,9 +58,10 @@ public class MainTele extends LinearOpMode{
             // DRIVER FUNCTIONS
 
             robot.calculateDrivePowers(
-                    controller1.left_stick_x,
+                    -1 * controller1.left_stick_x,
                     controller1.left_stick_y,
-                    controller1.right_stick_x
+                    -1 * controller1.right_stick_x,
+                    false
             );
 
             robot.sendDrivePowers();
@@ -72,65 +73,88 @@ public class MainTele extends LinearOpMode{
             // -----------------------------------------------------------------------------------------
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
-
+            /*ADD CODE: FINE CONTROL ARM VIA RIGHT JOYSTICK Y, DROPPER VIA L/R BUMPER
+            * RESET DROPPER TO NEUTRAL, forwards, backwards ON R JOYSTICK PRESSED*/
+            /*
+            * Y: extend to high arm position, A: extend to low arm position
+            * B: duckspinner
+            * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
+            * left stick y: both intakes forwards/backwards, hold left stick for slow mode
+            * right stick y: change dropper position, up = back, dwn = fwds
+            * L/R BUMPERS: set servo pos*/
             // make sure you make the target negative
-            boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
-            boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
+            boolean extenderGotoHigh = controller2.y == Btn.PRESSING;
+            boolean extenderGotoLow = controller2.a == Btn.PRESSING;
 
-            if(HIGH_EXTENDER) {
+            if(extenderGotoHigh) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
-                    robot.moveEntenderTo(-3700);
+                    robot.moveEntenderTo((int)Robot.EXT_OUT);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
-            //extends the arm to the low goal
-            if(LOW_EXTENDER) {
+            double duckFront = controller2.left_trigger;
+            double duckBack = controller2.right_trigger;
+
+            if (duckFront > 0) {
+                robot.spinRedDirection(1);
+            } else if (duckBack > 0) {
+                robot.spinBlueDirection(1);
+            } else {
+                robot.spinRedDirection(0); //This could be red or blue and it would still work
+            }
+
+            if(extenderGotoLow) {
                 if(shouldGoToLow) {
-                    robot.moveEntenderTo(-1500);
+                    robot.moveEntenderTo((int)Robot.EXT_LOW);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
 
-            boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
-            boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
-
-            //front intake
-            //run intake based on how strong the right trigger is pressed
-            if(FRONT_INTAKE) {
-                robot.setFrontIntakePower(0.9);
-                robot.forwardDropperPosition();
-            } else {
-                robot.setFrontIntakePower(0);
-            }
-
-            //back intake
-            if(BACK_INTAKE) {
-                robot.setBackIntakePower(0.9);
-                robot.backDropperPosition();
-            } else {
-                robot.setBackIntakePower(0);
+            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
+            if(TOGGLE_INTAKE_SPEED) {
+                robot.setBackIntakePower(-1 * controller2.left_stick_x*0.2);
+                robot.setFrontIntakePower(controller2.left_stick_x*0.2);
+            }else{
+                robot.setFrontIntakePower(-1 * controller2.left_stick_x);
+                robot.setBackIntakePower(controller2.left_stick_x);
             }
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
+            boolean drop = controller2.left_stick_button == Btn.PRESSED;
+            if(drop){
+                robot.dropperServo.setPosition(((controller2.left_stick_x)+1)/2);
+            }else {
+                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.left_stick_x) + 1) / 2,
+                        Robot.DROPPER_BACK), Robot.DROPPER_FORWARD));
+            }
+            telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
+
+            boolean dropBack = controller2.left_bumper == Btn.PRESSING;
+            if(dropBack){
+                robot.backDropperPosition();
+            }
+            boolean dropForward = controller2.right_bumper == Btn.PRESSING;
+            if(dropForward){
+                robot.forwardDropperPosition();
+            }
+
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
-            boolean SPINNER = controller2.b == Btn.PRESSED;
+            /*boolean SPINNER = controller2.b == Btn.PRESSED;*/
+            //robot.spinnerServo.setPower(controller2.right_trigger);
 
-            if(SPINNER) {
-                robot.spinnerServo.setPower(1);
-            } else {
-                robot.spinnerServo.setPower(0);
-            }
+            telemetry.addData("right trigger", controller2.right_trigger);
+            telemetry.addData("spinner power", robot.spinnerServoRed.getPower());
             telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
             telemetry.update();
