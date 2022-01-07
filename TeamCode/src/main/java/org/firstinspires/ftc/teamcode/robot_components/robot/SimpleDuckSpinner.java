@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.Optional;
 
 public class SimpleDuckSpinner {
-    CRServo spinnerServo;
+    DcMotor spinnerMotor;
     private ElapsedTime runtime;
     private Telemetry telemetry;
     private boolean isRunning = false;
@@ -22,17 +23,17 @@ public class SimpleDuckSpinner {
     private double servoDirection = 0;
     // TODO: SET DIRECTION !!!!
 
-    public SimpleDuckSpinner(CRServo spinnerServo, double radius) {
-        this(spinnerServo, radius, null);
+    public SimpleDuckSpinner(DcMotor spinnerMotor, double radius) {
+        this(spinnerMotor, radius, null);
     }
 
     public SimpleDuckSpinner(
-            CRServo spinnerServo,
+            DcMotor spinnerMotor,
             double radius,
             Telemetry telemetry //,
     ){
-        this.spinnerServo = spinnerServo;
-        spinnerServo.setDirection(CRServo.Direction.FORWARD);
+        this.spinnerMotor = spinnerMotor;
+        spinnerMotor.setDirection(DcMotor.Direction.FORWARD);
         this.runtime = new ElapsedTime();
         this.telemetry = telemetry;
     }
@@ -40,6 +41,7 @@ public class SimpleDuckSpinner {
     public void startRunningForwards() {
         runtime.reset();
         servoDirection = 1;
+        spinnerMotor.setPower(1);
         isRunning = true;
     }
     public void startRunningBackwards() {
@@ -52,6 +54,14 @@ public class SimpleDuckSpinner {
         servoDirection = 0;
         isRunning = false;
     }
+
+    public boolean isPowered () {
+        return isRunning;
+    }
+
+    public ElapsedTime getRuntime() {
+        return runtime;
+    }
     /**
      * call this repeatedly to run the spinner
      * @return true if done spinning, else false
@@ -60,9 +70,9 @@ public class SimpleDuckSpinner {
         double time = runtime.seconds();
         if(telemetry != null) {
             telemetry.addData("duck time: ", time);
-            telemetry.addData("duck motor power: ", spinnerServo.getPower());
+            telemetry.addData("duck motor power: ", spinnerMotor.getPower());
             telemetry.addData("Goal motor power: ", SERVO_SPEED * servoDirection);
         }
-        spinnerServo.setPower(SERVO_SPEED * servoDirection);
+        spinnerMotor.setPower(SERVO_SPEED * servoDirection);
     }
 }

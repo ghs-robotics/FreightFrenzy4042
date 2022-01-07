@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.navigation;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
+import org.firstinspires.ftc.teamcode.robot_components.navigation.OdometryModule;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 import java.util.List;
@@ -9,22 +14,26 @@ public class AutoController {
     private List<Task> tasks;
     private int currentTaskIdx = 0;
     private Robot robot;
-    private final double TICKSPERROT = 232.16;
+    /*private final double TICKSPERROT = 232.16;
     private final double ROTSPERTURN = 9.525;
-    private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter
+    private final double WHEELCIRC = 150.8; //Circumference of the wheel given a 48mm diameter*/
+    public HardwareMap hardwareMap;
     public Telemetry telemetry;
 
     public RobotPosition currentPosition;
     public RobotPosition startingPosition;
 
-    public AutoController(Telemetry telemetry,  Robot robot) {
+    private DcMotor odometerY = null;
+    private OdometryModule odometryModule;
+    private Gyro gyro;
+
+    public AutoController(HardwareMap hardwareMap, Telemetry telemetry, Robot robot) {
+        this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         this.robot = robot;
     }
 
-    public AutoController() {
-        this.robot = robot;
-    }
+    public AutoController() {}
 
     /**
      * Initialize with a series of points
@@ -35,6 +44,12 @@ public class AutoController {
         this.tasks = tasks;
         this.startingPosition = startingPosition;
         this.currentPosition = startingPosition;
+        gyro = new Gyro(hardwareMap);
+        odometerY = hardwareMap.get(DcMotor.class, "odo");
+        telemetry.addData("odo", odometerY);
+        telemetry.addData("gyro", gyro);
+        telemetry.update();
+        odometryModule = new OdometryModule(odometerY, odometerY, gyro);
     }
 
     /**
@@ -49,13 +64,38 @@ public class AutoController {
         // not done...
         Task currentTask = this.tasks.get(currentTaskIdx);
         boolean done = currentTask.update(currentPosition, robot);
-        telemetry.addData("Done?", done);
-        telemetry.update();
-        if (done) switchToNextTask();
+        if (done) {
+            // if this was the last task, return true
+            if (currentTaskIdx + 1 <= tasks.size()) {
+                switchToNextTask();
+            } else {
+                return true;
+            }
+        }
         return false;
     }
 
-    public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
+    public RobotPosition updateCurrentPosition() {
+        int posX = odometryModule.getMillimeterDist()[0];
+        int posY = odometryModule.getMillimeterDist()[1];
+        telemetry.update();
+        return new RobotPosition(startingPosition.position.add(new Point2D(posX, posY)),
+                startingPosition.rotation + robot.gyro.getAngle());
+    }
+
+    private void switchToNextTask() {
+        currentTaskIdx++;
+        this.tasks.get(currentTaskIdx).init();
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+}
+
+//OLD CODE BELOW. PLEASE IGNORE!
+
+    /*public RobotPosition updateCurrentPosition() { //Wheels rotate 1.6 times slower (factored in already)
         //Gives the number of encoder ticks (232.16 ticks is 1 rotation)
         double degreesTurned = robot.gyro.getAngle(); //Get gyro angle to subtract from robot rotations
         double leftFrontTicks = robot.leftFrontDrive.getCurrentPosition();
@@ -74,14 +114,4 @@ public class AutoController {
         telemetry.addData("position", "xDist:" + xDist + "yDist:" + yDist);
         return new RobotPosition(startingPosition.position.add(new Point2D(xDist, yDist)),
                 startingPosition.rotation);
-    }
-
-    private void switchToNextTask() {
-        currentTaskIdx++;
-        this.tasks.get(currentTaskIdx).init();
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-}
+    } */

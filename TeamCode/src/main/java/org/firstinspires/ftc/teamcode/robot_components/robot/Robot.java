@@ -31,12 +31,13 @@ public class Robot extends DriveBase {
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
-    private final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
-    private final double DROPPER_NEUTRAL = 0.5;
-    private final double DROPPER_BACK = 0.7; //Maybe increase this to 0.6 or so
+    public static final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
+    public static final double DROPPER_NEUTRAL = 0.5;
+    public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
     public double DROPPER_CURRENT = 0;
-    private final double EXT_OUT = 2500;
-    private final double EXT_IN = 0;
+    public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
+    public static final double EXT_LOW = -1500;
+    public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -50,11 +51,12 @@ public class Robot extends DriveBase {
         extenderMotor = hardwareMap.get(DcMotor.class, "extensionMotor");
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
+        spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
         spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
         spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
 
 
-        dropperServo.setPosition(DROPPER_NEUTRAL);
+        dropperServo.setPosition(DROPPER_BACK);
     }
 
     /**
@@ -80,10 +82,11 @@ public class Robot extends DriveBase {
         }
     }
 
-    public void moveEntenderTo(int target) {
+    public double moveEntenderTo(int target) {
         extenderMotor.setTargetPosition(target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);
+        return extenderMotor.getCurrentPosition();
     }
 
     public void setExtenderPower(double power){
@@ -106,6 +109,10 @@ public class Robot extends DriveBase {
     }
 
 
+    /**
+     * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
+     */
+
     /* KENNY PLS READ
     //just to clarify, the "bucket" is the part that is responsible for
     //holding the game element
@@ -118,14 +125,36 @@ public class Robot extends DriveBase {
     public void setFrontIntakePower(double power){
         intakePower = power;
         intakeMotorFront.setPower(intakePower);
+        //moveDropperCorrectly(power);
     }
     public void setBackIntakePower(double power){
         intakePower = power;
         intakeMotorBack.setPower(intakePower);
+        //moveDropperCorrectly(-1 * power);
     }
-    public void setSpinnerPower(double power){
+    public void setSpinnerPower(double power){ //THIS IS OLD CODE WHEN WE ONLY HAD 1 SPINNER
         spinnerPower = power;
-        spinnerServoRed.setPower(spinnerPower);
+        spinnerMotor.setPower(spinnerPower);
+    }
+
+    public void spinRedDirection(double power){
+        spinnerServoRed.setPower(power);
+        spinnerServoBlue.setPower(-1 * power);
+    }
+
+    public void spinBlueDirection(double power){
+        spinnerServoBlue.setPower(power);
+        spinnerServoRed.setPower(-1 * power);
+    }
+
+    public void moveDropperCorrectly(double direction) {
+        telemetry.addData("dropper position: ", dropperServo.getPosition());
+        telemetry.update();
+        if (direction < 0 && dropperServo.getPosition() != DROPPER_BACK) {
+            this.backDropperPosition();
+        } else if (direction > 0 && dropperServo.getPosition() != DROPPER_FORWARD) {
+            this.forwardDropperPosition();
+        }
     }
 
     public void forwardDropperPosition() {
@@ -136,8 +165,8 @@ public class Robot extends DriveBase {
         dropperServo.setPosition(DROPPER_BACK);
     }
 
-   /* public void neutralDropperPosition() {
-        dropperServo.setPosition(DROPPER_NEUTRAL);
-    } */
+    public void neutralDropperPosition() {
+        //dropperServo.setPosition(DROPPER_NEUTRAL);
+    }
 
 }

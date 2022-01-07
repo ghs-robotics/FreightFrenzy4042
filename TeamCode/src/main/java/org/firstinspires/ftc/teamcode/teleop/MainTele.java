@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.robot_components.input.Controller;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 
 @TeleOp(name="MainTele", group="Linear Opmode")
-public class MainTele extends LinearOpMode {
-
+public class MainTele extends LinearOpMode{
+    
     // Declare OpMode members
     Robot robot;
     Controller controller1;
@@ -17,9 +17,8 @@ public class MainTele extends LinearOpMode {
 
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
-    private boolean dropperPosSet = false;
 
-    private boolean extended = true;
+    private final double INTAKE_POWER = 1;
 
     @Override
     public void runOpMode() {
@@ -59,9 +58,10 @@ public class MainTele extends LinearOpMode {
             // DRIVER FUNCTIONS
 
             robot.calculateDrivePowers(
-                    controller1.left_stick_x,
+                    -1 * controller1.left_stick_x,
                     controller1.left_stick_y,
-                    controller1.right_stick_x
+                    -1 * controller1.right_stick_x,
+                    false
             );
 
             robot.sendDrivePowers();
@@ -74,37 +74,47 @@ public class MainTele extends LinearOpMode {
             // NOTE: TO USE THESE FUNCTIONS, PRESS START B
             //OPERATOR FUNCTIONS
             /*ADD CODE: FINE CONTROL ARM VIA RIGHT JOYSTICK Y, DROPPER VIA L/R BUMPER
-             * RESET DROPPER TO NEUTRAL, forwards, backwards ON R JOYSTICK PRESSED*/
+            * RESET DROPPER TO NEUTRAL, forwards, backwards ON R JOYSTICK PRESSED*/
             /*
-             * Y: extend to high arm position, A: extend to low arm position
-             * B: duckspinner
-             * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
-             * left stick y: both intakes forwards/backwards, hold left stick for slow mode
-             * right stick y: change dropper position, up = back, dwn = fwds
-             * L/R BUMPERS: set servo pos*/
+            * Y: extend to high arm position, A: extend to low arm position
+            * B: duckspinner
+            * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
+            * left stick y: both intakes forwards/backwards, hold left stick for slow mode
+            * right stick y: change dropper position, up = back, dwn = fwds
+            * L/R BUMPERS: set servo pos*/
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
-            if (HIGH_EXTENDER) {
+            if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
-                if (shouldGoToHigh) {
-                    robot.moveEntenderTo(-3700);
-                   // robot.neutralDropperPosition();
+                if(shouldGoToHigh) {
+                    robot.moveEntenderTo((int)Robot.EXT_OUT);
+                    robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
-            //extends the arm to the low goal
-            if (LOW_EXTENDER) {
-                if (shouldGoToLow) {
-                    robot.moveEntenderTo(-1500);
-                   // robot.neutralDropperPosition();
+            double DUCK_FRONT = controller2.left_trigger;
+            double DUCK_BACK = controller2.right_trigger;
+
+            if (DUCK_FRONT > 0) {
+                robot.spinRedDirection(1);
+            } else if (DUCK_BACK > 0) {
+                robot.spinBlueDirection(1);
+            } else {
+                robot.spinRedDirection(0); //This could be red or blue and it would still work
+            }
+
+            if(LOW_EXTENDER) {
+                if(shouldGoToLow) {
+                    robot.moveEntenderTo((int)Robot.EXT_LOW);
+                    robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo(-10);
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
@@ -113,70 +123,50 @@ public class MainTele extends LinearOpMode {
             boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
             boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
 
-            //front intake
-            if (FRONT_INTAKE) {
-                robot.setFrontIntakePower(0.9);
-                robot.backDropperPosition();
+            /*if(controller2.left_stick_x > 0) {
+                robot.setFrontIntakePower(INTAKE_POWER); //Primarily move this
+                robot.setBackIntakePower(-1 * INTAKE_POWER); //But also reverse this
+            } else if (controller2.left_stick_x < 0) {
+                robot.setBackIntakePower(INTAKE_POWER); //see above
+                robot.setFrontIntakePower(-1 * INTAKE_POWER);
             } else {
                 robot.setFrontIntakePower(0);
-            }
-
-            //back intake
-            if (BACK_INTAKE) {
-                robot.setBackIntakePower(0.9);
-                robot.forwardDropperPosition();
-            } else {
                 robot.setBackIntakePower(0);
-            }
+            } */
 
-           /* boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
+            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
             if(TOGGLE_INTAKE_SPEED) {
-                robot.setBackIntakePower(controller2.left_stick_y*0.2);
-                robot.setFrontIntakePower(controller2.left_stick_y*0.2);
+                robot.setBackIntakePower(-1 * controller2.left_stick_x*0.2);
+                robot.setFrontIntakePower(controller2.left_stick_x*0.2);
             }else{
-                robot.setFrontIntakePower(controller2.left_stick_y);
-                robot.setBackIntakePower(controller2.left_stick_y);
-            }*/
-
-           telemetry.addData("dropperPosSet", dropperPosSet);
-
-            if (controller2.left_stick_x < 0) {
-                robot.setFrontIntakePower(-controller2.left_stick_x);
+                robot.setFrontIntakePower(-1 * controller2.left_stick_x);
                 robot.setBackIntakePower(controller2.left_stick_x);
-
-            }else if (controller2.left_stick_x > 0) {
-                    robot.setFrontIntakePower(-controller2.left_stick_x);
-                    robot.setBackIntakePower(controller2.left_stick_x);
-            }
-            telemetry.addData("dropperPOS", robot.dropperServo.getPosition());
-            if (controller2.left_stick_x > 0){
-                robot.forwardDropperPosition();
-                robot.setFrontIntakePower(controller2.left_stick_x);
             }
 
-            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition() + "");
+            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
             boolean DROP = controller2.left_stick_button == Btn.PRESSED;
-                if (DROP) {
-                    robot.dropperServo.setPosition(((controller2.left_stick_x) + 1) / 2);
-                } else {
-                    robot.dropperServo.setPosition(Math.max(Math.min(((controller2.left_stick_x) + 1) / 2, 0.7), 0.3));
-                }
-                telemetry.addData("right stick pressed", controller2.right_stick_button == Btn.PRESSED);
+            if(DROP){
+                robot.dropperServo.setPosition(((controller2.left_stick_x)+1)/2);
+            }else {
+                robot.dropperServo.setPosition(Math.max(Math.min(((controller2.left_stick_x) + 1) / 2,
+                        Robot.DROPPER_BACK), Robot.DROPPER_FORWARD));
+            }
+            telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
 
-                boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
-                if (DROP_BACK) {
-                    robot.backDropperPosition();
-                }
-                boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
-                if (DROP_FORWARD) {
-                    robot.forwardDropperPosition();
-                }
+            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
+            if(DROP_BACK){
+                robot.backDropperPosition();
+            }
+            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
+            if(DROP_FORWARD){
+                robot.forwardDropperPosition();
+            }
 
-                //there is a delay between when you press the button and the servo starts spinning
-                //duck spinner
-                /*boolean SPINNER = controller2.b == Btn.PRESSED;*/
-                //robot.spinnerServo.setPower(controller2.right_trigger);
+            //there is a delay between when you press the button and the servo starts spinning
+            //duck spinner
+            /*boolean SPINNER = controller2.b == Btn.PRESSED;*/
+            //robot.spinnerServo.setPower(controller2.right_trigger);
 
             /*if(SPINNER) {
                 robot.spinnerServo.setPower(1);
@@ -184,13 +174,13 @@ public class MainTele extends LinearOpMode {
                 robot.spinnerServo.setPower(0);
             }
             telemetry.addData("b", SPINNER); */
-                robot.setSpinnerPower(controller2.left_trigger);
-                robot.setSpinnerPower(controller2.right_trigger);
-                telemetry.addData("right trigger", controller2.right_trigger);
-                telemetry.addData("spinner power", robot.spinnerServoRed.getPower());
-                telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
+            robot.setSpinnerPower(controller2.right_trigger);
+            robot.setSpinnerPower(-1 * controller2.left_trigger);
+            telemetry.addData("right trigger", controller2.right_trigger);
+            telemetry.addData("spinner power", robot.spinnerServoRed.getPower());
+            telemetry.addData("dropper servo pos", robot.dropperServo.getPosition());
 
-                telemetry.update();
+            telemetry.update();
         }
     }
 }
