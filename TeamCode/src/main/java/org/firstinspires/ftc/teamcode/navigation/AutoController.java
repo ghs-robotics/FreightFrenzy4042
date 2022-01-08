@@ -23,6 +23,7 @@ public class AutoController {
     public RobotPosition currentPosition;
     public RobotPosition startingPosition;
 
+    private DcMotor odometerX = null;
     private DcMotor odometerY = null;
     private OdometryModule odometryModule;
     private Gyro gyro;
@@ -45,11 +46,13 @@ public class AutoController {
         this.startingPosition = startingPosition;
         this.currentPosition = startingPosition;
         gyro = new Gyro(hardwareMap);
-        odometerY = hardwareMap.get(DcMotor.class, "odo");
+        odometerX = hardwareMap.get(DcMotor.class, "odo");
+        odometerY = hardwareMap.get(DcMotor.class, "intakeMotorFront");
+        //^ intakeMotorFront has the y-axis odometer in its encoder slot!
         telemetry.addData("odo", odometerY);
         telemetry.addData("gyro", gyro);
         telemetry.update();
-        odometryModule = new OdometryModule(odometerY, odometerY, gyro);
+        odometryModule = new OdometryModule(odometerX, odometerY, gyro);
     }
 
     /**

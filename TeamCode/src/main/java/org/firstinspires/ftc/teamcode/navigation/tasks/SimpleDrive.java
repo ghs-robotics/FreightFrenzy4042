@@ -32,7 +32,7 @@ public class SimpleDrive implements Task {
     public boolean update(RobotPosition currentPosition, Robot robot) {
 	// done -> stop motors and return true
 	if (timer.seconds() > driveTime) {
-	    robot.calculateDrivePowers(0, 0, 0);
+	    robot.calculateDrivePowers(0, 0, 0, true);
 	    robot.sendDrivePowers();
 	    return true;
 	}
@@ -40,12 +40,12 @@ public class SimpleDrive implements Task {
 	double rotDifference = robot.gyro.getAngle() % 360.0 - rotation;
 	if (Math.abs(rotDifference) > 5.0) {
 	    double rotPower = rotDifference * ROTATION_P_COEF;
-	    robot.calculateDrivePowers(0, 0, rotPower);
+	    robot.calculateDrivePowers(0, 0, rotPower, true);
 	    robot.sendDrivePowers();
 	    return false;
 	}
 	// time ok, rotation ok -> drive.
-	robot.calculateDrivePowers(direction.x, direction.y, 0);
+	robot.calculateDrivePowers(direction.x, direction.y, 0, true);
 	robot.sendDrivePowers();
 	return false;
     }

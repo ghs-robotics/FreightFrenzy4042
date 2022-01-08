@@ -51,13 +51,15 @@ public class AutoRed extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //tasks.add(new Deposit());
+        tasks.add(new Deposit());
         //tasks.add(drive(-1500, -1500, 0.0));
-        tasks.add(new Intake(1, telemetry)); //Give this 1 to intake when red, -1 to intake when blue
+        //tasks.add(new Intake(1, 1000, telemetry));
+        //targetDist is how far you want it to drive before turning back (sensors not working yet)
+        //^Give this 1 to intake when red, -1 to intake when blue
         //tasks.add(drive(0, 0, 0.0));
         //tasks.add(new Deposit());
         //tasks.add(drive(-1500, -1500, 0.0));
-        //tasks.add(new Intake(telemetry));
+        //tasks.add(new Intake(1, 1000, telemetry));
         //tasks.add(drive(0, 0, 0.0));
         //tasks.add(new Deposit());
         //tasks.add(drive(-1500, -1500, 0.0));

@@ -19,10 +19,10 @@ public class DriveBase {
     protected double leftRearPower = 0;
     protected double rightRearPower = 0;
 
-    private final double LFM = 0.95;
-    private final double RFM = 0.95;
+    private final double LFM = 1;
+    private final double RFM = 1;
     private final double LRM = 1;
-    private final double RRM = 0.95;
+    private final double RRM = 1;
 
     protected double batteryVoltage;
 
@@ -98,7 +98,7 @@ public class DriveBase {
 
     // Turns the robot to a desired target angle (if called repeatedly)
     public void adjustAngle() {
-        calculateDrivePowers(0, 0, getGyroPIDValue());
+        calculateDrivePowers(0, 0, getGyroPIDValue(), false);
         sendDrivePowers();
     }
 
@@ -108,7 +108,11 @@ public class DriveBase {
     }
 
     // Calculates powers for mecanum wheel drive
-    public void calculateDrivePowers(double x, double y, double r) {
+    public void calculateDrivePowers(double x, double y, double r, boolean isAuto) {
+        if (isAuto) {
+            calculateDrivePowersAuto(x, y, r);
+            return;
+        }
         r = -r;
     // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
         rightFrontPower = speed * (y - x + r);
@@ -117,23 +121,18 @@ public class DriveBase {
         rightRearPower = -1 * speed * (y + x + r);
     }
 
-    public void calculateDrivePowersOffset(double x, double y, double r, double offset) {
-        offset = Math.toRadians(offset);
-        x = x * Math.cos(offset) - y * Math.sin(offset);
-        y = x * Math.sin(offset) + y * Math.cos(offset);
-
+    public void calculateDrivePowersAuto(double x, double y, double r) {
         r = -r;
         // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
         rightFrontPower = autoSpeed * (y - x + r);
         leftFrontPower = autoSpeed * (y + x - r);
-        leftRearPower = autoSpeed * (y - x - r);
-        rightRearPower = autoSpeed * (y + x + r);
-        /*telemetry.addData("lf", leftFrontPower);
-        telemetry.addData("lr", leftRearPower);
-        telemetry.addData("rf", rightFrontPower);
-        telemetry.addData("rr", rightRearPower);
-        telemetry.update(); */
+        leftRearPower = -1 * autoSpeed * (y - x - r);
+        rightRearPower = -1 * autoSpeed * (y + x + r);
     }
+
+    /*offset = Math.toRadians(offset);
+    x = x * Math.cos(offset) - y * Math.sin(offset);
+    y = x * Math.sin(offset) + y * Math.cos(offset); */
 
     // Returns how many seconds have passed since the timer was last reset
     public double elapsedSecs() {
@@ -189,11 +188,11 @@ public class DriveBase {
         if (gyro) {
             double t = elapsedSecs();
             while (elapsedSecs() - t < seconds) {
-                calculateDrivePowers(x, y, getGyroPIDValue());
+                calculateDrivePowers(x, y, getGyroPIDValue(), false);
                 sendDrivePowers();
             }
         } else {
-            calculateDrivePowers(x, y, 0);
+            calculateDrivePowers(x, y, 0, false);
             sendDrivePowers();
             wait(seconds);
         }
@@ -237,8 +236,8 @@ public class DriveBase {
     }
 
     // Sends specific driver powers to drive motors
-    public void sendDrivePowers(double x, double y, double rot) {
-        calculateDrivePowers(x, y, rot);
+    public void sendDrivePowers(double x, double y, double rot, boolean isAuto) {
+        calculateDrivePowers(x, y, rot, isAuto);
         sendDrivePowers();
     }
 
@@ -254,7 +253,7 @@ public class DriveBase {
 
     // Makes the robot stop driving
     public void stopDrive() {
-        sendDrivePowers(0, 0, 0);
+        sendDrivePowers(0, 0, 0, false);
     }
 
     // Toggles the drive speed between 60% and normal

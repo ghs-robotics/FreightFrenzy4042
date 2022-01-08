@@ -59,8 +59,9 @@ public class MainTele extends LinearOpMode{
 
             robot.calculateDrivePowers(
                     -1 * controller1.left_stick_x,
-                    controller1.left_stick_y,
-                    1 * controller1.right_stick_x
+                    1 * controller1.left_stick_y,
+                    1 * controller1.right_stick_x,
+                    false
             );
 
             robot.sendDrivePowers();

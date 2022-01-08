@@ -10,6 +10,8 @@ public class IntakeDetector {
     public DcMotor intakeMotorBack;
     public double velocityFront;
     public double velocityBack;
+    public double startingPositionFront;
+    public double startingPositionBack;
     public double curPositionFront;
     public double prePositionFront;
     public double curPositionBack;
@@ -25,6 +27,8 @@ public class IntakeDetector {
         intakeMotorBack = Robot.intakeMotorBack;
         velocityFront = 0;
         velocityBack = 0;
+        startingPositionFront = intakeMotorFront.getCurrentPosition();
+        startingPositionBack = intakeMotorBack.getCurrentPosition();
         curPositionFront = 0;
         prePositionFront = 0;
         curPositionBack = 0;
@@ -37,7 +41,7 @@ public class IntakeDetector {
         preTime = elapsedTime.seconds();
     }
 
-    public double update() {
+    public double[] update() {
         curPositionFront = intakeMotorFront.getCurrentPosition();
         curPositionBack = intakeMotorBack.getCurrentPosition();
         velocityFront = (curPositionFront - prePositionFront) / (elapsedTime.seconds() - preTime);
@@ -46,15 +50,21 @@ public class IntakeDetector {
         /*if (velocityFront > 50 || velocityBack > 50) {
             motorSpinning = true;
         } */
-        if (velocityFront > 0) { //motorSpinning && (velocityFront < 10 || velocityBack < 10)
+        if (curPositionFront != startingPositionFront) { //motorSpinning && (velocityFront < 10 || velocityBack < 10)
             pickedUpObject = true;
+            telemetry.addData("OBJECT DETECTED", "YES");
+            telemetry.addData("curPosFront", curPositionFront);
+            telemetry.update();
+        } else {
+            telemetry.addData("OBJECT DETECTED", "NO");
+            telemetry.addData("curPosFront", curPositionFront);
+            telemetry.update();
         }
 
         prePositionFront = curPositionFront;
         prePositionBack = curPositionBack;
 
-        return velocityFront;
-        //return new double[]{curPositionFront, curPositionBack, velocityFront, velocityBack};
+        return new double[]{curPositionFront, curPositionBack, velocityFront, velocityBack};
     }
 
     public boolean holdingObject() {

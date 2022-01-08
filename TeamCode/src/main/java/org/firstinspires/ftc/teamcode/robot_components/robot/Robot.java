@@ -45,6 +45,7 @@ public class Robot extends DriveBase {
         super(hardwareMap, telemetry); // Calls the DriveBase constructor, which handles drive motors
 
         intakeMotorFront = hardwareMap.get(DcMotor.class, "intakeMotorFront");
+        //^Intake motor front also contains y-axis odometer in encoder slot
         intakeMotorFront.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotorBack = hardwareMap.get(DcMotor.class, "intakeMotorBack");
         intakeMotorBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -52,6 +53,7 @@ public class Robot extends DriveBase {
         extenderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dropperServo = hardwareMap.get(Servo.class, "dropperServo"); //need testing
         spinnerMotor = hardwareMap.get(DcMotor.class, "odo");
+        //^Spinner motor (which doesn't exist anymore) also contains x-axis odometer in encoder slot
         spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
         spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
         dropperServo.setPosition(DROPPER_BACK);
@@ -168,8 +170,6 @@ public class Robot extends DriveBase {
         dropperServo.setPosition(DROPPER_BACK);
     }
 
-    public void neutralDropperPosition() {
-        //dropperServo.setPosition(DROPPER_NEUTRAL);
-    }
+    public void neutralDropperPosition() { dropperServo.setPosition(DROPPER_NEUTRAL); }
 
 }

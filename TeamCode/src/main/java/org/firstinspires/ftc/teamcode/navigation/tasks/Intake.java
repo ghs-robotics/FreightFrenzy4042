@@ -12,39 +12,56 @@ import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
  * Intake freight (requires detection of some kind)
  */
 public class Intake implements Task {
-    public IntakeDetector detector;
-    public boolean intakeFinished;
     public double direction;
+    public double targetDist;
+    public double startingDist;
+    public boolean startingDistSet;
     public Telemetry telemetry;
+    public boolean reachedTarget;
 
-    public Intake(double d, Telemetry t) {
-        detector = new IntakeDetector(t);
-        intakeFinished = false;
-        direction = d;
-        telemetry = t;
+    public Intake(double direction, double targetDist, Telemetry telemetry) {
+        this.direction = direction;
+        this.targetDist = targetDist;
+        this.telemetry = telemetry;
+        reachedTarget = false;
+        startingDistSet = false;
     }
 
     public void init() {}
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
-        double data = detector.update();
-        telemetry.addData("data", data);
-        /*telemetry.addData("posBack", data[1]);
-        telemetry.addData("velFront", data[2]);
-        telemetry.addData("velBack", data[3]); */
-        telemetry.update();
-        robot.calculateDrivePowersOffset(1,1,0,45);
-        robot.sendDrivePowers();
-        robot.setFrontIntakePower(direction);
-        robot.setBackIntakePower(-1 * direction);
-        robot.forwardDropperPosition();
-        intakeFinished = detector.holdingObject();
-        if (data > 0) {
-            robot.calculateDrivePowersOffset(0, 0, 0, 45);
-            robot.sendDrivePowers();
-            robot.setFrontIntakePower(0);
-            robot.setBackIntakePower(0);
+        double distance = currentPosition.position.y;
+        if (!startingDistSet) {
+            startingDist = distance;
+            startingDistSet = true;
         }
-        return data > 0;
+        telemetry.addData("Reached target? ", reachedTarget);
+        telemetry.addData("Distance: ", distance);
+        if (!reachedTarget) {
+            if (distance < targetDist) {
+                robot.calculateDrivePowersAuto(0, 1, 0);
+                robot.sendDrivePowers();
+                robot.setFrontIntakePower(direction);
+                robot.setBackIntakePower(-1 * direction);
+                robot.forwardDropperPosition();
+            } else {
+                reachedTarget = true;
+            }
+        } else {
+            if (distance > startingDist) {
+                robot.calculateDrivePowersAuto(0, -1, 0);
+                robot.sendDrivePowers();
+                robot.setFrontIntakePower(-1);
+                robot.setBackIntakePower(-1);
+                robot.neutralDropperPosition();
+            } else {
+                robot.calculateDrivePowersAuto(0, 0, 0);
+                robot.sendDrivePowers();
+                robot.setFrontIntakePower(0);
+                robot.setBackIntakePower(0);
+                return true;
+            }
+        }
+        return false;
     }
 }
