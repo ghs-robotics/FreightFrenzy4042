@@ -51,31 +51,10 @@ public class AutoRed extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
+        //tasks.add(new Deposit());
+        //tasks.add(new Intake(1, 1000, telemetry));
         tasks.add(new Deposit());
-        //tasks.add(drive(-1500, -1500, 0.0));
-        //tasks.add(new Intake(1, 1000, telemetry));
-        //targetDist is how far you want it to drive before turning back (sensors not working yet)
-        //^Give this 1 to intake when red, -1 to intake when blue
-        //tasks.add(drive(0, 0, 0.0));
-        //tasks.add(new Deposit());
-        //tasks.add(drive(-1500, -1500, 0.0));
-        //tasks.add(new Intake(1, 1000, telemetry));
-        //tasks.add(drive(0, 0, 0.0));
-        //tasks.add(new Deposit());
-        //tasks.add(drive(-1500, -1500, 0.0));
 
-        /*tasks.add(drive(1000, 1000, 0.0));
-                //tasks.add(drive(1500, 1500, 0.0));
-        //tasks.add(new DuckSpin(robot, -1));
-                //manager.init();
-        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
-        tasks.add(new DuckSpin(robot, -1)); //Forwards = 1, backwards = -1
-        tasks.add(drive(-1000, -1000, 0.0)); */
-        //tasks.add(drive(0, 0, 0.0));
-        //tasks.add(new Deposit(barcodeLevel * 100));
-        //tasks.add(drive(0, -1000, 0.0));
-        //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
-        //tasks.add(drive(1000, 0, 0.0));
         tasks.add(new Stop());
 
         //telemetry.addData("barcode", barcodeLevel);
@@ -85,6 +64,29 @@ public class AutoRed extends LinearOpMode {
         autoController.setTasks(tasks);
         autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
+
+    /*tasks.add(drive(1000, 1000, 0.0));
+                //tasks.add(drive(-1500, -1500, 0.0));
+                //tasks.add(drive(1500, 1500, 0.0));
+        //tasks.add(new DuckSpin(robot, -1));
+                //manager.init();
+                        //targetDist is how far you want it to drive before turning back (sensors not working yet)
+        //^Give this 1 to intake when red, -1 to intake when blue
+        //tasks.add(drive(0, 0, 0.0));
+        //tasks.add(new Deposit());
+        //tasks.add(drive(-1500, -1500, 0.0));
+        //tasks.add(new Intake(1, 1000, telemetry));
+        //tasks.add(drive(0, 0, 0.0));
+        //tasks.add(new Deposit());
+        //tasks.add(drive(-1500, -1500, 0.0));
+        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        tasks.add(new DuckSpin(robot, -1)); //Forwards = 1, backwards = -1
+        tasks.add(drive(-1000, -1000, 0.0)); */
+    //tasks.add(drive(0, 0, 0.0));
+    //tasks.add(new Deposit(barcodeLevel * 100));
+    //tasks.add(drive(0, -1000, 0.0));
+    //tasks.add(new DuckSpin(1)); //Forwards = 1, backwards = -1
+    //tasks.add(drive(1000, 0, 0.0));
 
     //TODO idk if the camera should be initialized here
     public void initializeCV() {
@@ -127,6 +129,7 @@ public class AutoRed extends LinearOpMode {
             //telemetry.addData("Boxes", pipeline.returnResultsBoxes());
             //telemetry.addData("Wiffles", pipeline.returnResultsWiffles());
             //telemetry.addData("Ducks", pipeline.returnResultsDucks());
+            telemetry.addData("dropper pos", robot.dropperServo.getPosition());
             telemetry.update();
             autoController.update();
         }

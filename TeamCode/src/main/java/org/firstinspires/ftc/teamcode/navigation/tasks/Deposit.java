@@ -17,7 +17,7 @@ public class Deposit implements Task {
 
     //private final double TICKSTODIST = 0.09363; //Multiply by this to convert from ticks to mm
     private static final double ERROR_MARGIN = 50;
-    private static final double EXTENDED_WAIT_TIME = 3; //In seconds
+    private static final double EXTENDED_WAIT_TIME = 1.5; //In seconds
 
     public Deposit() {
         this(Robot.EXT_OUT);
@@ -34,7 +34,8 @@ public class Deposit implements Task {
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
         if (!extended) {
-            double extendedDist = robot.moveEntenderTo((int)(targetDist));
+            double extendedDist = robot.moveExtenderTo((int)(targetDist));
+            robot.telemetry.update();
             robot.neutralDropperPosition();
             if (Math.abs(extendedDist - targetDist) < ERROR_MARGIN) {
                 extended = true;
@@ -43,9 +44,9 @@ public class Deposit implements Task {
             robot.dropperServo.setPosition(1);
             initialTime = robot.elapsedSecs();
             dropped = true;
-        }
-        if ((robot.elapsedSecs() - initialTime) > EXTENDED_WAIT_TIME) {
-            double extendedDist = robot.moveEntenderTo((int)Robot.EXT_IN);
+        } else if ((robot.elapsedSecs() - initialTime) > EXTENDED_WAIT_TIME) {
+            double extendedDist = robot.moveExtenderTo((int)Robot.EXT_IN);
+            robot.neutralDropperPosition();
             if (Math.abs(extendedDist - Robot.EXT_IN) < ERROR_MARGIN) {
                 returned = true;
             }

@@ -28,7 +28,7 @@ public class DriveBase {
 
     // Drive speed ranges from 0 to 1
     public double speed = 1.0;
-    public double autoSpeed = 0.8;
+    public double autoSpeed = 0.4;
 
 
     // Mecanum wheel drive motors

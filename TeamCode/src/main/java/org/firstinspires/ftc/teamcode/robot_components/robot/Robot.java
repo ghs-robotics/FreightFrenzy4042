@@ -56,7 +56,7 @@ public class Robot extends DriveBase {
         //^Spinner motor (which doesn't exist anymore) also contains x-axis odometer in encoder slot
         spinnerServoRed = hardwareMap.get(CRServo.class, "spinnerServoRed");
         spinnerServoBlue = hardwareMap.get(CRServo.class, "spinnerServoBlue");
-        dropperServo.setPosition(DROPPER_BACK);
+        dropperServo.setPosition(DROPPER_NEUTRAL);
     }
 
     /**
@@ -82,7 +82,7 @@ public class Robot extends DriveBase {
         }
     }
 
-    public double moveEntenderTo(int target) {
+    public double moveExtenderTo(int target) {
         extenderMotor.setTargetPosition(target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);

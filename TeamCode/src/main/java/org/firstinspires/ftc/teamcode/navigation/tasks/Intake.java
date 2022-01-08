@@ -53,12 +53,12 @@ public class Intake implements Task {
                 robot.sendDrivePowers();
                 robot.setFrontIntakePower(-1);
                 robot.setBackIntakePower(-1);
-                robot.neutralDropperPosition();
             } else {
                 robot.calculateDrivePowersAuto(0, 0, 0);
                 robot.sendDrivePowers();
                 robot.setFrontIntakePower(0);
                 robot.setBackIntakePower(0);
+                robot.neutralDropperPosition();
                 return true;
             }
         }

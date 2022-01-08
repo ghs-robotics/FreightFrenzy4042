@@ -89,10 +89,10 @@ public class MainTele extends LinearOpMode{
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
-                    robot.moveEntenderTo((int)Robot.EXT_OUT);
+                    robot.moveExtenderTo((int)Robot.EXT_OUT);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo((int)Robot.EXT_IN);
+                    robot.moveExtenderTo((int)Robot.EXT_IN);
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
@@ -111,10 +111,10 @@ public class MainTele extends LinearOpMode{
 
             if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
-                    robot.moveEntenderTo((int)Robot.EXT_LOW);
+                    robot.moveExtenderTo((int)Robot.EXT_LOW);
                     robot.neutralDropperPosition();
                 } else {
-                    robot.moveEntenderTo((int)Robot.EXT_IN);
+                    robot.moveExtenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
             }
