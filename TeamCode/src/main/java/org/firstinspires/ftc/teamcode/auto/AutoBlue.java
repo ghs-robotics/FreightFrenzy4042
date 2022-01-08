@@ -49,6 +49,7 @@ public class AutoBlue extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
+        tasks.add(new ScanCode());
         //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
         //manager.cameraTelemetry();
         //tasks.add(new Deposit(barcodeLevel));

@@ -58,12 +58,13 @@ public class CVManager {
     }
 
     public void cameraTelemetry() {
-        /*telemetry.addData("Faces", pipeline.returnResultsFaces().toList().toString());
-        telemetry.addData("Boxes", pipeline.returnResultsBoxes().toList().toString());
+        telemetry.addData("Faces", pipeline.returnResultsFaces().toList());
+        /*telemetry.addData("Boxes", pipeline.returnResultsBoxes().toList().toString());
         telemetry.addData("Wiffles", pipeline.returnResultsWiffles().toList().toString());
         telemetry.addData("Ducks", pipeline.returnResultsDucks().toList().toString()); */
         telemetry.addData("InitFrame ", pipeline.returnInitialFrame().get(0, 0)[0]);
         telemetry.addData("FPS ", webcam.getFps());
+        //telemetry.addData("file exists? ", pipeline.fileExists);
         telemetry.update();
     }
 

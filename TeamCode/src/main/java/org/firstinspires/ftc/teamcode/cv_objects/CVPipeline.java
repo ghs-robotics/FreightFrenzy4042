@@ -5,13 +5,17 @@ import org.opencv.core.MatOfRect;
 import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class CVPipeline extends OpenCvPipeline
 {
     Mat IntegralImage = new Mat();
     Mat initialFrame;
+    //public boolean fileExists;
 
     private CascadeClassifier faceClassifier = new CascadeClassifier(
-            "mtp://REV_Robotics_Control_Hub_v1.0_809a3b987eebdaa7/Internal%20shared%20storage/FIRST/CascadeFiles/FaceCascade");
+            "/storage/emulated/0/FIRST/CascadeFiles/haarcascade_frontalface_default.xml");
     private MatOfRect faces = new MatOfRect();
 
     private CascadeClassifier boxClassifier = new CascadeClassifier(
@@ -32,7 +36,9 @@ public class CVPipeline extends OpenCvPipeline
     @Override
     public Mat processFrame(Mat input) {
         initialFrame = input;
-        //faceClassifier.detectMultiScale(input, faces);
+        //File file = new File("/storage/emulated/0/FIRST/CascadeFiles/haarcascade_frontalface_default.xml");
+        //fileExists = !faceClassifier.empty();
+        faceClassifier.detectMultiScale(input, faces);
         /*boxClassifier.detectMultiScale(input, boxes);
         wiffleClassifier.detectMultiScale(input, wiffles);
         duckClassifier.detectMultiScale(input, ducks); */
