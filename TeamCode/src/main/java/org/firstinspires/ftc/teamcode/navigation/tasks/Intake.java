@@ -33,14 +33,14 @@ public class Intake implements Task {
         telemetry.addData("velFront", data[2]);
         telemetry.addData("velBack", data[3]); */
         telemetry.update();
-        robot.calculateDrivePowersOffset(1,1,0,45);
+        robot.calculateDrivePowersOffset(1,1,0,45, true);
         robot.sendDrivePowers();
         robot.setFrontIntakePower(direction);
         robot.setBackIntakePower(-1 * direction);
         robot.forwardDropperPosition();
         intakeFinished = detector.holdingObject();
         if (data > 0) {
-            robot.calculateDrivePowersOffset(0, 0, 0, 45);
+            robot.calculateDrivePowersOffset(0, 0, 0, 45, true);
             robot.sendDrivePowers();
             robot.setFrontIntakePower(0);
             robot.setBackIntakePower(0);

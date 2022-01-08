@@ -17,7 +17,7 @@ public class MainTele extends LinearOpMode{
 
     private boolean shouldGoToHigh = true;
     private boolean shouldGoToLow = true;
-
+    private boolean shouldGoToCap = true;
     private final double INTAKE_POWER = 1;
 
     @Override
@@ -60,7 +60,7 @@ public class MainTele extends LinearOpMode{
             robot.calculateDrivePowers(
                     -1 * controller1.left_stick_x,
                     controller1.left_stick_y,
-                    1 * controller1.right_stick_x
+                    controller1.right_stick_x, false
             );
 
             robot.sendDrivePowers();
@@ -79,11 +79,11 @@ public class MainTele extends LinearOpMode{
             * B: duckspinner
             * DPAD UP: autorun front intake, DPAD DOWN: autorun back intake
             * left stick y: both intakes forwards/backwards, hold left stick for slow mode
-            * right stick y: change dropper position, up = back, dwn = fwds
             * L/R BUMPERS: set servo pos*/
             // make sure you make the target negative
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
+            boolean CAP_EXTENDER = controller2.x == Btn.PRESSING;
 
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
@@ -97,6 +97,30 @@ public class MainTele extends LinearOpMode{
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
+            if(LOW_EXTENDER) {
+                if(shouldGoToLow) {
+                    robot.moveEntenderTo((int)Robot.EXT_LOW);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
+                }
+                shouldGoToLow = !shouldGoToLow;
+            }
+
+            if(CAP_EXTENDER){
+                if(shouldGoToCap){
+                    robot.moveEntenderTo((int)Robot.EXT_CAP);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveEntenderTo((int)Robot.EXT_IN);
+                }
+                shouldGoToCap = !shouldGoToCap;
+
+            }
+
+
+            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
+
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
 
@@ -108,19 +132,10 @@ public class MainTele extends LinearOpMode{
                 robot.spinRedDirection(0); //This could be red or blue and it would still work
             }
 
-            if(LOW_EXTENDER) {
-                if(shouldGoToLow) {
-                    robot.moveEntenderTo((int)Robot.EXT_LOW);
-                    robot.neutralDropperPosition();
-                } else {
-                    robot.moveEntenderTo((int)Robot.EXT_IN);
-                }
-                shouldGoToLow = !shouldGoToLow;
-            }
             //both intakes can run on same joystick
             //toggle between slow and fast by left joysick pressed OR by left joystick held
-            boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
-            boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
+            //boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
+            //boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
 
             /*if(controller2.left_stick_x > 0) {
                 robot.setFrontIntakePower(INTAKE_POWER); //Primarily move this
@@ -141,8 +156,8 @@ public class MainTele extends LinearOpMode{
                 robot.setFrontIntakePower(controller2.left_stick_x);
                 robot.setBackIntakePower(-1 * controller2.left_stick_x);
             }
+            telemetry.addData("left stic x", controller2.left_stick_x);
 
-            telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
             //boolean DROP = controller2.left_stick_button == Btn.PRESSED;
             boolean DROP = robot.extenderMotor.getCurrentPosition() < -1000;
@@ -152,7 +167,11 @@ public class MainTele extends LinearOpMode{
                 robot.dropperServo.setPosition(1-Math.max(Math.min(((controller2.left_stick_x) +1) / 2,
                         Robot.DROPPER_BACK         ), Robot.DROPPER_FORWARD));
             }
-            telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
+            //if arm is out set intake to 0
+            if(DROP){
+                robot.setFrontIntakePower(0);
+                robot.setBackIntakePower(0);
+            }
 
             boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
             if(DROP_BACK){

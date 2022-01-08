@@ -37,6 +37,7 @@ public class Robot extends DriveBase {
     public double DROPPER_CURRENT = 0;
     public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
     public static final double EXT_LOW = -1600; //previous was -1500
+    public static final double EXT_CAP = -700;
     public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
 
     // Constructs a robot with the mechanical functions specific to this year's competition

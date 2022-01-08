@@ -72,10 +72,10 @@ public class DriveToPoint implements Task {
 
         if (!arrived) {
             robot.calculateDrivePowersOffset(Math.max(-1, Math.min(1, errorPID.x)),
-                    Math.max(-1, Math.min(1, errorPID.y)), Math.max(-1, Math.min(1, rotErrorPID)), 45);
+                    Math.max(-1, Math.min(1, errorPID.y)), Math.max(-1, Math.min(1, rotErrorPID)), 45, false);
             robot.sendDrivePowers();
         } else {
-            robot.calculateDrivePowersOffset(0, 0, 0, 45);
+            robot.calculateDrivePowersOffset(0, 0, 0, 45, false);
             robot.sendDrivePowers();
         }
 
