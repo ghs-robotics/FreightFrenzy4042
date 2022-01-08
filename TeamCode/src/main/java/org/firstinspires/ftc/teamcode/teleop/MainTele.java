@@ -85,7 +85,7 @@ public class MainTele extends LinearOpMode{
             // make sure you make the target negative
             boolean extenderGotoHigh = controller2.y == Btn.PRESSING;
             boolean extenderGotoLow = controller2.a == Btn.PRESSING;
-
+    //random thing
             if(extenderGotoHigh) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
