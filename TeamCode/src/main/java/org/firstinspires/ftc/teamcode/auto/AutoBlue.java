@@ -44,26 +44,24 @@ public class AutoBlue extends LinearOpMode {
     private Robot robot;
     private AutoController autoController = new AutoController(); //had to do context actions and get rid of a parameter in order for the code to build
     private CVManager manager;
-    private Object Spin;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        manager.init();
-        int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
-        manager.cameraTelemetry();
-        tasks.add(new Deposit(barcodeLevel));
-        tasks.add(new Deposit());
+        //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
+        //manager.cameraTelemetry();
+        //tasks.add(new Deposit(barcodeLevel));
+        //tasks.add(new Deposit());
         //tasks.add(new Deposit(barcodeLevel * 100));
-        tasks.add(drive(1364, 1364, 0.0));
+        //tasks.add(drive(1364, 1364, 0.0));
 
         tasks.add(new Stop());
 
         //telemetry.addData("barcode", barcodeLevel);
 
-        telemetry.addData("task 1", tasks.get(0));
-        telemetry.update();
+        //telemetry.addData("task 1", tasks.get(0));
+        //telemetry.update();
         autoController.setTasks(tasks);
         autoController.initialize(tasks, new RobotPosition(new Point2D(0, 0), 0.0));
     }
@@ -76,12 +74,12 @@ public class AutoBlue extends LinearOpMode {
     @Override
     public void runOpMode()
     {
+        manager = new CVManager(hardwareMap, telemetry);
+        manager.initCamera();
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         waitForStart();
         autoController = new AutoController(hardwareMap, telemetry,robot);
         robot.elapsedTime.reset();
-        manager = new CVManager(hardwareMap, telemetry);
-        manager.startCamera();
         initializeTasks();
 
         while(opModeIsActive()){
