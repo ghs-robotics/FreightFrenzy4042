@@ -88,6 +88,7 @@ public class Robot extends DriveBase {
     }
 
     public double moveExtenderTo(double target) {
+
         extenderMotor.setTargetPosition((int)target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);
@@ -96,11 +97,11 @@ public class Robot extends DriveBase {
 
     public void moveExtenderWithJoyStick(double input) {
 
-        double armPos = extenderMotor.getCurrentPosition();
+        double armPos = extenderMotor.getCurrentPosition()+(input * ARM_SPEED);
 
-        if(armPos >= EXT_OUT) {
+        if(armPos > EXT_OUT) {
             targetPosition = EXT_OUT;
-        } else if(armPos <= EXT_IN) {
+        } else if(armPos < EXT_IN) {
             targetPosition = EXT_IN;
         }
         else {
@@ -113,7 +114,6 @@ public class Robot extends DriveBase {
     public void setExtenderPower(double power){
 
         int position = extenderMotor.getCurrentPosition();
-
 
         while(position < EXT_IN) {
             position = extenderMotor.getCurrentPosition();
