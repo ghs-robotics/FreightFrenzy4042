@@ -86,6 +86,8 @@ public class MainTele extends LinearOpMode{
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
+            robot.moveExtenderWithJoyStick(controller2.right_stick_y);
+
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {

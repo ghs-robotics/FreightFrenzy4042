@@ -19,12 +19,15 @@ public class Robot extends DriveBase {
     protected double spinnerPower = 0;
     double dropperAngle;
     double intakeAngle;
+    public double targetPosition = 0;
+
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
     public static DcMotor intakeMotorFront;
     public static DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
+    private final double ARM_SPEED = 50;
     public DcMotor spinnerMotor;
     public CRServo spinnerServoRed;
     public CRServo spinnerServoBlue;
@@ -82,11 +85,27 @@ public class Robot extends DriveBase {
         }
     }
 
-    public double moveExtenderTo(int target) {
-        extenderMotor.setTargetPosition(target);
+    public double moveExtenderTo(double target) {
+        extenderMotor.setTargetPosition((int)target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);
         return extenderMotor.getCurrentPosition();
+    }
+
+    public void moveExtenderWithJoyStick(double input) {
+
+        double armPos = extenderMotor.getCurrentPosition();
+
+        if(armPos >= EXT_OUT) {
+            targetPosition = EXT_OUT;
+        } else if(armPos <= EXT_IN) {
+            targetPosition = EXT_IN;
+        }
+        else {
+            targetPosition += input * ARM_SPEED;
+        }
+
+        moveExtenderTo(targetPosition);
     }
 
     public void setExtenderPower(double power){
