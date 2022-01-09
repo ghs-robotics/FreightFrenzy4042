@@ -35,6 +35,7 @@ public class Robot extends DriveBase {
     public Servo dropperServo;
     //public Servo spinnerServo;
     public Servo intakeBucketFlipServo;
+    public static final double DROPPER_CAP = 0.75;
     public static final double DROPPER_FORWARD = 0.3; //Maybe increase this to 0.6 or so
     public static final double DROPPER_NEUTRAL = 0.5;
     public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
@@ -191,7 +192,12 @@ public class Robot extends DriveBase {
         dropperServo.setPosition(DROPPER_BACK);
     }
 
-    public void neutralDropperPosition() { dropperServo.setPosition(DROPPER_NEUTRAL); }
+    public void neutralDropperPosition() {
+        dropperServo.setPosition(DROPPER_NEUTRAL); }
+
+    public void capDropperPosition(){
+        dropperServo.setPosition(DROPPER_CAP);
+    }
 
     public void setBarcodePos(Rect pos) {
         barcodePos = pos;
