@@ -157,14 +157,22 @@ public class MainTele extends LinearOpMode{
             }
             telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
 
-            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
+            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSED;
             if(DROP_BACK){
                 robot.backDropperPosition();
             }
-            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
+
+            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSED;
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
+
+            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSED;
+            if(DROP_CAP){
+                robot.capDropperPosition();
+            }
+
+
 
             //there is a delay between when you press the button and the servo starts spinning
             //duck spinner
