@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.cv_objects;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
 
@@ -36,8 +38,7 @@ public class CVPipeline extends OpenCvPipeline
     @Override
     public Mat processFrame(Mat input) {
         initialFrame = input;
-        //File file = new File("/storage/emulated/0/FIRST/CascadeFiles/haarcascade_frontalface_default.xml");
-        //fileExists = !faceClassifier.empty();
+        Imgproc.GaussianBlur(input, input, new Size(15,15), 0,0);
         faceClassifier.detectMultiScale(input, faces);
         /*boxClassifier.detectMultiScale(input, boxes);
         wiffleClassifier.detectMultiScale(input, wiffles);

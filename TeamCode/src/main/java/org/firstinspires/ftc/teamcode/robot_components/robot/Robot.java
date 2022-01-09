@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.opencv.core.Rect;
 
 // Robot class with more functionality than just the DriveBase
 // Contains all of the motors/servos/sensors specific to this year's challenge
@@ -41,6 +42,7 @@ public class Robot extends DriveBase {
     public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
     public static final double EXT_LOW = -1600; //previous was -1500
     public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
+    private Rect barcodePos;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -190,5 +192,13 @@ public class Robot extends DriveBase {
     }
 
     public void neutralDropperPosition() { dropperServo.setPosition(DROPPER_NEUTRAL); }
+
+    public void setBarcodePos(Rect pos) {
+        barcodePos = pos;
+    }
+
+    public Rect getBarcodePos() {
+        return barcodePos;
+    }
 
 }
