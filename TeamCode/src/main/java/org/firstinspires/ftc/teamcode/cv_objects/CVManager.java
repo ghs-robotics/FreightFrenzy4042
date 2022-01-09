@@ -8,11 +8,14 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.navigation.AutoController;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
+
+import java.util.List;
 
 public class CVManager {
 
@@ -58,7 +61,7 @@ public class CVManager {
     }
 
     public void cameraTelemetry() {
-        telemetry.addData("Faces", pipeline.returnResultsFaces().toList());
+        telemetry.addData("Faces", pipeline.returnResultsFaces().toList().toString());
         /*telemetry.addData("Boxes", pipeline.returnResultsBoxes().toList().toString());
         telemetry.addData("Wiffles", pipeline.returnResultsWiffles().toList().toString());
         telemetry.addData("Ducks", pipeline.returnResultsDucks().toList().toString()); */
@@ -68,7 +71,7 @@ public class CVManager {
         telemetry.update();
     }
 
-    public int detectBarcode() { //currently returns the x and not an x converted to barcode
-        return pipeline.returnResultsFaces().toArray()[0].x;
+    public List<Rect> getFaces() { //currently returns the x and not an x converted to barcode
+        return pipeline.returnResultsFaces().toList();
     }
 }

@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Deposit;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DuckSpin;
+import org.firstinspires.ftc.teamcode.navigation.tasks.ScanCode;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Stop;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
@@ -43,13 +44,13 @@ public class AutoBlue extends LinearOpMode {
     // Declare OpMode members
     private Robot robot;
     private AutoController autoController = new AutoController(); //had to do context actions and get rid of a parameter in order for the code to build
-    private CVManager manager;
+    //private CVManager manager;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new ScanCode());
+        tasks.add(new ScanCode(hardwareMap, telemetry));
         //int barcodeLevel = manager.detectBarcode(); //Currently setting to a position, not a level
         //manager.cameraTelemetry();
         //tasks.add(new Deposit(barcodeLevel));
@@ -75,8 +76,8 @@ public class AutoBlue extends LinearOpMode {
     @Override
     public void runOpMode()
     {
-        manager = new CVManager(hardwareMap, telemetry);
-        manager.initCamera();
+        /*manager = new CVManager(hardwareMap, telemetry);
+        manager.initCamera(); */
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         waitForStart();
         autoController = new AutoController(hardwareMap, telemetry,robot);
@@ -84,7 +85,8 @@ public class AutoBlue extends LinearOpMode {
         initializeTasks();
 
         while(opModeIsActive()){
-            manager.cameraTelemetry();
+            //manager.cameraTelemetry();
+            telemetry.addData("map: ", ScanCode.getMap().toString());
             telemetry.update();
             autoController.update();
         }
