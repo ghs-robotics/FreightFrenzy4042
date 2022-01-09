@@ -100,6 +100,15 @@ public class MainTele extends LinearOpMode{
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
+            if(LOW_EXTENDER) {
+                if(shouldGoToLow) {
+                    robot.moveExtenderTo((int)Robot.EXT_LOW);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveExtenderTo((int)Robot.EXT_IN);
+                }
+                shouldGoToLow = !shouldGoToLow;
+            }
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
 
@@ -111,15 +120,6 @@ public class MainTele extends LinearOpMode{
                 robot.spinRedDirection(0); //This could be red or blue and it would still work
             }
 
-            if(LOW_EXTENDER) {
-                if(shouldGoToLow) {
-                    robot.moveExtenderTo((int)Robot.EXT_LOW);
-                    robot.neutralDropperPosition();
-                } else {
-                    robot.moveExtenderTo((int)Robot.EXT_IN);
-                }
-                shouldGoToLow = !shouldGoToLow;
-            }
             //both intakes can run on same joystick
             //toggle between slow and fast by left joysick pressed OR by left joystick held
 
@@ -155,19 +155,19 @@ public class MainTele extends LinearOpMode{
             }
             telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
 
-            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
+            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSED;
             if(DROP_BACK){
                 robot.backDropperPosition();
             }
             telemetry.addData("LB", controller2.left_bumper);
 
-            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
+            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSED;
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
             telemetry.addData("RB", controller2.right_bumper);
 
-            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSING;
+            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSED;
             if(DROP_CAP){
                 robot.capDropperPosition();
             }
