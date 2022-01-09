@@ -40,9 +40,9 @@ public class Robot extends DriveBase {
     public static final double DROPPER_NEUTRAL = 0.5;
     public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
     public double DROPPER_CURRENT = 0;
-    public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
-    public static final double EXT_LOW = -1600; //previous was -1500
-    public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
+    public static final double EXT_OUT = 3700; //Previous value was 2500, corrected to -3700
+    public static final double EXT_LOW = 1600; //previous was -1500
+    public static final double EXT_IN = 10; //Previous value was 0, corrected to -10
     private Rect barcodePos;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
@@ -65,40 +65,17 @@ public class Robot extends DriveBase {
         dropperServo.setPosition(DROPPER_NEUTRAL);
     }
 
-    /**
-     * Toggle the extension between extended to a given length or retracted. Expects extenderMotor
-     * to be set up properly with RunMode.RUN_TO_POSITION.
-     * todo what unit of measurement is distance????? Gonna assume that it is in mm
-     * @param distance The distance to extend to if retracted.
-     */
-    public void toggleExtension(double distance) {
-
-        int currentTicks = extenderMotor.getCurrentPosition();
-        boolean isExtended = currentTicks > 5 || currentTicks < -5;
-        if (isExtended) {
-            // retract
-            extenderMotor.setTargetPosition(0);
-        } else {
-            // extend
-            int targetTicks = (int) Math.round(
-                    (distance / EXTENDER_PULLEY_INNER_CIRC /* num. revolutions*/)
-                    * EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT
-            );
-            extenderMotor.setTargetPosition(targetTicks);
-        }
-    }
-
     public double moveExtenderTo(double target) {
 
         extenderMotor.setTargetPosition((int)target);
         extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         extenderMotor.setPower(1);
-        return extenderMotor.getCurrentPosition();
+        return getExtenderPos();
     }
 
     public void moveExtenderWithJoyStick(double input) {
 
-        double armPos = extenderMotor.getCurrentPosition()+(input * ARM_SPEED);
+        double armPos = getExtenderPos()+(input * ARM_SPEED);
 
         if(armPos > EXT_OUT) {
             targetPosition = EXT_OUT;
@@ -111,25 +88,6 @@ public class Robot extends DriveBase {
 
         moveExtenderTo(targetPosition);
     }
-
-    public void setExtenderPower(double power){
-
-        int position = extenderMotor.getCurrentPosition();
-
-        while(position < EXT_IN) {
-            position = extenderMotor.getCurrentPosition();
-            extenderMotor.setPower(.2);
-        }
-
-        while(position > EXT_OUT) {
-            position = extenderMotor.getCurrentPosition();
-            extenderMotor.setPower(-.2);
-        }
-
-        extenderPower = power;
-        extenderMotor.setPower(extenderPower);
-    }
-
 
     /**
      * Toggle the position of dropperServo between DROPPER_MAX and DROPPER_MIN
@@ -201,6 +159,10 @@ public class Robot extends DriveBase {
 
     public void setBarcodePos(Rect pos) {
         barcodePos = pos;
+    }
+
+    public double getExtenderPos() {
+        return extenderMotor.getCurrentPosition() * -1;
     }
 
     public Rect getBarcodePos() {
