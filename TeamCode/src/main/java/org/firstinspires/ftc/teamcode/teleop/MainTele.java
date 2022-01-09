@@ -122,8 +122,8 @@ public class MainTele extends LinearOpMode{
             }
             //both intakes can run on same joystick
             //toggle between slow and fast by left joysick pressed OR by left joystick held
-            boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;
-            boolean BACK_INTAKE = controller2.dpad_down == Btn.PRESSED;
+
+
 
             /*if(controller2.left_stick_x > 0) {
                 robot.setFrontIntakePower(INTAKE_POWER); //Primarily move this
