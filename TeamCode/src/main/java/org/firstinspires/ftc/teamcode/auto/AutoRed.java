@@ -51,7 +51,7 @@ public class AutoRed extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        //tasks.add(new Deposit());
+        tasks.add(new Deposit());
         //tasks.add(new Intake(1, 1000, telemetry));
         //tasks.add(new Deposit());
 

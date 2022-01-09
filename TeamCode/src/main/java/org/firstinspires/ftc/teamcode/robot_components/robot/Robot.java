@@ -40,7 +40,7 @@ public class Robot extends DriveBase {
     public static final double EXT_MED = -1600;//previous was -1500
     public static final double EXT_LOW = -800;
     public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
-    private static Rect barcodePos;
+    private Rect barcodePos;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -179,7 +179,7 @@ public class Robot extends DriveBase {
         barcodePos = pos;
     }
 
-    public static Rect getBarcodePos() {
+    public Rect getBarcodePos() {
         return barcodePos;
     }
 

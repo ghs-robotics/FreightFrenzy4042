@@ -9,7 +9,7 @@ import org.opencv.core.Rect;
  * Deposit freight into an the chosen goal (this includes extension, drop, and retraction)
  */
 public class Deposit implements Task {
-
+    private boolean useBarcode;
     private boolean extended;
     private boolean dropped;
     private boolean returned;
@@ -25,6 +25,7 @@ public class Deposit implements Task {
     }
 
     public Deposit(double targetDist) { //Full extension = -3700
+        useBarcode = false;
         extended = false;
         dropped = false;
         returned = false;
@@ -32,15 +33,21 @@ public class Deposit implements Task {
     }
 
     public Deposit(boolean useBarcode) {
-        this(
-                ((Robot.getBarcodePos().x < 110) ? Robot.EXT_LOW : (Robot.getBarcodePos().x < 210)
-                        ? Robot.EXT_MED : Robot.getBarcodePos().x < 320 ? Robot.EXT_OUT : 0)
-        );
+        this.useBarcode = useBarcode;
+        extended = false;
+        dropped = false;
+        returned = false;
+        this.targetDist = targetDist;
     }
 
     public void init() {}
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
+        int barX = robot.getBarcodePos().x;
+        if (useBarcode) {
+            targetDist = (barX < 110) ? Robot.EXT_LOW : (barX < 210)
+                    ? Robot.EXT_MED : (barX < 320) ? Robot.EXT_OUT : 0;
+        }
         if (targetDist == 0) {
             return true;
         }

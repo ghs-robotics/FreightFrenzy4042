@@ -51,7 +51,7 @@ public class AutoBlue extends LinearOpMode {
 
         List<Task> tasks = new ArrayList<>();
         tasks.add(new ScanCode(hardwareMap, telemetry));
-        //tasks.add(new Deposit(true)); //Use barcode is set to true for this time
+        tasks.add(new Deposit(true)); //Use barcode is set to true for this time
         //tasks.add(new Deposit());
         //tasks.add(drive(1364, 1364, 0.0));
 
