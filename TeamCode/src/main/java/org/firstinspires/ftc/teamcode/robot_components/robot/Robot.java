@@ -28,7 +28,7 @@ public class Robot extends DriveBase {
     public static DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
-    private final double ARM_SPEED = 50;
+    private final double ARM_SPEED = 40;
     public DcMotor spinnerMotor;
     public CRServo spinnerServoRed;
     public CRServo spinnerServoBlue;
