@@ -157,20 +157,24 @@ public class MainTele extends LinearOpMode{
             }
             telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
 
-            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSED;
+            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
             if(DROP_BACK){
                 robot.backDropperPosition();
             }
+            telemetry.addData("LB", controller2.left_bumper);
 
-            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSED;
+            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
+            telemetry.addData("RB", controller2.right_bumper);
 
-            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSED;
+            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSING;
             if(DROP_CAP){
                 robot.capDropperPosition();
             }
+            telemetry.addData("LDPAD", controller2.dpad_left);
+
 
 
 
