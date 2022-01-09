@@ -19,13 +19,14 @@ public class ScanCode implements Task {
     public double timesScanned;
     public boolean finishedScan;
     CVManager manager;
-    static HashMap<Rect, Integer> faceLocations = new HashMap<>(); //Rect key and Integer value (# times seen)
+    static HashMap<Rect, Integer> faceLocations; //Rect key and Integer value (# times seen)
 
     public ScanCode(HardwareMap hM, Telemetry t) {
         timesScanned = 0;
         finishedScan = false;
         manager = new CVManager(hM, t);
         manager.initCamera();
+        faceLocations = new HashMap<>();
     }
 
     public void init() {}
@@ -51,6 +52,7 @@ public class ScanCode implements Task {
             robot.setBarcodePos(mostFrequent(faceLocations));
             finishedScan = true;
         }
+        manager.cameraTelemetry();
         return finishedScan;
     }
 

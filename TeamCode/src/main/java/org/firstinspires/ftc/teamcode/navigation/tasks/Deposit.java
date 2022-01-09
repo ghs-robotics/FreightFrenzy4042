@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.navigation.tasks;
 import org.firstinspires.ftc.teamcode.navigation.RobotPosition;
 import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.robot_components.robot.Robot;
+import org.opencv.core.Rect;
 
 /**
  * Deposit freight into an the chosen goal (this includes extension, drop, and retraction)
@@ -30,9 +31,19 @@ public class Deposit implements Task {
         this.targetDist = targetDist;
     }
 
+    public Deposit(boolean useBarcode) {
+        this(
+                ((Robot.getBarcodePos().x < 110) ? Robot.EXT_LOW : (Robot.getBarcodePos().x < 210)
+                        ? Robot.EXT_MED : Robot.getBarcodePos().x < 320 ? Robot.EXT_OUT : 0)
+        );
+    }
+
     public void init() {}
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
+        if (targetDist == 0) {
+            return true;
+        }
         if (!extended) {
             double extendedDist = robot.moveExtenderTo((int)(targetDist));
             robot.telemetry.update();

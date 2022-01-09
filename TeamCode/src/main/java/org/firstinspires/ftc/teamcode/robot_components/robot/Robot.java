@@ -37,9 +37,10 @@ public class Robot extends DriveBase {
     public static final double DROPPER_BACK = 0.76; //This value was previously 0.7, and was increased to 0.76
     public double DROPPER_CURRENT = 0;
     public static final double EXT_OUT = -3700; //Previous value was 2500, corrected to -3700
-    public static final double EXT_LOW = -1600; //previous was -1500
+    public static final double EXT_MED = -1600;//previous was -1500
+    public static final double EXT_LOW = -800;
     public static final double EXT_IN = -10; //Previous value was 0, corrected to -10
-    private Rect barcodePos;
+    private static Rect barcodePos;
 
     // Constructs a robot with the mechanical functions specific to this year's competition
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -178,7 +179,7 @@ public class Robot extends DriveBase {
         barcodePos = pos;
     }
 
-    public Rect getBarcodePos() {
+    public static Rect getBarcodePos() {
         return barcodePos;
     }
 

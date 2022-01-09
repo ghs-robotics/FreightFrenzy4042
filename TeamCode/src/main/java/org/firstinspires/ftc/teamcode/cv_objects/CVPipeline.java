@@ -38,7 +38,7 @@ public class CVPipeline extends OpenCvPipeline
     @Override
     public Mat processFrame(Mat input) {
         initialFrame = input;
-        Imgproc.GaussianBlur(input, input, new Size(15,15), 0,0);
+        //Imgproc.GaussianBlur(input, input, new Size(15,15), 0,0);
         faceClassifier.detectMultiScale(input, faces);
         /*boxClassifier.detectMultiScale(input, boxes);
         wiffleClassifier.detectMultiScale(input, wiffles);

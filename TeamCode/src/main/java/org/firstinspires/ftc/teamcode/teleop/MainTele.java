@@ -83,6 +83,7 @@ public class MainTele extends LinearOpMode{
             * right stick y: change dropper position, up = back, dwn = fwds
             * L/R BUMPERS: set servo pos*/
             // make sure you make the target negative
+
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
@@ -98,6 +99,12 @@ public class MainTele extends LinearOpMode{
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
+            /*double extenderMove = controller2.right_stick_y;
+
+            if (!HIGH_EXTENDER && !LOW_EXTENDER) {
+                robot.moveExtenderTo((int)(robot.extenderMotor.getCurrentPosition()+extenderMove));
+            } */
+
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
 
@@ -111,7 +118,7 @@ public class MainTele extends LinearOpMode{
 
             if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
-                    robot.moveExtenderTo((int)Robot.EXT_LOW);
+                    robot.moveExtenderTo((int)Robot.EXT_MED);
                     robot.neutralDropperPosition();
                 } else {
                     robot.moveExtenderTo((int)Robot.EXT_IN);
