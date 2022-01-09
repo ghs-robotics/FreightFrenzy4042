@@ -145,7 +145,6 @@ public class MainTele extends LinearOpMode{
 
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
-            //boolean DROP = controller2.left_stick_button == Btn.PRESSED;
             boolean DROP = robot.extenderMotor.getCurrentPosition() < -1000;
             if(DROP){
                 robot.dropperServo.setPosition(1-(((controller2.left_stick_x)+1)/2));
@@ -153,21 +152,21 @@ public class MainTele extends LinearOpMode{
                 robot.dropperServo.setPosition(1-Math.max(Math.min(((controller2.left_stick_x) +1) / 2,
                         Robot.DROPPER_BACK         ), Robot.DROPPER_FORWARD));
             }
-            telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSED);
+            telemetry.addData( "right stick pressed", controller2.left_stick_button == Btn.PRESSING);
 
-            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSED;
+            boolean DROP_BACK = controller2.left_bumper == Btn.PRESSING;
             if(DROP_BACK){
                 robot.backDropperPosition();
             }
             telemetry.addData("LB", controller2.left_bumper);
 
-            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSED;
+            boolean DROP_FORWARD = controller2.right_bumper == Btn.PRESSING;
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
             telemetry.addData("RB", controller2.right_bumper);
 
-            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSED;
+            boolean DROP_CAP = controller2.dpad_left == Btn.PRESSING;
             if(DROP_CAP){
                 robot.capDropperPosition();
             }
