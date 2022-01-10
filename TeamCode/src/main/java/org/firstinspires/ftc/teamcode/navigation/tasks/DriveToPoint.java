@@ -17,6 +17,7 @@ public class DriveToPoint implements Task {
     public RobotPosition errorMargin;
     public Telemetry telemetry;
     public double totalDistance;
+    public boolean useBarcode;
 
     public DriveToPoint(RobotPosition targetPosition) {
         // default error margin of 1.5cm, 10 degrees
@@ -27,8 +28,14 @@ public class DriveToPoint implements Task {
         this.targetPosition = targetPosition;
         this.errorMargin = errorMargin;
         totalDistance = 0; //Put this temporarily until distance is found
+        useBarcode = false;
         //driveTime = targetPosition.position.length() / 762.5;
 
+    }
+
+    public DriveToPoint(boolean useBarcode) {
+        this.errorMargin = new RobotPosition(15.0, 15.0, 10.0);
+        this.useBarcode = useBarcode;
     }
 
 
@@ -37,6 +44,14 @@ public class DriveToPoint implements Task {
     }
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
+        if (useBarcode) {
+            int barX = robot.getBarcodePos().x;
+            targetPosition = (barX < 110) ? new RobotPosition(0, -50, 0.0) : //x should be 200
+                    (barX < 210) ? new RobotPosition(0, -100, 0.0) : //x should be 100
+                    (barX < 320) ? new RobotPosition(0, -150, 0.0) : //x should be 0
+                            //y should always be -100
+                    new RobotPosition(0, 0, 0.0);
+        }
 
         if (totalDistance == 0) {
             totalDistance = currentPosition.position.distanceTo(targetPosition.position);
@@ -55,7 +70,7 @@ public class DriveToPoint implements Task {
         //This ^ number should be 588.23529 for 1000m total distance
 
         Point2D error = targetPosition.position.subtract(currentPosition.position);
-        Point2D errorPID = error;
+        //Point2D errorPID = error.scale(0.01);
         //Point2D errorPID = error.scale(1/startSlowing).exponent(4); //At 1000mm, 0.00170 and 4
         //errorPID.x *= (error.x / Math.abs(error.x));
         //errorPID.y *= (error.y / Math.abs(error.y));
@@ -71,8 +86,8 @@ public class DriveToPoint implements Task {
         // TODO THIS DOESN'T REALLY WORK MOST LIKELY
 
         if (!arrived) { //FIX THIS
-            robot.calculateDrivePowersAuto(Math.max(-1, Math.min(1, errorPID.x)),
-                    Math.max(-1, Math.min(1, errorPID.y)), Math.max(-1, Math.min(1, rotErrorPID)));
+            robot.calculateDrivePowersAuto(Math.max(-1, Math.min(1, error.scale(0.01).x)),
+                    Math.max(-1, Math.min(1, error.scale(0.01).y)), Math.max(-1, Math.min(1, rotErrorPID)));
             robot.sendDrivePowers();
         } else {
             robot.calculateDrivePowersAuto(0, 0, 0);

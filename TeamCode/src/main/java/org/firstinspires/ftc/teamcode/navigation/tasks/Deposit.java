@@ -43,8 +43,8 @@ public class Deposit implements Task {
     public void init() {}
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
-        int barX = robot.getBarcodePos().x;
         if (useBarcode) {
+            int barX = robot.getBarcodePos().x;
             targetDist = (barX < 110) ? Robot.EXT_LOW : (barX < 210)
                     ? Robot.EXT_MED : (barX < 320) ? Robot.EXT_OUT : 0;
         }
