@@ -56,13 +56,23 @@ public class MainTele extends LinearOpMode{
             // NOTE: TO USE THESE FUNCTIONS PRESS START A
             // NOTE: NEED TO REFINE CONTROLS WITH DRIVE TEAM
             // DRIVER FUNCTIONS
+            double rAngle = mod(robot.gyro.getAngle(), 360);
 
-            robot.calculateDrivePowers(
-                    -1 * controller1.left_stick_x,
-                    1 * controller1.left_stick_y,
-                    1 * controller1.right_stick_x,
-                    false
-            );
+            telemetry.addData("gyro angle: ", rAngle);
+
+            if(rAngle < 10 || rAngle > 350) {
+                robot.calculateDrivePowers(
+                        -1 * controller1.left_stick_x,
+                        1 * controller1.left_stick_y,
+                        1 * controller1.right_stick_x,
+                        false
+                );
+            } else {
+                robot.calculateDrivePowers(0,0,1 - ((rAngle - 180) * (-1.0 / 180.0)), false);
+            }
+            telemetry.addData("calculated power: ", 1-((rAngle - 180) * (-1.0 / 180.0)));
+            //0, 0, rAngle > 180 ? -1 : 1
+            //((rAngle - 180) * (-1 / 180)) <------ BROKEN PID
 
             robot.sendDrivePowers();
 
@@ -192,5 +202,16 @@ public class MainTele extends LinearOpMode{
 
             telemetry.update();
         }
+    }
+
+    private double mod(double input, double modBy) {
+        while (input < 0 || input > modBy) {
+            if (input < 0) {
+                input += modBy;
+            } else {
+                input -= modBy;
+            }
+        }
+        return input;
     }
 }
