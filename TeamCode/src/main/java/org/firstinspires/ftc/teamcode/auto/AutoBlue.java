@@ -78,7 +78,7 @@ public class AutoBlue extends LinearOpMode {
     {
         robot = new Robot(hardwareMap, telemetry); // new CVModule(hardwareMap, telemetry);
         waitForStart();
-        autoController = new AutoController(hardwareMap, telemetry,robot);
+        autoController = new AutoController(hardwareMap, telemetry, robot);
         robot.elapsedTime.reset();
         //manager = new CVManager(hardwareMap, telemetry);
         //manager.startCamera();
