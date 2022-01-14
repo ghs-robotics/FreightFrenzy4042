@@ -67,9 +67,9 @@ public class MainTele extends LinearOpMode{
                         1 * controller1.right_stick_x,
                         false
                 );
-            } else {
+            } /*else {
                 robot.calculateDrivePowers(0,0,1 - ((rAngle - 180) * (-1.0 / 180.0)), false);
-            }
+            }*/
             telemetry.addData("calculated power: ", 1-((rAngle - 180) * (-1.0 / 180.0)));
             //0, 0, rAngle > 180 ? -1 : 1
             //((rAngle - 180) * (-1 / 180)) <------ BROKEN PID
@@ -96,7 +96,6 @@ public class MainTele extends LinearOpMode{
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
-            robot.moveExtenderWithJoyStick(-controller2.right_stick_y);
 
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
@@ -108,9 +107,7 @@ public class MainTele extends LinearOpMode{
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
-            }
-
-            if(LOW_EXTENDER) {
+            }else if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
                     robot.moveExtenderTo((int)Robot.EXT_LOW);
                     robot.neutralDropperPosition();
@@ -118,7 +115,10 @@ public class MainTele extends LinearOpMode{
                     robot.moveExtenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
+            }else {
+                robot.moveExtenderWithJoyStick(-controller2.right_stick_y);
             }
+
             double DUCK_FRONT = controller2.left_trigger;
             double DUCK_BACK = controller2.right_trigger;
 
