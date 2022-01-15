@@ -99,6 +99,20 @@ public class MainTele extends LinearOpMode{
                 shouldGoToHigh = !shouldGoToHigh;
             }
 
+            if(LOW_EXTENDER) {
+                if(shouldGoToLow) {
+                    robot.moveExtenderTo((int)Robot.EXT_LOW);
+                    robot.neutralDropperPosition();
+                } else {
+                    robot.moveExtenderTo((int)Robot.EXT_IN);
+                }
+                shouldGoToLow = !shouldGoToLow;
+            }
+
+            if(controller2.right_stick_y != 0){
+                robot.moveExtenderWithJoyStick(-controller2.right_stick_y);
+            }
+
             /*double extenderMove = controller2.right_stick_y;
 
             if (!HIGH_EXTENDER && !LOW_EXTENDER) {
@@ -116,15 +130,6 @@ public class MainTele extends LinearOpMode{
                 robot.spinRedDirection(0); //This could be red or blue and it would still work
             }
 
-            if(LOW_EXTENDER) {
-                if(shouldGoToLow) {
-                    robot.moveExtenderTo((int)Robot.EXT_MED);
-                    robot.neutralDropperPosition();
-                } else {
-                    robot.moveExtenderTo((int)Robot.EXT_IN);
-                }
-                shouldGoToLow = !shouldGoToLow;
-            }
             //both intakes can run on same joystick
             //toggle between slow and fast by left joysick pressed OR by left joystick held
             boolean FRONT_INTAKE = controller2.dpad_up == Btn.PRESSED;

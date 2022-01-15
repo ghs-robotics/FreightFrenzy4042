@@ -20,12 +20,16 @@ public class Robot extends DriveBase {
     protected double spinnerPower = 0;
     double dropperAngle;
     double intakeAngle;
+    public double targetPosition = 0;
+
+
     //public CRServo intakeCRServo;
     public DcMotor extenderMotor;
     public static DcMotor intakeMotorFront;
     public static DcMotor intakeMotorBack;
     private final double EXTENDER_TICKS_PER_REV_OUTPUT_SHAFT = 384.5; // for 435 rpm yellowjacket
     private final double EXTENDER_PULLEY_INNER_CIRC = 36.0 * Math.PI; // very important for accurate distance!
+    private final double ARM_SPEED = 40;
     public DcMotor spinnerMotor;
     public CRServo spinnerServoRed;
     public CRServo spinnerServoBlue;
@@ -83,6 +87,33 @@ public class Robot extends DriveBase {
             );
             extenderMotor.setTargetPosition(targetTicks);
         }
+    }
+
+    public double moveExtenderTo(double target) {
+
+        extenderMotor.setTargetPosition((int)target);
+        extenderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        extenderMotor.setPower(1);
+        return extenderMotor.getCurrentPosition();
+    }
+
+    public void moveExtenderWithJoyStick(double input) {
+
+        double armPos = extenderMotor.getCurrentPosition()+(input * ARM_SPEED);
+
+        //WARNINGG!@@@!!1312321312!!!!!!!
+        //the encoder values are negative!!!!! This is why I put armPos < EXT_OUT. - Simon
+        //I know that this is stupid code, but life never works out the way you want it
+        if(armPos < EXT_OUT) {
+            targetPosition = EXT_OUT;
+        } else if(armPos > EXT_IN) {
+            targetPosition = EXT_IN;
+        }
+        else {
+            targetPosition += input * ARM_SPEED;
+        }
+
+        moveExtenderTo(targetPosition);
     }
 
     public double moveExtenderTo(int target) {
