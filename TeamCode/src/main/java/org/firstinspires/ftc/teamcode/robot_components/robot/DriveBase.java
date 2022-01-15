@@ -14,10 +14,11 @@ import org.firstinspires.ftc.teamcode.robot_components.navigation.Gyro;
 public class DriveBase {
 
     // Motor powers
-    protected double leftFrontPower = 0;
-    protected double rightFrontPower = 0;
-    protected double leftRearPower = 0;
-    protected double rightRearPower = 0;
+    //todo make protected again after ileague
+    public double leftFrontPower = 0;
+    public double rightFrontPower = 0;
+    public double leftRearPower = 0;
+    public double rightRearPower = 0;
 
     private final double LFM = 1;
     private final double RFM = 1;

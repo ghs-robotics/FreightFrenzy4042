@@ -87,6 +87,11 @@ public class MainTele extends LinearOpMode{
             boolean HIGH_EXTENDER = controller2.y == Btn.PRESSING;
             boolean LOW_EXTENDER = controller2.a == Btn.PRESSING;
 
+            telemetry.addData("lfpower", robot.leftFrontPower);
+            telemetry.addData("rfpower", robot.rightFrontPower);
+            telemetry.addData("lrpower", robot.leftRearPower);
+            telemetry.addData("rrpower", robot.rightRearPower);
+
             if(HIGH_EXTENDER) {
                 //im gonna hardcode the distance because heck you - simon
                 if(shouldGoToHigh) {
@@ -109,7 +114,7 @@ public class MainTele extends LinearOpMode{
                 shouldGoToLow = !shouldGoToLow;
             }
 
-            if(controller2.right_stick_y != 0){
+            if(Math.abs(controller2.right_stick_y) > 0.05){
                 robot.moveExtenderWithJoyStick(-controller2.right_stick_y);
             }
 
@@ -175,6 +180,7 @@ public class MainTele extends LinearOpMode{
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
+
 
 
 
