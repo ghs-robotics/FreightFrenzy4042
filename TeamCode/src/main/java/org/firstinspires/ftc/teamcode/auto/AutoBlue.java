@@ -19,8 +19,10 @@ import org.firstinspires.ftc.teamcode.navigation.Task;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Deposit;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DriveToPoint;
 import org.firstinspires.ftc.teamcode.navigation.tasks.DuckSpin;
+import org.firstinspires.ftc.teamcode.navigation.tasks.Intake;
 import org.firstinspires.ftc.teamcode.navigation.tasks.ScanCode;
 import org.firstinspires.ftc.teamcode.navigation.tasks.Stop;
+import org.firstinspires.ftc.teamcode.navigation.tasks.Wait;
 import org.firstinspires.ftc.teamcode.robot_components.cv.CVModule;
 
 import java.util.ArrayList;
@@ -50,7 +52,14 @@ public class AutoBlue extends LinearOpMode {
     public void initializeTasks() {
 
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new ScanCode(hardwareMap, telemetry));
+        /*tasks.add(new Wait(15));
+        tasks.add(new Deposit());
+        tasks.add(new Intake(-1, 1600, telemetry));//1600 is about 3 tiles
+        tasks.add(new Deposit());
+        tasks.add(new Intake(-1, 1600, telemetry));
+        tasks.add(new Deposit());*/
+        tasks.add(drive(0, -1600, 0.0));
+        //tasks.add(new ScanCode(hardwareMap, telemetry));
         //tasks.add(new DriveToPoint(true));
         //tasks.add(new Deposit(true)); //Use barcode is set to true for this time
         //tasks.add(new Deposit());
