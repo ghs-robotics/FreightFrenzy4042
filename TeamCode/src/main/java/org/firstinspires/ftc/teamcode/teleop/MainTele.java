@@ -151,19 +151,12 @@ public class MainTele extends LinearOpMode{
                 robot.setBackIntakePower(0);
             } */
 
-            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
-            if(TOGGLE_INTAKE_SPEED) {
-                robot.setBackIntakePower(controller2.left_stick_x*0.2);
-                robot.setFrontIntakePower(-1 * controller2.left_stick_x*0.2);
-            }else{
-                robot.setFrontIntakePower(controller2.left_stick_x);
-                robot.setBackIntakePower(-1 * controller2.left_stick_x);
-            }
-
             telemetry.addData("arm encoder", robot.extenderMotor.getCurrentPosition()+"");
 
+            boolean intakeOut = robot.extenderMotor.getCurrentPosition() < -400;
+
             //boolean DROP = controller2.left_stick_button == Btn.PRESSED;
-            boolean DROP = robot.extenderMotor.getCurrentPosition() < -1000;
+            boolean DROP = intakeOut;
             if(DROP){
                 robot.dropperServo.setPosition(1-(((controller2.left_stick_x)+1)/2));
             }else {
@@ -180,6 +173,21 @@ public class MainTele extends LinearOpMode{
             if(DROP_FORWARD){
                 robot.forwardDropperPosition();
             }
+
+            boolean TOGGLE_INTAKE_SPEED = controller2.left_stick_button == Btn.PRESSING;
+            if (!intakeOut) {
+                if (TOGGLE_INTAKE_SPEED) {
+                    robot.setBackIntakePower(controller2.left_stick_x * 0.2);
+                    robot.setFrontIntakePower(-1 * controller2.left_stick_x * 0.2);
+                } else {
+                    robot.setFrontIntakePower(controller2.left_stick_x);
+                    robot.setBackIntakePower(-1 * controller2.left_stick_x);
+                }
+            } else {
+                robot.setBackIntakePower(0);
+                robot.setFrontIntakePower(0);
+            }
+
 
 
 

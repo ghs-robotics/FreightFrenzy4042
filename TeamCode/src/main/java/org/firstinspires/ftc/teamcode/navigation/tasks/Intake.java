@@ -39,7 +39,7 @@ public class Intake implements Task {
         telemetry.addData("Distance: ", distance);
         if (!reachedTarget) {
             if (distance < targetDist) {
-                robot.calculateDrivePowersAuto(0, 1, 0);
+                robot.calculateDrivePowersAuto(0, direction * 1, 0);
                 robot.sendDrivePowers();
                 robot.setFrontIntakePower(direction);
                 robot.setBackIntakePower(-1 * direction);
@@ -49,7 +49,7 @@ public class Intake implements Task {
             }
         } else {
             if (distance > startingDist) {
-                robot.calculateDrivePowersAuto(0, -1, 0);
+                robot.calculateDrivePowersAuto(0, direction * -1, 0);
                 robot.sendDrivePowers();
                 robot.setFrontIntakePower(-1);
                 robot.setBackIntakePower(-1);

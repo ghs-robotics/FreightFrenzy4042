@@ -33,6 +33,8 @@ public class ScanCode implements Task {
 
     public boolean update(RobotPosition currentPosition, Robot robot) {
         List<Rect> faces = manager.getFaces();
+        robot.telemetry.addData("face", faces.toString());
+        robot.telemetry.update();
         for (Rect face : faces) {
             boolean foundMatch = false;
             for (Rect loc : faceLocations.keySet()) {
@@ -48,7 +50,7 @@ public class ScanCode implements Task {
         }
 
         timesScanned++;
-        if (timesScanned >= 30) {
+        if (timesScanned >= 1000) {
             robot.setBarcodePos(mostFrequent(faceLocations));
             finishedScan = true;
         }
