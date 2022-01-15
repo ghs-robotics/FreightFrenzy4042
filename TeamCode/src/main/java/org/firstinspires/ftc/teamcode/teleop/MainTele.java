@@ -107,7 +107,9 @@ public class MainTele extends LinearOpMode{
                 }
 
                 shouldGoToHigh = !shouldGoToHigh;
-            }else if(LOW_EXTENDER) {
+            }
+
+            if(LOW_EXTENDER) {
                 if(shouldGoToLow) {
                     robot.moveExtenderTo((int)Robot.EXT_LOW);
                     robot.neutralDropperPosition();
@@ -115,7 +117,9 @@ public class MainTele extends LinearOpMode{
                     robot.moveExtenderTo((int)Robot.EXT_IN);
                 }
                 shouldGoToLow = !shouldGoToLow;
-            }else {
+            }
+
+            if(controller2.right_stick_y != 0){
                 robot.moveExtenderWithJoyStick(-controller2.right_stick_y);
             }
 
